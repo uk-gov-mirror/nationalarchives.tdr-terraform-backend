@@ -8,7 +8,7 @@ resource "aws_iam_group" "tdr_management_administrators" {
   name = "tdr-management-administrators"
 }
 
-resource "aws_iam_group_policy_attachment" "developers_terraform_assume_role" {
+resource "aws_iam_group_policy_attachment" "developers_terraform_assume_role_ci" {
   group      = aws_iam_group.tdr_management_developers.name
   policy_arn = aws_iam_policy.ci_terraform_assume_role.arn
 }

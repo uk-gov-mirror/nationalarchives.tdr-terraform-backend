@@ -1,6 +1,6 @@
 locals {
   common_tags = map(
-    "Owner", "TDR Management",
+    "Owner", "TDR Backend",
     "Terraform", true
   )
 }
