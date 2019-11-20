@@ -24,5 +24,6 @@ module "terraform_state_lock" {
 module "terraform_permissions" {
   source = "./modules/permissions"
 
-  common_tags = local.common_tags
+  common_tags            = local.common_tags
+  terraform_state_bucket = module.terraform_state.terraform_state_bucket_arn
 }
