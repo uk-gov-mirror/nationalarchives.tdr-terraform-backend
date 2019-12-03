@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "ci_terraform_assume_role" {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
     //This should be the arn to the Terraform role defined for the environment
-    resources = ["*"]
+    resources = ["arn:aws:iam::247222723249:role/TerraformCI"]
   }
 }
 
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "test_terraform_assume_role" {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
     //This should be the arn to the Terraform role defined for the environment
-    resources = ["*"]
+    resources = ["arn:aws:iam::247222723249:role/TerraformCI"]
   }
 }
 
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "prod_terraform_assume_role" {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
     //This should be the arn to the Terraform role defined for the environment
-    resources = ["*"]
+    resources = ["arn:aws:iam::247222723249:role/TerraformCI"]
   }
 }
 
