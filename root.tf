@@ -26,3 +26,8 @@ module "terraform_permissions" {
 
   common_tags = local.common_tags
 }
+
+module "jenkins_policies" {
+  source = "./modules/jenkins"
+  common_tags = local.common_tags
+}
