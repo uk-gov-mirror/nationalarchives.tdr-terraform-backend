@@ -6,7 +6,8 @@ locals {
 }
 
 provider "aws" {
-  region = "eu-west-2"
+  region  = "eu-west-2"
+  profile = "managementprofile"
 }
 
 module "terraform_state" {
@@ -24,5 +25,7 @@ module "terraform_state_lock" {
 module "terraform_permissions" {
   source = "./modules/permissions"
 
-  common_tags = local.common_tags
+  common_tags            = local.common_tags
+  terraform_state_bucket = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock   = module.terraform_state_lock.terraform_state_lock_arn
 }
