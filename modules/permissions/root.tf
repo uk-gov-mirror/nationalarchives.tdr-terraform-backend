@@ -53,15 +53,22 @@ resource "aws_iam_group_policy_attachment" "administrator_change_prod_terraform_
   policy_arn = aws_iam_policy.prod_access_terraform_state.arn
 }
 
+data "aws_ssm_parameter" "ci_account_number" {
+  name = "/mgmt/ci_account"
+}
+
 data "aws_iam_policy_document" "ci_terraform_assume_role" {
   version = "2012-10-17"
 
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    //This should be the arn to the Terraform role defined for the environment
-    resources = ["arn:aws:iam::247222723249:role/TerraformCI"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.ci_account_number.value}:role/ci-terraform-role"]
   }
+}
+
+data "aws_ssm_parameter" "test_account_number" {
+  name = "/mgmt/test_account"
 }
 
 data "aws_iam_policy_document" "test_terraform_assume_role" {
@@ -70,9 +77,12 @@ data "aws_iam_policy_document" "test_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    //This should be the arn to the Terraform role defined for the environment
-    resources = ["arn:aws:iam::247222723249:role/TerraformCI"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.test_account_number.value}:role/test-terraform-role"]
   }
+}
+
+data "aws_ssm_parameter" "prod_account_number" {
+  name = "/mgmt/prod_account"
 }
 
 data "aws_iam_policy_document" "prod_terraform_assume_role" {
@@ -81,8 +91,7 @@ data "aws_iam_policy_document" "prod_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    //This should be the arn to the Terraform role defined for the environment
-    resources = ["arn:aws:iam::247222723249:role/TerraformCI"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/prod-terraform-role"]
   }
 }
 
