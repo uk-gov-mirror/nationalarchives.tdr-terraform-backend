@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_iam_policy" "jenkins_logs_policy" {
   policy = data.aws_iam_policy_document.jenkins_logs_document.json
   name = "JenkinsLogs"
@@ -45,12 +47,12 @@ data "aws_iam_policy_document" "jenkins_ssm_document" {
       "ssm:PutParameter"
     ]
     resources = [
-      "arn:aws:ssm:eu-west-2:328920706552:parameter/${var.environment}/access_key",
-      "arn:aws:ssm:eu-west-2:328920706552:parameter/${var.environment}/fargate_security_group",
-      "arn:aws:ssm:eu-west-2:328920706552:parameter/${var.environment}/github/client",
-      "arn:aws:ssm:eu-west-2:328920706552:parameter/${var.environment}/github/secret",
-      "arn:aws:ssm:eu-west-2:328920706552:parameter/${var.environment}/jenkins_url",
-      "arn:aws:ssm:eu-west-2:328920706552:parameter/${var.environment}/secret_key"
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/access_key",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/fargate_security_group",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/github/client",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/github/secret",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/jenkins_url",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.environment}/secret_key"
     ]
   }
 
