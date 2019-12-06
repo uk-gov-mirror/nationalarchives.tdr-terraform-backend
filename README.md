@@ -7,10 +7,16 @@ The purpose of this repository is to setup the necessary Terraform backend AWS r
 The Terraform scripts are to be used as a one off operation, and not to retain the state.
 
 Specific resources created:
-* S3 Bucket: contains the Terraform state files for each TDR workspace
-* DyanmoDB table: used for locking to prevent concurrent operations on a single workspace
+* AWS TDR Management account resources:
+  * **S3 Bucket**: contains the Terraform state files for each TDR workspace
+  * **DyanmoDB table**: used for locking to prevent concurrent operations on a single workspace
+* AWS TDR Environment accounts resources:
+  * **Terraform IAM Roles**: IAM role to allow creation of AWS resource within the environment using Terraform (Terraform IAM role)
+  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform IAM role
 
-These resources are used by the TDR application Terraform code.
+These resources are used by the TDR application Terraform code: https://github.com/nationalarchives/tdr-terraform-environments
+
+The Terraform IAM roles are assumed by the TDR AWS Management account user running the TDR application Terraform code.
 
 ## Getting Started
 
@@ -20,12 +26,47 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
 
 ## Running the Project
 
-1. Clone the project to local machine: 
+1. Clone the project to local machine: https://github.com/nationalarchives/tdr-terraform-backend
 
-2. Add AWS credentials to the local credential store:
-    * Terraform will read these credentials to give it access to AWS.
-    * See instructions here: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
-3. Open command terminal on local machine
+2. Add AWS credentials to the local credential store (~/.aws/credentials):
+
+   ```
+   ... other credentials ...
+   [management]
+   aws_access_key_id = ... management user access key ...
+   aws_secret_access_key = ... management user secret key ...
+   ```
+
+  * These credentials will be used to create the Terraform backend and set up the individual Terraform environments with IAM roles that will allow Terraform to create the AWS resources in that TDR environment.
+  * See instructions here: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
+
+3. Add AWS profiles to the local config store (~/.aws/config):
+
+   ```
+   [profile intgaccess]
+   region = eu-west-2
+   role_arn = ... arn of the IAM role that provides admin access to the TDR intg AWS account ...
+   source_profile = management
+   
+   [profile prodaccess]
+   region = eu-west-2
+   role_arn = ... arn of the IAM role that provides admin access to the TDR intg AWS account ...
+   source_profile = management
+   ```
+  * The profiles allow Terraform to assume IAM roles in the TDR environment accounts to create IAM roles and policies which give permissions for the creation of AWS resources by Terraform.
+  
+4. Open command terminal on local machine and navigate to the environment-roles module: ./modules/environment-roles
+
+5. 
+
+5. Run the Terraform init command in the environment-roles module:
+
+   ```
+   [environment-roles] $ terraform init
+   ```
+   
+6. 
+
 4. In command terminal navigate to the folder where the project has been cloned to
 5. In the command terminal run the following command:
     ```
