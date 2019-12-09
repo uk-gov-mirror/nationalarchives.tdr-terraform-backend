@@ -17,7 +17,7 @@ terraform {
 
 provider "aws" {
   region  = "eu-west-2"
-  profile = "managementprofile"
+  profile = "management"
 }
 
 module "terraform_state" {
