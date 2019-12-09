@@ -1,6 +1,5 @@
 locals {
   environment         = lookup(var.workspace_to_environment_map, terraform.workspace, "intg")
-  //environment_account = lookup(var.workspace_environment_account_map, terraform.workspace, "ci" )
   environment_profile = lookup(var.workspace_aws_profile_map, terraform.workspace, "intg")
   common_tags = map(
     "Owner", "TDR",
@@ -8,7 +7,18 @@ locals {
   )
 }
 
+
 data "aws_caller_identity" "current" {}
+
+terraform {
+  backend "s3" {
+    bucket         = "tdr-bootstrap-terraform-state"
+    key            = "terraform.env.state"
+    region         = "eu-west-2"
+    encrypt        = true
+    dynamodb_table = "tdr-bootstrap-terraform-state-lock"
+  }
+}
 
 provider "aws" {
   region  = "eu-west-2"
