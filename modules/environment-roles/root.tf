@@ -8,6 +8,8 @@ locals {
   )
 }
 
+data "aws_caller_identity" "current" {}
+
 provider "aws" {
   region  = "eu-west-2"
   profile = local.environment_profile
@@ -36,9 +38,27 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_terraform.arn
 }
 
+resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.keycloak_terraform.arn
+}
+
 data "template_file" "s3_terraform_policy" {
   template = file("./templates/s3_terraform_policy.json.tpl")
   vars     = {}
+}
+
+data "template_file" "keycloak_terraform_policy" {
+  template = file("./templates/keycloak_terraform_policy.json.tpl")
+  vars = {
+    account_id = data.aws_caller_identity.current.account_id
+    environment = local.environment
+  }
+}
+
+resource "aws_iam_policy" "keycloak_terraform" {
+  policy = data.template_file.keycloak_terraform_policy.rendered
+  name = "keycloak-terraform-${local.environment}"
 }
 
 resource "aws_iam_policy" "s3_terraform" {
