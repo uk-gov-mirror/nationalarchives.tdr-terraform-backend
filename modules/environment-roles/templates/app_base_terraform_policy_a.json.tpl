@@ -92,14 +92,16 @@
         "iam:ListPolicyVersions",
         "iam:PassRole",
         "iam:TagRole",
-        "iam:UpdateAssumeRolePolicy"
+        "iam:UpdateAssumeRolePolicy",
+        "iam:CreateServiceLinkedRole"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_task_policy_${environment}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_execution_role_${environment}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_task_role_${environment}",
-        "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
+        "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "arn:aws:iam::${account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing"
 
       ]
     },
@@ -125,6 +127,14 @@
         "lambda:RemovePermission"
       ],
       "Resource": "arn:aws:lambda:eu-west-2:${account_id}:function:${app_name}_${environment}"
+    },
+    {
+      "Sid": "acm",
+      "Effect": "Allow",
+      "Action" : [
+        "acm:ListCertificates"
+      ],
+      "Resource": "*"
     }
   ]
 }

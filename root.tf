@@ -8,7 +8,7 @@ locals {
 terraform {
   backend "s3" {
     bucket         = "tdr-bootstrap-terraform-state"
-    key            = "terraform.backend.state"
+    key            = "terraform.state"
     region         = "eu-west-2"
     encrypt        = true
     dynamodb_table = "tdr-bootstrap-terraform-state-lock"
