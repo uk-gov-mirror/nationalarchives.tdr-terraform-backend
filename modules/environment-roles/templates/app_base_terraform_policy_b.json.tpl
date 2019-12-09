@@ -102,7 +102,8 @@
         "ec2:ModifySubnetAttribute",
         "ec2:ReleaseAddress",
         "ec2:RunInstances",
-        "ec2:DescribeAvailabilityZones"
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeAccountAttributes"
       ],
       "Resource": "*"
     },
