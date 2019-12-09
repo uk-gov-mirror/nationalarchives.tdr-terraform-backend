@@ -101,7 +101,8 @@
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_execution_role_${environment}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_task_role_${environment}",
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing"
+        "arn:aws:iam::${account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing",
+        "arn:aws:iam::${account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"
 
       ]
     },
@@ -132,7 +133,9 @@
       "Sid": "acm",
       "Effect": "Allow",
       "Action" : [
-        "acm:ListCertificates"
+        "acm:ListCertificates",
+        "acm:ListCertificates",
+        "acm:DescribeCertificate"
       ],
       "Resource": "*"
     }
