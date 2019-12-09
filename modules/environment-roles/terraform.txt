@@ -1,0 +1,15 @@
+2019/12/06 15:28:45 [INFO] Terraform version: 0.12.17  
+2019/12/06 15:28:45 [INFO] Go runtime version: go1.12.13
+2019/12/06 15:28:45 [INFO] CLI args: []string{"/usr/local/bin/terraform", "plan"}
+2019/12/06 15:28:45 [DEBUG] Attempting to open CLI config file: /home/sam/.terraformrc
+2019/12/06 15:28:45 [DEBUG] File doesn't exist, but doesn't need to. Ignoring.
+2019/12/06 15:28:45 [INFO] CLI command args: []string{"plan"}
+2019/12/06 15:28:45 [DEBUG] New state was assigned lineage "ad58bc22-d156-d575-fb5c-df07c6d0576c"
+2019/12/06 15:28:45 [TRACE] Meta.Backend: using default local state only (no backend configuration, and no existing initialized backend)
+2019/12/06 15:28:45 [TRACE] Meta.Backend: instantiated backend of type <nil>
+2019/12/06 15:28:45 [DEBUG] checking for provider in "."
+2019/12/06 15:28:45 [DEBUG] checking for provider in "/usr/local/bin"
+2019/12/06 15:28:45 [DEBUG] checking for provisioner in "."
+2019/12/06 15:28:45 [DEBUG] checking for provisioner in "/usr/local/bin"
+2019/12/06 15:28:45 [INFO] Failed to read plugin lock file .terraform/plugins/linux_amd64/lock.json: open .terraform/plugins/linux_amd64/lock.json: no such file or directory
+2019/12/06 15:28:45 [INFO] backend/local: starting Plan operation
