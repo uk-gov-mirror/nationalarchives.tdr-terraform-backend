@@ -274,10 +274,18 @@ data "aws_iam_policy_document" "terraform_create_jenkins_document_b" {
       "iam:PassRole",
       "iam:TagRole",
       "iam:UpdateAssumeRolePolicy",
-      "iam:GetInstanceProfile"
+      "iam:GetInstanceProfile",
+      "iam:CreateGroup",
+      "iam:GetGroup",
+      "iam:DeleteGroup",
+      "iam:AttachGroupPolicy",
+      "iam:DetachGroupPolicy",
+      "iam:ListAttachedGroupPolicies",
+      "iam:CreatePolicyVersion"
     ]
     resources = [
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:instance-profile/jenkins_instance_profile_${var.environment}",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:group/jenkins-fargate-${var.environment}",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/api_ecs_execution_policy_${var.environment}",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/invoke-jenkins-sg-update-api-gateway_${var.environment}",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/jenkins_ec2_policy_${var.environment}",
