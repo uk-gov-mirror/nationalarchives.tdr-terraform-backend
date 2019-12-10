@@ -45,6 +45,7 @@
         "ec2:CreateRoute",
         "ec2:DeleteSecurityGroup",
         "ec2:RevokeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress",
         "ec2:TerminateInstances"
       ],
       "Resource": [
