@@ -9,7 +9,7 @@ The Terraform scripts are to be used as a one off operation, and not to retain t
 Specific resources created:
 * AWS TDR Management account resources:
   * **S3 Bucket**: contains the Terraform state files for each TDR workspace
-  * **DyanmoDB table**: used for locking to prevent concurrent operations on a single workspace
+  * **DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
 * AWS TDR Environment accounts resources:
   * **Terraform IAM Roles**: IAM role to allow creation of AWS resource within the environment using Terraform (Terraform IAM role)
   * **IAM Policies**: Specific IAM policies to give permissions to the Terraform IAM role
@@ -50,50 +50,86 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
    
    [profile prodaccess]
    region = eu-west-2
-   role_arn = ... arn of the IAM role that provides admin access to the TDR intg AWS account ...
+   role_arn = ... arn of the IAM role that provides admin access to the TDR staging/prod AWS account ...
    source_profile = management
    ```
   * The profiles allow Terraform to assume IAM roles in the TDR environment accounts to create IAM roles and policies which give permissions for the creation of AWS resources by Terraform.
   
 4. Open command terminal on local machine and navigate to the environment-roles module: ./modules/environment-roles
 
-5. 
-
-5. Run the Terraform init command in the environment-roles module:
+5. Create Terraform workspaces in the environment-roles module for each of the TDR environments:
 
    ```
-   [environment-roles] $ terraform init
+   [environment-roles] $ terraform workspace new intg
+   
+   [environment-roles] $ terraform workspace new staging
+   
+   [environment-roles] $ terraform workspace new prod
+   ```
+
+6. Run the following command to ensure Terraform uses the correct credentials:
+
+   ```
+   [environment-roles] $ export AWS_PROFILE=management
    ```
    
-6. 
+7. Select each Terraform workspace and create the Terraform IAM roles for each of the TDR environments in their corresponding AWS accounts:
 
-4. In command terminal navigate to the folder where the project has been cloned to
-5. In the command terminal run the following command:
-    ```
-    $ terraform init
-    ```
-6. Once Terraform has been initiated run the following command:
-    ```
-    $ terraform apply
-    ```
-7. Check the Terraform generate output is created
-8. If output is correct type: ```yes```
-9. TDR Terraform backend resources will be created
+   ```
+   [environment-roles] $ terraform workspace select intg
+   
+   [environment-roles] $ terrform apply
+   ```
+   
+   * This will create the IAM roles that will be assumed by the TDR AWS management account to give permission for Terraform to create the AWS resources for the TDR environment.
+
+8. Navigate back to the root of the project from the environment-roles module and run the Terraform root in the ***default*** Terraform workspace:
+
+   ```
+   [location of project] $ terraform workspace select default   
+   
+   [location of project] $ terraform apply
+   ```
+
+  * This will generate the Terraform backend (s3 bucket and DynamoDb) which will store the Terraform state for the TDR environments in each of the TDR AWS environment accounts.
+
+Once the Terraform Backend project has been setup the following AWS backend resources should be available in the AWS TDR Management account:
+
+  * S3 Buckets: 
+    * tdr-terraform-state; 
+    * tdr-terraform-state-jenkins
+  * DyanmoDb Tables: 
+    * tdr-terraform-state-lock; 
+    * tdr-state-lock-jenkins
+  * IAM Groups: 
+    * tdr-terraform-administrators; 
+    * tdr-terraform-developers
+  * IAM Policies: 
+    * *[env name]*_access_terraform_state; 
+    * *[env name]*_terraform_assume_role_policy; 
+    * read_terraform_state; 
+    * terraform_state_lock_access
+  
+In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
+  * IAM Role: *[env name]*-terraform-role
+  * IAM Policies:
+    * s3-terraform-policy-*[env name]*
+    * *[further policies to be added as needed]*   
 
 ## Background to TDR AWS Structure
 
 ### TDR AWS Accounts
 
 Three TDR Application AWS accounts are used to host the different environments:
-* CI
-* Test
-* Prod
+* Integration (intg)
+* Staging (staging)
+* Production (prod)
 
-In addition there is a TDR Management AWS account which is used to host the Terraform backend.
+In addition there is a TDR Management AWS account which is used to host the Terraform backend and Jenkins.
 
 ### IAM Role Delegation
 
-IAM role delegation will be used to allow users in the AWS management account to have access to the TDR environment AWS accounts to perform terraforming operations.
+IAM role delegation is used to allow users in the AWS management account to have access to the TDR environment AWS accounts to perform terraforming operations.
 
 IAM policies are defined to create a trust relationship between the TDR environment AWS accounts (trusting account) and the management AWS account (trusted account).
 
@@ -105,7 +141,7 @@ Example of the IAM policy that needs to be added to the user group(s) in the AWS
       "Statement": {
         "Effect": "Allow",
         "Action": "sts:AssumeRole",
-        "Resource": "arn:aws:iam::TDR-ENVIORNMENT-ID:role/Terraform"
+        "Resource": "arn:aws:iam::TDR-ENVIORNMENT-ID:role/[environment name]-terraform-role"
       }
     }
 ```
@@ -118,9 +154,9 @@ The TDR Terraform script can the access the Terraform backend in the following w
 ...
 variable "workspace_iam_roles" {
   default = {
-    ci   = "arn:aws:iam::CI-ACCOUNT-ID:role/Terraform"
-    test = "arn:aws:iam::TEST-ACCOUNT-ID:role/Terraform"
-    prod = "arn:aws:iam::PRODUCTION-ACCOUNT-ID:role/Terraform"
+    intg    = "arn:aws:iam::INTG-ACCOUNT-ID:role/intg-terraform-role"
+    staging = "arn:aws:iam::STAGING-ACCOUNT-ID:role/staging-terraform-role"
+    prod    = "arn:aws:iam::PRODUCTION-ACCOUNT-ID:role/prod-terraform-role"
   }
 }
 
@@ -144,7 +180,7 @@ provider "aws" {
 
 ### IAM User Groups
 
-Two user groups are defined: "developer"; "administrator". This is to limit which users will have permission to apply Terraform changes to the "test" and "prod" TDR environments.
+Two user groups are defined: "developer"; "administrator". This is to limit which users will have permission to apply Terraform changes to the "staging" and "production" TDR environments.
 
 ## Further Information
 

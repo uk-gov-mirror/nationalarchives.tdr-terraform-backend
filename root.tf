@@ -5,9 +5,19 @@ locals {
   )
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "tdr-bootstrap-terraform-state"
+    key            = "terraform.state"
+    region         = "eu-west-2"
+    encrypt        = true
+    dynamodb_table = "tdr-bootstrap-terraform-state-lock"
+  }
+}
+
 provider "aws" {
   region  = "eu-west-2"
-  profile = "managementprofile"
+  profile = "management"
 }
 
 module "terraform_state" {
