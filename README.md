@@ -9,7 +9,7 @@ The Terraform scripts are to be used as a one off operation, and not to retain t
 Specific resources created:
 * AWS TDR Management account resources:
   * **S3 Bucket**: contains the Terraform state files for each TDR workspace
-  * **DyanmoDB table**: used for locking to prevent concurrent operations on a single workspace
+  * **DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
 * AWS TDR Environment accounts resources:
   * **Terraform IAM Roles**: IAM role to allow creation of AWS resource within the environment using Terraform (Terraform IAM role)
   * **IAM Policies**: Specific IAM policies to give permissions to the Terraform IAM role
@@ -64,7 +64,7 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
    
    [environment-roles] $ terraform workspace new staging
    
-   [environment-roles] $ terraform workspapce new prod
+   [environment-roles] $ terraform workspace new prod
    ```
 
 6. Run the following command to ensure Terraform uses the correct credentials:
