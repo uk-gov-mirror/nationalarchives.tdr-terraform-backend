@@ -28,6 +28,16 @@ resource "aws_iam_group_policy_attachment" "developers_access_terraform_state_lo
   policy_arn = aws_iam_policy.terraform_state_lock_access.arn
 }
 
+resource "aws_iam_group_policy_attachment" "developers_describe_accounts" {
+  group      = aws_iam_group.tdr_terraform_developers.name
+  policy_arn = aws_iam_policy.terraform_describe_account.arn
+}
+
+resource "aws_iam_group_policy_attachment" "administrators_describe_accounts" {
+  group      = aws_iam_group.tdr_terraform_administrators.name
+  policy_arn = aws_iam_policy.terraform_describe_account.arn
+}
+
 resource "aws_iam_group_policy_attachment" "administrators_terraform_assume_role_staging" {
   group      = aws_iam_group.tdr_terraform_administrators.name
   policy_arn = aws_iam_policy.staging_terraform_assume_role.arn
@@ -168,6 +178,17 @@ data "aws_iam_policy_document" "terraform_state_lock" {
   }
 }
 
+data "aws_iam_policy_document" "terraform_describe_account" {
+  version = "2012-10-17"
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ec2:DescribeAccountAttributes","ec2:DescribeAvailabilityZones"]
+    resources = ["*"]
+  }
+}
+
+
 resource "aws_iam_policy" "read_terraform_state" {
   name        = "read_terraform_state"
   description = "Policy to allow access to TDR environments' states"
@@ -196,4 +217,10 @@ resource "aws_iam_policy" "terraform_state_lock_access" {
   name        = "terraform_state_lock_access"
   description = "Policy to allow access to DyanmoDb to obtain lock to amend Terraform state"
   policy      = data.aws_iam_policy_document.terraform_state_lock.json
+}
+
+resource "aws_iam_policy" "terraform_describe_account" {
+  name        = "terraform_describe_account"
+  description = "Policy to allow terraform to describe the accounts"
+  policy      = data.aws_iam_policy_document.terraform_describe_account.json
 }

@@ -7,6 +7,9 @@ locals {
   )
 }
 
+
+data "aws_caller_identity" "current" {}
+
 terraform {
   backend "s3" {
     bucket         = "tdr-bootstrap-terraform-state"
@@ -45,9 +48,47 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_terraform.arn
 }
 
+resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_a" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.keycloak_terraform_iam_a.arn
+}
+
+resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_b" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.keycloak_terraform_iam_b.arn
+}
+
 data "template_file" "s3_terraform_policy" {
   template = file("./templates/s3_terraform_policy.json.tpl")
   vars     = {}
+}
+
+data "template_file" "keycloak_terraform_policy_b" {
+  template = file("./templates/app_base_terraform_policy_b.json.tpl")
+  vars = {
+    account_id = data.aws_caller_identity.current.account_id
+    environment = local.environment
+    app_name = "keycloak"
+  }
+}
+
+resource "aws_iam_policy" "keycloak_terraform_iam_b" {
+  policy = data.template_file.keycloak_terraform_policy_b.rendered
+  name = "keycloak-terraform-${local.environment}-b"
+}
+
+data "template_file" "keycloak_terraform_policy_a" {
+  template = file("./templates/app_base_terraform_policy_a.json.tpl")
+  vars = {
+    account_id = data.aws_caller_identity.current.account_id
+    environment = local.environment
+    app_name = "keycloak"
+  }
+}
+
+resource "aws_iam_policy" "keycloak_terraform_iam_a" {
+  policy = data.template_file.keycloak_terraform_policy_a.rendered
+  name = "keycloak-terraform-${local.environment}-a"
 }
 
 resource "aws_iam_policy" "s3_terraform" {

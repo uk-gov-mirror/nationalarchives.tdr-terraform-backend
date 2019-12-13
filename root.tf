@@ -34,8 +34,14 @@ module "terraform_state_lock" {
 
 module "terraform_permissions" {
   source = "./modules/permissions"
-
   common_tags            = local.common_tags
   terraform_state_bucket = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock   = module.terraform_state_lock.terraform_state_lock_arn
+}
+
+module "jenkins_permissions" {
+  source = "./modules/jenkins"
+  environment = "mgmt"
+  terraform_jenkins_state_bucket = module.terraform_state.terraform_jenkins_state_bucket
+  terraform_jenkins_state_lock = module.terraform_state_lock.terraform_jenkins_state_lock
 }
