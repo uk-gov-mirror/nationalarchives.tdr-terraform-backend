@@ -13,7 +13,7 @@ resource "aws_iam_group" "tdr_deny_access" {
 }
 
 resource "aws_iam_group_policy_attachment" "deny_all_access" {
-  group = aws_iam_group.tdr_deny_access.name
+  group      = aws_iam_group.tdr_deny_access.name
   policy_arn = "arn:aws:iam::aws:policy/AWSDenyAll"
 }
 
@@ -192,7 +192,7 @@ data "aws_iam_policy_document" "terraform_describe_account" {
 
   statement {
     effect    = "Allow"
-    actions   = ["ec2:DescribeAccountAttributes","ec2:DescribeAvailabilityZones"]
+    actions   = ["ec2:DescribeAccountAttributes", "ec2:DescribeAvailabilityZones"]
     resources = ["*"]
   }
 }
