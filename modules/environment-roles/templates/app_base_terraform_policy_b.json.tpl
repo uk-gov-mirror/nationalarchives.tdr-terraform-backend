@@ -109,7 +109,7 @@
       "Resource": "*"
     },
     {
-      "Sid" : "rds",
+      "Sid" : "storage",
       "Effect": "Allow",
       "Action" : [
         "rds:DescribeDBSubnetGroups",
