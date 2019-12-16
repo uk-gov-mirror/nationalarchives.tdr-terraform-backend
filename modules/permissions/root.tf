@@ -8,6 +8,15 @@ resource "aws_iam_group" "tdr_terraform_administrators" {
   name = "tdr-terraform-administrators"
 }
 
+resource "aws_iam_group" "tdr_deny_access" {
+  name = "tdr-deny-access"
+}
+
+resource "aws_iam_group_policy_attachment" "deny_all_access" {
+  group = aws_iam_group.tdr_deny_access.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSDenyAll"
+}
+
 resource "aws_iam_group_policy_attachment" "developers_terraform_assume_role_intg" {
   group      = aws_iam_group.tdr_terraform_developers.name
   policy_arn = aws_iam_policy.intg_terraform_assume_role.arn
@@ -187,7 +196,6 @@ data "aws_iam_policy_document" "terraform_describe_account" {
     resources = ["*"]
   }
 }
-
 
 resource "aws_iam_policy" "read_terraform_state" {
   name        = "read_terraform_state"
