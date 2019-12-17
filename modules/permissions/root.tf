@@ -232,3 +232,44 @@ resource "aws_iam_policy" "terraform_describe_account" {
   description = "Policy to allow terraform to describe the accounts"
   policy      = data.aws_iam_policy_document.terraform_describe_account.json
 }
+
+data "aws_iam_policy_document" "ecs_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+
+data "aws_iam_policy_document" "jenkins_node_assume_role_document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    resources = [
+      "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRJenkinsECSUpdateRoleIntg",
+      "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRJenkinsECSUpdateRoleStaging",
+      "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRJenkinsECSUpdateRoleProd"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "jenkins_ecs_policy" {
+  name   = "TDRJenkinsNodePolicy"
+  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document.json
+}
+
+resource "aws_iam_role" "jenkins_node_assume_role" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRJenkinsNodeRole"
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_role_attachment" {
+  policy_arn = aws_iam_policy.jenkins_ecs_policy.arn
+  role       = aws_iam_role.jenkins_node_assume_role.name
+}
