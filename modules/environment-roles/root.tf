@@ -171,3 +171,31 @@ resource "aws_iam_policy" "s3_terraform" {
   description = "Policy to give permission to Terraform s3 buckets"
   policy      = data.template_file.s3_terraform_policy.rendered
 }
+
+resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
+  name = "TDRJenkinsECSUpdateRole${title(local.environment)}"
+  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+}
+
+resource "aws_iam_role_policy_attachment" "tdr_jenkins_ecs_update_role_attach" {
+  policy_arn = aws_iam_policy.tdr_jenkins_update_ecs_policy.arn
+  role = aws_iam_role.tdr_jenkins_ecs_update_role.name
+}
+
+resource "aws_iam_policy" "tdr_jenkins_update_ecs_policy" {
+  name = "TDRJenkinsUpdateECS${title(local.environment)}"
+  policy = data.aws_iam_policy_document.tdr_jenkins_update_ecs_service.json
+}
+
+data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
+  statement {
+    actions = [
+      "ecs:UpdateService"
+    ]
+    resources = [
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${local.environment}/frontend_service_${local.environment}"
+    ]
+  }
+}
+
+
