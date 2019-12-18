@@ -37,10 +37,10 @@ resource "aws_iam_role" "terraform_role" {
 
   tags = merge(
     local.common_tags,
-      map(
-        "Name", "${local.environment} Terraform Role",
-      )
+    map(
+      "Name", "${local.environment} Terraform Role",
     )
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
@@ -76,43 +76,43 @@ data "template_file" "s3_terraform_policy" {
 data "template_file" "keycloak_terraform_policy_b" {
   template = file("./templates/app_base_terraform_policy_b.json.tpl")
   vars = {
-    account_id = data.aws_caller_identity.current.account_id
+    account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
-    app_name = "keycloak"
+    app_name    = "keycloak"
   }
 }
 
 resource "aws_iam_policy" "keycloak_terraform_iam_b" {
   policy = data.template_file.keycloak_terraform_policy_b.rendered
-  name = "keycloak-terraform-${local.environment}-b"
+  name   = "keycloak-terraform-${local.environment}-b"
 }
 
 data "template_file" "keycloak_terraform_policy_a" {
   template = file("./templates/app_base_terraform_policy_a.json.tpl")
   vars = {
-    account_id = data.aws_caller_identity.current.account_id
+    account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
-    app_name = "keycloak"
+    app_name    = "keycloak"
   }
 }
 
 resource "aws_iam_policy" "keycloak_terraform_iam_a" {
   policy = data.template_file.keycloak_terraform_policy_a.rendered
-  name = "keycloak-terraform-${local.environment}-a"
+  name   = "keycloak-terraform-${local.environment}-a"
 }
 
 data "template_file" "frontend_terraform_policy_b" {
   template = file("./templates/app_base_terraform_policy_b.json.tpl")
   vars = {
-    account_id = data.aws_caller_identity.current.account_id
+    account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
-    app_name = "frontend"
+    app_name    = "frontend"
   }
 }
 
 data "aws_iam_policy_document" "frontend_storage_override" {
   statement {
-    sid = "storage"
+    sid    = "storage"
     effect = "Allow"
     actions = [
       "elasticache:CreateCacheCluster",
@@ -125,7 +125,7 @@ data "aws_iam_policy_document" "frontend_storage_override" {
     resources = ["*"]
   }
   statement {
-    sid = "ssm"
+    sid    = "ssm"
     effect = "Allow"
     actions = [
       "ssm:AddTagsToResource",
@@ -142,27 +142,27 @@ data "aws_iam_policy_document" "frontend_storage_override" {
 }
 
 data "aws_iam_policy_document" "frontend_terraform_iam_b" {
-  source_json = data.template_file.frontend_terraform_policy_b.rendered
+  source_json   = data.template_file.frontend_terraform_policy_b.rendered
   override_json = data.aws_iam_policy_document.frontend_storage_override.json
 }
 
 resource "aws_iam_policy" "frontend_terraform_iam_b" {
   policy = data.aws_iam_policy_document.frontend_terraform_iam_b.json
-  name = "frontend-terraform-${local.environment}-b"
+  name   = "frontend-terraform-${local.environment}-b"
 }
 
 data "template_file" "frontend_terraform_policy_a" {
   template = file("./templates/app_base_terraform_policy_a.json.tpl")
   vars = {
-    account_id = data.aws_caller_identity.current.account_id
+    account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
-    app_name = "frontend"
+    app_name    = "frontend"
   }
 }
 
 resource "aws_iam_policy" "frontend_terraform_iam_a" {
   policy = data.template_file.frontend_terraform_policy_a.rendered
-  name = "frontend-terraform-${local.environment}-a"
+  name   = "frontend-terraform-${local.environment}-a"
 }
 
 
@@ -171,3 +171,31 @@ resource "aws_iam_policy" "s3_terraform" {
   description = "Policy to give permission to Terraform s3 buckets"
   policy      = data.template_file.s3_terraform_policy.rendered
 }
+
+resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
+  name               = "TDRJenkinsECSUpdateRole${title(local.environment)}"
+  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+}
+
+resource "aws_iam_role_policy_attachment" "tdr_jenkins_ecs_update_role_attach" {
+  policy_arn = aws_iam_policy.tdr_jenkins_update_ecs_policy.arn
+  role       = aws_iam_role.tdr_jenkins_ecs_update_role.name
+}
+
+resource "aws_iam_policy" "tdr_jenkins_update_ecs_policy" {
+  name   = "TDRJenkinsUpdateECS${title(local.environment)}"
+  policy = data.aws_iam_policy_document.tdr_jenkins_update_ecs_service.json
+}
+
+data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
+  statement {
+    actions = [
+      "ecs:UpdateService"
+    ]
+    resources = [
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${local.environment}/frontend_service_${local.environment}"
+    ]
+  }
+}
+
+
