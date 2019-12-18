@@ -31,7 +31,7 @@ data "template_file" "terraform_assume_role_policy" {
 }
 
 resource "aws_iam_role" "terraform_role" {
-  name               = "${local.environment}-terraform-role"
+  name               = "TDRTerraformRole${title(local.environment)}"
   description        = "Role to allow Terraform to create resources for the ${local.environment} environment"
   assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
 
