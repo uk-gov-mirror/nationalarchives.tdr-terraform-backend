@@ -2,12 +2,12 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_iam_policy" "terraform_create_jenkins_a" {
   policy = data.aws_iam_policy_document.terraform_create_jenkins_document_a.json
-  name = "terraform_create_jenkins_a"
+  name   = "terraform_create_jenkins_a"
 }
 
 resource "aws_iam_policy" "terraform_create_jenkins_b" {
   policy = data.aws_iam_policy_document.terraform_create_jenkins_document_b.json
-  name = "terraform_create_jenkins_b"
+  name   = "terraform_create_jenkins_b"
 }
 
 data "aws_iam_policy_document" "terraform_create_jenkins_document_a" {
@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "terraform_create_jenkins_document_a" {
   }
 
   statement {
-    actions   = [
+    actions = [
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:CreateRoute",
       "ec2:DeleteSecurityGroup",
@@ -168,8 +168,8 @@ data "aws_iam_policy_document" "terraform_create_jenkins_document_a" {
   }
 
   statement {
-    effect = "Allow"
-    actions = ["s3:ListBucket"]
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
     resources = ["*"]
   }
 
@@ -318,12 +318,12 @@ resource "aws_iam_group" "terraform_jenkins" {
 }
 
 resource "aws_iam_group_policy_attachment" "jenkins_policy_a_attach" {
-  group = aws_iam_group.terraform_jenkins.name
+  group      = aws_iam_group.terraform_jenkins.name
   policy_arn = aws_iam_policy.terraform_create_jenkins_a.arn
 }
 
 resource "aws_iam_group_policy_attachment" "jenkins_policy_b_attach" {
-  group = aws_iam_group.terraform_jenkins.name
+  group      = aws_iam_group.terraform_jenkins.name
   policy_arn = aws_iam_policy.terraform_create_jenkins_b.arn
 }
 

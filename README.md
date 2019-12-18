@@ -109,11 +109,18 @@ Once the Terraform Backend project has been setup the following AWS backend reso
     * *[env name]*_terraform_assume_role_policy; 
     * read_terraform_state; 
     * terraform_state_lock_access
+    * TDRJenkinsNodePolicy
+  * IAM Roles:
+    * TDRJenkinsNodeRole 
   
 In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
-  * IAM Role: *[env name]*-terraform-role
+  * IAM Roles: 
+    * *[env name]*-terraform-role
+    * TDRJenkinsECSUpdateRoleIntg-*[env name]*
+  
   * IAM Policies:
     * s3-terraform-policy-*[env name]*
+    * TDRJenkinsUpdateECSIntg-*[env name]*
     * *[further policies to be added as needed]*   
 
 ## Background to TDR AWS Structure
