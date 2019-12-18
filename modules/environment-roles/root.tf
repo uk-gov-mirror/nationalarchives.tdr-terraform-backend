@@ -84,7 +84,7 @@ data "template_file" "keycloak_terraform_policy_b" {
 
 resource "aws_iam_policy" "keycloak_terraform_iam_b" {
   policy = data.template_file.keycloak_terraform_policy_b.rendered
-  name   = "keycloak-terraform-${local.environment}-b"
+  name   = "TDRKeycloakTerraform${title(local.environment)}-b"
 }
 
 data "template_file" "keycloak_terraform_policy_a" {
@@ -98,7 +98,7 @@ data "template_file" "keycloak_terraform_policy_a" {
 
 resource "aws_iam_policy" "keycloak_terraform_iam_a" {
   policy = data.template_file.keycloak_terraform_policy_a.rendered
-  name   = "keycloak-terraform-${local.environment}-a"
+  name   = "TDRKeycloakTerraform${title(local.environment)}-a"
 }
 
 data "template_file" "frontend_terraform_policy_b" {
@@ -148,7 +148,7 @@ data "aws_iam_policy_document" "frontend_terraform_iam_b" {
 
 resource "aws_iam_policy" "frontend_terraform_iam_b" {
   policy = data.aws_iam_policy_document.frontend_terraform_iam_b.json
-  name   = "frontend-terraform-${local.environment}-b"
+  name   = "TDRFrontendTerraform${title(local.environment)}-b"
 }
 
 data "template_file" "frontend_terraform_policy_a" {
@@ -162,7 +162,7 @@ data "template_file" "frontend_terraform_policy_a" {
 
 resource "aws_iam_policy" "frontend_terraform_iam_a" {
   policy = data.template_file.frontend_terraform_policy_a.rendered
-  name   = "frontend-terraform-${local.environment}-a"
+  name   = "TDRFrontendTerraform${title(local.environment)}-a"
 }
 
 
@@ -197,5 +197,3 @@ data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
     ]
   }
 }
-
-

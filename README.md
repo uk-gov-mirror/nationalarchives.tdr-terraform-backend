@@ -119,7 +119,10 @@ In the TDR AWS environment accounts the following AWS resources should be availa
     * TDRJenkinsECSUpdateRole-*[env name]*
   
   * IAM Policies:
-    * s3-terraform-policy-*[env name]*
+    * TDRFrontendTerraform[env name]*-a
+    * TDRFrontendTerraform[env name]-b
+    * TDRKeycloakTerraform[env name]-a
+    * TDRKeycloakTerraform[env name]-b
     * TDRJenkinsUpdateECS-*[env name]*
     * *[further policies to be added as needed]*   
 
