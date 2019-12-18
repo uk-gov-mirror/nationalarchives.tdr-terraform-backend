@@ -7,7 +7,6 @@ locals {
   )
 }
 
-
 data "aws_caller_identity" "current" {}
 
 terraform {
@@ -43,11 +42,6 @@ resource "aws_iam_role" "terraform_role" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.s3_terraform.arn
-}
-
 resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_a" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.keycloak_terraform_iam_a.arn
@@ -66,11 +60,6 @@ resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_a" {
 resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_b" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.frontend_terraform_iam_b.arn
-}
-
-data "template_file" "s3_terraform_policy" {
-  template = file("./templates/s3_terraform_policy.json.tpl")
-  vars     = {}
 }
 
 data "template_file" "keycloak_terraform_policy_b" {
@@ -163,13 +152,6 @@ data "template_file" "frontend_terraform_policy_a" {
 resource "aws_iam_policy" "frontend_terraform_iam_a" {
   policy = data.template_file.frontend_terraform_policy_a.rendered
   name   = "TDRFrontendTerraform${title(local.environment)}-a"
-}
-
-
-resource "aws_iam_policy" "s3_terraform" {
-  name        = "s3-terraform-policy-${local.environment}"
-  description = "Policy to give permission to Terraform s3 buckets"
-  policy      = data.template_file.s3_terraform_policy.rendered
 }
 
 resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
