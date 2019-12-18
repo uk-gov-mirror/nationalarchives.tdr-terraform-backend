@@ -119,12 +119,14 @@ In the TDR AWS environment accounts the following AWS resources should be availa
     * TDRJenkinsECSUpdateRole-*[env name]*
   
   * IAM Policies:
-    * TDRFrontendTerraform[env name]*-a
-    * TDRFrontendTerraform[env name]-b
-    * TDRKeycloakTerraform[env name]-a
-    * TDRKeycloakTerraform[env name]-b
+    * TDRFrontendTerraform[env name]-part-a
+    * TDRFrontendTerraform[env name]-part-b
+    * TDRKeycloakTerraform[env name]-part-a
+    * TDRKeycloakTerraform[env name]-part-b
     * TDRJenkinsUpdateECS-*[env name]*
     * *[further policies to be added as needed]*   
+
+The IAM policies are split into parts due to a limit on the size of the policies.
 
 ## Background to TDR AWS Structure
 
