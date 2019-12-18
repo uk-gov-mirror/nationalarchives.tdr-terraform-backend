@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "intg_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/intg-terraform-role"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRTerraformRoleIntg"]
   }
 }
 
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "staging_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/staging-terraform-role"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRTerraformRoleStaging"]
   }
 }
 
@@ -115,7 +115,7 @@ data "aws_iam_policy_document" "prod_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/prod-terraform-role"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRTerraformRoleProd"]
   }
 }
 
@@ -247,28 +247,74 @@ data "aws_iam_policy_document" "ecs_assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "jenkins_node_assume_role_document" {
+data "aws_iam_policy_document" "jenkins_node_assume_role_document_intg" {
   statement {
     actions = ["sts:AssumeRole"]
     resources = [
-      "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRJenkinsECSUpdateRoleIntg",
-      "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRJenkinsECSUpdateRoleStaging",
+      "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRJenkinsECSUpdateRoleIntg"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "jenkins_ecs_policy_intg" {
+  name   = "TDRJenkinsNodePolicyIntg"
+  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document_intg.json
+}
+
+resource "aws_iam_role" "jenkins_node_assume_role_intg" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRJenkinsNodeRoleIntg"
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_role_attachment_intg" {
+  policy_arn = aws_iam_policy.jenkins_ecs_policy_intg.arn
+  role       = aws_iam_role.jenkins_node_assume_role_intg.name
+}
+
+data "aws_iam_policy_document" "jenkins_node_assume_role_document_staging" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    resources = [
+      "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRJenkinsECSUpdateRoleStaging"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "jenkins_ecs_policy_staging" {
+  name   = "TDRJenkinsNodePolicyStaging"
+  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document_staging.json
+}
+
+resource "aws_iam_role" "jenkins_node_assume_role_staging" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRJenkinsNodeRoleStaging"
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_role_attachment_staging" {
+  policy_arn = aws_iam_policy.jenkins_ecs_policy_staging.arn
+  role       = aws_iam_role.jenkins_node_assume_role_staging.name
+}
+
+data "aws_iam_policy_document" "jenkins_node_assume_role_document_prod" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    resources = [
       "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRJenkinsECSUpdateRoleProd"
     ]
   }
 }
 
-resource "aws_iam_policy" "jenkins_ecs_policy" {
-  name   = "TDRJenkinsNodePolicy"
-  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document.json
+resource "aws_iam_policy" "jenkins_ecs_policy_prod" {
+  name   = "TDRJenkinsNodePolicyProd"
+  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document_prod.json
 }
 
-resource "aws_iam_role" "jenkins_node_assume_role" {
+resource "aws_iam_role" "jenkins_node_assume_role_prod" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name               = "TDRJenkinsNodeRole"
+  name               = "TDRJenkinsNodeRoleProd"
 }
 
-resource "aws_iam_role_policy_attachment" "jenkins_role_attachment" {
-  policy_arn = aws_iam_policy.jenkins_ecs_policy.arn
-  role       = aws_iam_role.jenkins_node_assume_role.name
+resource "aws_iam_role_policy_attachment" "jenkins_role_attachment_prod" {
+  policy_arn = aws_iam_policy.jenkins_ecs_policy_prod.arn
+  role       = aws_iam_role.jenkins_node_assume_role_prod.name
 }
