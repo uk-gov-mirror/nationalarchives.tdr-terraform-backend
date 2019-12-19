@@ -142,7 +142,9 @@
       "Resource" : [
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/url",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/username",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/password"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/user"
       ]
     },
     {
