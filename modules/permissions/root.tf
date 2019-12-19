@@ -1,15 +1,15 @@
 //Developers can only Terraform the intg environment
 resource "aws_iam_group" "tdr_terraform_developers" {
-  name = "tdr-terraform-developers"
+  name = "TDRTerraformDevelopers"
 }
 
 //Administrators can Terraform all environments
 resource "aws_iam_group" "tdr_terraform_administrators" {
-  name = "tdr-terraform-administrators"
+  name = "TDRTerraformAdministrators"
 }
 
 resource "aws_iam_group" "tdr_deny_access" {
-  name = "tdr-deny-access"
+  name = "TDRDenyAccess"
 }
 
 resource "aws_iam_group_policy_attachment" "deny_all_access" {
@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "intg_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/intg-terraform-role"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRTerraformRoleIntg"]
   }
 }
 
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "staging_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/staging-terraform-role"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRTerraformRoleStaging"]
   }
 }
 
@@ -115,24 +115,24 @@ data "aws_iam_policy_document" "prod_terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/prod-terraform-role"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRTerraformRoleProd"]
   }
 }
 
 resource "aws_iam_policy" "intg_terraform_assume_role" {
-  name        = "intg_terraform_assume_role_policy"
+  name        = "TDRIntgTerraformAssumeRolePolicy"
   description = "Policy to allow terraforming of the intg TDR environment"
   policy      = data.aws_iam_policy_document.intg_terraform_assume_role.json
 }
 
 resource "aws_iam_policy" "staging_terraform_assume_role" {
-  name        = "staging_terraform_assume_role_policy"
+  name        = "TDRStagingTerraformAssumeRolePolicy"
   description = "Policy to allow terraforming of the staging TDR environment"
   policy      = data.aws_iam_policy_document.staging_terraform_assume_role.json
 }
 
 resource "aws_iam_policy" "prod_terraform_assume_role" {
-  name        = "prod_terraform_assume_role_policy"
+  name        = "TDRProdTerraformAssumeRolePolicy"
   description = "Policy to allow terraforming of the production TDR environment"
   policy      = data.aws_iam_policy_document.prod_terraform_assume_role.json
 }
@@ -198,37 +198,37 @@ data "aws_iam_policy_document" "terraform_describe_account" {
 }
 
 resource "aws_iam_policy" "read_terraform_state" {
-  name        = "read_terraform_state"
+  name        = "TDRReadTerraformState"
   description = "Policy to allow access to TDR environments' states"
   policy      = data.aws_iam_policy_document.read_terraform_state_bucket.json
 }
 
 resource "aws_iam_policy" "intg_access_terraform_state" {
-  name        = "intg_access_terraform_state"
+  name        = "TDRIntgAccessTerraformState"
   description = "Policy to allow read/write access to intg TDR environment state"
   policy      = data.aws_iam_policy_document.intg_write_terraform_state_bucket.json
 }
 
 resource "aws_iam_policy" "staging_access_terraform_state" {
-  name        = "staging_access_terraform_state"
+  name        = "TDRStagingAccessTerraformState"
   description = "Policy to allow read/write access to staging TDR environment state"
   policy      = data.aws_iam_policy_document.staging_write_terraform_state_bucket.json
 }
 
 resource "aws_iam_policy" "prod_access_terraform_state" {
-  name        = "prod_access_terraform_state"
+  name        = "TDRProdAccessTerraformState"
   description = "Policy to allow read/write access to PROD TDR environment state"
   policy      = data.aws_iam_policy_document.prod_write_terraform_state_bucket.json
 }
 
 resource "aws_iam_policy" "terraform_state_lock_access" {
-  name        = "terraform_state_lock_access"
+  name        = "TDRTerraformStateLockAccess"
   description = "Policy to allow access to DyanmoDb to obtain lock to amend Terraform state"
   policy      = data.aws_iam_policy_document.terraform_state_lock.json
 }
 
 resource "aws_iam_policy" "terraform_describe_account" {
-  name        = "terraform_describe_account"
+  name        = "TDRTerraformDescribeAccount"
   description = "Policy to allow terraform to describe the accounts"
   policy      = data.aws_iam_policy_document.terraform_describe_account.json
 }

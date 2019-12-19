@@ -7,7 +7,6 @@ locals {
   )
 }
 
-
 data "aws_caller_identity" "current" {}
 
 terraform {
@@ -31,7 +30,7 @@ data "template_file" "terraform_assume_role_policy" {
 }
 
 resource "aws_iam_role" "terraform_role" {
-  name               = "${local.environment}-terraform-role"
+  name               = "TDRTerraformRole${title(local.environment)}"
   description        = "Role to allow Terraform to create resources for the ${local.environment} environment"
   assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
 
@@ -43,38 +42,28 @@ resource "aws_iam_role" "terraform_role" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_part_a" {
   role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.s3_terraform.arn
+  policy_arn = aws_iam_policy.keycloak_terraform_iam_part_a.arn
 }
 
-resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_a" {
+resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_part_b" {
   role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.keycloak_terraform_iam_a.arn
+  policy_arn = aws_iam_policy.keycloak_terraform_iam_part_b.arn
 }
 
-resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_b" {
+resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_part_a" {
   role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.keycloak_terraform_iam_b.arn
+  policy_arn = aws_iam_policy.frontend_terraform_iam_part_a.arn
 }
 
-resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_a" {
+resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_part_b" {
   role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.frontend_terraform_iam_a.arn
+  policy_arn = aws_iam_policy.frontend_terraform_iam_part_b.arn
 }
 
-resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_b" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.frontend_terraform_iam_b.arn
-}
-
-data "template_file" "s3_terraform_policy" {
-  template = file("./templates/s3_terraform_policy.json.tpl")
-  vars     = {}
-}
-
-data "template_file" "keycloak_terraform_policy_b" {
-  template = file("./templates/app_base_terraform_policy_b.json.tpl")
+data "template_file" "keycloak_terraform_policy_part_b" {
+  template = file("./templates/app_base_terraform_policy_part_b.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
@@ -82,13 +71,13 @@ data "template_file" "keycloak_terraform_policy_b" {
   }
 }
 
-resource "aws_iam_policy" "keycloak_terraform_iam_b" {
-  policy = data.template_file.keycloak_terraform_policy_b.rendered
-  name   = "keycloak-terraform-${local.environment}-b"
+resource "aws_iam_policy" "keycloak_terraform_iam_part_b" {
+  policy = data.template_file.keycloak_terraform_policy_part_b.rendered
+  name   = "TDRKeycloakTerraform${title(local.environment)}-part-b"
 }
 
-data "template_file" "keycloak_terraform_policy_a" {
-  template = file("./templates/app_base_terraform_policy_a.json.tpl")
+data "template_file" "keycloak_terraform_policy_part_a" {
+  template = file("./templates/app_base_terraform_policy_part_a.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
@@ -96,13 +85,13 @@ data "template_file" "keycloak_terraform_policy_a" {
   }
 }
 
-resource "aws_iam_policy" "keycloak_terraform_iam_a" {
-  policy = data.template_file.keycloak_terraform_policy_a.rendered
-  name   = "keycloak-terraform-${local.environment}-a"
+resource "aws_iam_policy" "keycloak_terraform_iam_part_a" {
+  policy = data.template_file.keycloak_terraform_policy_part_a.rendered
+  name   = "TDRKeycloakTerraform${title(local.environment)}-part-a"
 }
 
-data "template_file" "frontend_terraform_policy_b" {
-  template = file("./templates/app_base_terraform_policy_b.json.tpl")
+data "template_file" "frontend_terraform_policy_part_b" {
+  template = file("./templates/app_base_terraform_policy_part_b.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
@@ -141,18 +130,18 @@ data "aws_iam_policy_document" "frontend_storage_override" {
   }
 }
 
-data "aws_iam_policy_document" "frontend_terraform_iam_b" {
-  source_json   = data.template_file.frontend_terraform_policy_b.rendered
+data "aws_iam_policy_document" "frontend_terraform_iam_part_b" {
+  source_json   = data.template_file.frontend_terraform_policy_part_b.rendered
   override_json = data.aws_iam_policy_document.frontend_storage_override.json
 }
 
-resource "aws_iam_policy" "frontend_terraform_iam_b" {
-  policy = data.aws_iam_policy_document.frontend_terraform_iam_b.json
-  name   = "frontend-terraform-${local.environment}-b"
+resource "aws_iam_policy" "frontend_terraform_iam_part_b" {
+  policy = data.aws_iam_policy_document.frontend_terraform_iam_part_b.json
+  name   = "TDRFrontendTerraform${title(local.environment)}-part-b"
 }
 
-data "template_file" "frontend_terraform_policy_a" {
-  template = file("./templates/app_base_terraform_policy_a.json.tpl")
+data "template_file" "frontend_terraform_policy_part_a" {
+  template = file("./templates/app_base_terraform_policy_part_a.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = local.environment
@@ -160,16 +149,9 @@ data "template_file" "frontend_terraform_policy_a" {
   }
 }
 
-resource "aws_iam_policy" "frontend_terraform_iam_a" {
-  policy = data.template_file.frontend_terraform_policy_a.rendered
-  name   = "frontend-terraform-${local.environment}-a"
-}
-
-
-resource "aws_iam_policy" "s3_terraform" {
-  name        = "s3-terraform-policy-${local.environment}"
-  description = "Policy to give permission to Terraform s3 buckets"
-  policy      = data.template_file.s3_terraform_policy.rendered
+resource "aws_iam_policy" "frontend_terraform_iam_part_a" {
+  policy = data.template_file.frontend_terraform_policy_part_a.rendered
+  name   = "TDRFrontendTerraform${title(local.environment)}-part-a"
 }
 
 resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
@@ -197,5 +179,3 @@ data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
     ]
   }
 }
-
-
