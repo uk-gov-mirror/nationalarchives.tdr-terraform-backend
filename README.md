@@ -102,26 +102,31 @@ Once the Terraform Backend project has been setup the following AWS backend reso
     * tdr-terraform-state-lock; 
     * tdr-state-lock-jenkins
   * IAM Groups: 
-    * tdr-terraform-administrators; 
-    * tdr-terraform-developers
+    * TDRTerraformAdministrators; 
+    * TDRTerraformDevelopers
   * IAM Policies: 
-    * *[env name]*_access_terraform_state; 
-    * *[env name]*_terraform_assume_role_policy; 
-    * read_terraform_state; 
-    * terraform_state_lock_access
+    * TDR[env name]AccessTerraformState; 
+    * TDR[env name]TerraformAssumeRolePolicy; 
+    * TDRReadTerraformState; 
+    * TDRTerraformStateLockAccess
     * TDRJenkinsNodePolicy
   * IAM Roles:
     * TDRJenkinsNodeRole 
   
 In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
   * IAM Roles: 
-    * *[env name]*-terraform-role
-    * TDRJenkinsECSUpdateRoleIntg-*[env name]*
+    * TDRTerraformRole[env name]
+    * TDRJenkinsECSUpdateRole-*[env name]*
   
   * IAM Policies:
-    * s3-terraform-policy-*[env name]*
-    * TDRJenkinsUpdateECSIntg-*[env name]*
+    * TDRFrontendTerraform[env name]-part-a
+    * TDRFrontendTerraform[env name]-part-b
+    * TDRKeycloakTerraform[env name]-part-a
+    * TDRKeycloakTerraform[env name]-part-b
+    * TDRJenkinsUpdateECS-*[env name]*
     * *[further policies to be added as needed]*   
+
+The IAM policies are split into parts due to a limit on the size of the policies.
 
 ## Background to TDR AWS Structure
 
