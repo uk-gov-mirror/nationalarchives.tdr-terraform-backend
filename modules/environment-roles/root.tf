@@ -175,7 +175,8 @@ data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
       "ecs:UpdateService"
     ]
     resources = [
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${local.environment}/frontend_service_${local.environment}"
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${local.environment}/frontend_service_${local.environment}",
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/keycloak_${local.environment}/keycloak_service_${local.environment}"
     ]
   }
 }
