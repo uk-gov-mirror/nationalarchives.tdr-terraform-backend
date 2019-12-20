@@ -1,12 +1,4 @@
-//Developers can only Terraform the intg environment
-resource "aws_iam_group" "tdr_terraform_developers" {
-  name = "TDRTerraformDevelopers"
-}
-
-//Administrators can Terraform all environments
-resource "aws_iam_group" "tdr_terraform_administrators" {
-  name = "TDRTerraformAdministrators"
-}
+//IAM Group: Deny All Access
 
 resource "aws_iam_group" "tdr_deny_access" {
   name = "TDRDenyAccess"
@@ -17,125 +9,21 @@ resource "aws_iam_group_policy_attachment" "deny_all_access" {
   policy_arn = "arn:aws:iam::aws:policy/AWSDenyAll"
 }
 
-resource "aws_iam_group_policy_attachment" "developers_terraform_assume_role_intg" {
-  group      = aws_iam_group.tdr_terraform_developers.name
-  policy_arn = aws_iam_policy.intg_terraform_assume_role.arn
-}
-
-resource "aws_iam_group_policy_attachment" "developers_access_terraform_state" {
-  group      = aws_iam_group.tdr_terraform_developers.name
-  policy_arn = aws_iam_policy.read_terraform_state.arn
-}
-
-resource "aws_iam_group_policy_attachment" "developers_change_terraform_state" {
-  group      = aws_iam_group.tdr_terraform_developers.name
-  policy_arn = aws_iam_policy.intg_access_terraform_state.arn
-}
-
-resource "aws_iam_group_policy_attachment" "developers_access_terraform_state_lock" {
-  group      = aws_iam_group.tdr_terraform_developers.name
-  policy_arn = aws_iam_policy.terraform_state_lock_access.arn
-}
-
-resource "aws_iam_group_policy_attachment" "developers_describe_accounts" {
-  group      = aws_iam_group.tdr_terraform_developers.name
-  policy_arn = aws_iam_policy.terraform_describe_account.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrators_describe_accounts" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.terraform_describe_account.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrators_terraform_assume_role_staging" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.staging_terraform_assume_role.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrators_terraform_assume_role_prod" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.prod_terraform_assume_role.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrator_access_terraform_state" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.read_terraform_state.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrator_change_staging_terraform_state" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.staging_access_terraform_state.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrator_access_terraform_state_lock" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.terraform_state_lock_access.arn
-}
-
-resource "aws_iam_group_policy_attachment" "administrator_change_prod_terraform_state" {
-  group      = aws_iam_group.tdr_terraform_administrators.name
-  policy_arn = aws_iam_policy.prod_access_terraform_state.arn
-}
+//TDR Environment Account Numbers
 
 data "aws_ssm_parameter" "intg_account_number" {
   name = "/mgmt/intg_account"
-}
-
-data "aws_iam_policy_document" "intg_terraform_assume_role" {
-  version = "2012-10-17"
-
-  statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRTerraformRoleIntg"]
-  }
 }
 
 data "aws_ssm_parameter" "staging_account_number" {
   name = "/mgmt/staging_account"
 }
 
-data "aws_iam_policy_document" "staging_terraform_assume_role" {
-  version = "2012-10-17"
-
-  statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRTerraformRoleStaging"]
-  }
-}
-
 data "aws_ssm_parameter" "prod_account_number" {
   name = "/mgmt/prod_account"
 }
 
-data "aws_iam_policy_document" "prod_terraform_assume_role" {
-  version = "2012-10-17"
-
-  statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRTerraformRoleProd"]
-  }
-}
-
-resource "aws_iam_policy" "intg_terraform_assume_role" {
-  name        = "TDRIntgTerraformAssumeRolePolicy"
-  description = "Policy to allow terraforming of the intg TDR environment"
-  policy      = data.aws_iam_policy_document.intg_terraform_assume_role.json
-}
-
-resource "aws_iam_policy" "staging_terraform_assume_role" {
-  name        = "TDRStagingTerraformAssumeRolePolicy"
-  description = "Policy to allow terraforming of the staging TDR environment"
-  policy      = data.aws_iam_policy_document.staging_terraform_assume_role.json
-}
-
-resource "aws_iam_policy" "prod_terraform_assume_role" {
-  name        = "TDRProdTerraformAssumeRolePolicy"
-  description = "Policy to allow terraforming of the production TDR environment"
-  policy      = data.aws_iam_policy_document.prod_terraform_assume_role.json
-}
+//IAM Policies: TDR Terraform Backend Permissions
 
 data "aws_iam_policy_document" "read_terraform_state_bucket" {
   version = "2012-10-17"
@@ -233,6 +121,8 @@ resource "aws_iam_policy" "terraform_describe_account" {
   policy      = data.aws_iam_policy_document.terraform_describe_account.json
 }
 
+//IAM Roles: Jenkins Nodes Assume Roles
+
 data "aws_iam_policy_document" "ecs_assume_role" {
   version = "2012-10-17"
 
@@ -264,6 +154,13 @@ resource "aws_iam_policy" "jenkins_ecs_policy_intg" {
 resource "aws_iam_role" "jenkins_node_assume_role_intg" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsNodeRoleIntg"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Node Role Intg",
+    )
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_role_attachment_intg" {
@@ -288,6 +185,13 @@ resource "aws_iam_policy" "jenkins_ecs_policy_staging" {
 resource "aws_iam_role" "jenkins_node_assume_role_staging" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsNodeRoleStaging"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Node Role Staging",
+    )
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_role_attachment_staging" {
@@ -312,9 +216,174 @@ resource "aws_iam_policy" "jenkins_ecs_policy_prod" {
 resource "aws_iam_role" "jenkins_node_assume_role_prod" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsNodeRoleProd"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Node Role Prod",
+    )
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_role_attachment_prod" {
   policy_arn = aws_iam_policy.jenkins_ecs_policy_prod.arn
   role       = aws_iam_role.jenkins_node_assume_role_prod.name
+}
+
+//IAM Roles: Terraform Assume Roles
+
+data "aws_iam_policy_document" "intg_terraform_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRTerraformRoleIntg"]
+  }
+}
+
+resource "aws_iam_policy" "terraform_ecs_policy_intg" {
+  name   = "TDRTerraformPolicyIntg"
+  policy = data.aws_iam_policy_document.intg_terraform_assume_role.json
+}
+
+resource "aws_iam_role" "terraform_assume_role_intg" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRTerraformAssumeRoleIntg"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Terraform Assume Role Intg",
+    )
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_role_attachment_intg" {
+  role       = aws_iam_role.terraform_assume_role_intg.name
+  policy_arn = aws_iam_policy.terraform_ecs_policy_intg.arn
+}
+
+resource "aws_iam_role_policy_attachment" "intg_terraform_role_access_terraform_state" {
+  role       = aws_iam_role.terraform_assume_role_intg.name
+  policy_arn = aws_iam_policy.read_terraform_state.arn
+}
+
+resource "aws_iam_role_policy_attachment" "intg_terraform_role_change_terraform_state" {
+  role       = aws_iam_role.terraform_assume_role_intg.name
+  policy_arn = aws_iam_policy.intg_access_terraform_state.arn
+}
+
+resource "aws_iam_role_policy_attachment" "intg_terraform_role_access_terraform_state_lock" {
+  role       = aws_iam_role.terraform_assume_role_intg.name
+  policy_arn = aws_iam_policy.terraform_state_lock_access.arn
+}
+
+resource "aws_iam_role_policy_attachment" "intg_terraform_role_describe_accounts" {
+  role       = aws_iam_role.terraform_assume_role_intg.name
+  policy_arn = aws_iam_policy.terraform_describe_account.arn
+}
+
+data "aws_iam_policy_document" "staging_terraform_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRTerraformRoleStaging"]
+  }
+}
+
+resource "aws_iam_policy" "terraform_ecs_policy_staging" {
+  name   = "TDRTerraformPolicyStaging"
+  policy = data.aws_iam_policy_document.staging_terraform_assume_role.json
+}
+
+resource "aws_iam_role" "terraform_assume_role_staging" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRTerraformAssumeRoleStaging"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Terraform Assume Role Staging",
+    )
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_role_attachment_staging" {
+  policy_arn = aws_iam_policy.terraform_ecs_policy_staging.arn
+  role       = aws_iam_role.terraform_assume_role_staging.name
+}
+
+resource "aws_iam_role_policy_attachment" "staging_terraform_role_access_terraform_state" {
+  role       = aws_iam_role.terraform_assume_role_staging.name
+  policy_arn = aws_iam_policy.read_terraform_state.arn
+}
+
+resource "aws_iam_role_policy_attachment" "staging_terraform_role_change_terraform_state" {
+  role       = aws_iam_role.terraform_assume_role_staging.name
+  policy_arn = aws_iam_policy.intg_access_terraform_state.arn
+}
+
+resource "aws_iam_role_policy_attachment" "staging_terraform_role_access_terraform_state_lock" {
+  role       = aws_iam_role.terraform_assume_role_staging.name
+  policy_arn = aws_iam_policy.terraform_state_lock_access.arn
+}
+
+resource "aws_iam_role_policy_attachment" "staging_terraform_role_describe_accounts" {
+  role       = aws_iam_role.terraform_assume_role_staging.name
+  policy_arn = aws_iam_policy.terraform_describe_account.arn
+}
+
+data "aws_iam_policy_document" "prod_terraform_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRTerraformRoleProd"]
+  }
+}
+
+resource "aws_iam_policy" "terraform_ecs_policy_prod" {
+  name   = "TDRTerraformPolicyProd"
+  policy = data.aws_iam_policy_document.prod_terraform_assume_role.json
+}
+
+resource "aws_iam_role" "terraform_assume_role_prod" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRTerraformAssumeRoleProd"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Terraform Assume Role Prod",
+    )
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_role_attachment_prod" {
+  policy_arn = aws_iam_policy.terraform_ecs_policy_prod.arn
+  role       = aws_iam_role.terraform_assume_role_prod.name
+}
+
+resource "aws_iam_role_policy_attachment" "prod_terraform_role_access_terraform_state" {
+  role       = aws_iam_role.terraform_assume_role_prod.name
+  policy_arn = aws_iam_policy.read_terraform_state.arn
+}
+
+resource "aws_iam_role_policy_attachment" "prod_terraform_role_change_terraform_state" {
+  role       = aws_iam_role.terraform_assume_role_prod.name
+  policy_arn = aws_iam_policy.intg_access_terraform_state.arn
+}
+
+resource "aws_iam_role_policy_attachment" "prod_terraform_role_access_terraform_state_lock" {
+  role       = aws_iam_role.terraform_assume_role_prod.name
+  policy_arn = aws_iam_policy.terraform_state_lock_access.arn
+}
+
+resource "aws_iam_role_policy_attachment" "prod_terraform_role_describe_accounts" {
+  role       = aws_iam_role.terraform_assume_role_prod.name
+  policy_arn = aws_iam_policy.terraform_describe_account.arn
 }
