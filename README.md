@@ -2,17 +2,18 @@
 
 ## Purpose
 
-The purpose of this repository is to setup the necessary Terraform backend AWS resources to support terraforming for the TDR application AWS resources.
-
-The Terraform scripts are to be used as a one off operation, and not to retain the state.
+The purpose of this repository is to setup the necessary Terraform backend and Jenkins permissions AWS resources to support development operations for the TDR application in the different environments, using cross account access.
 
 Specific resources created:
 * AWS TDR Management account resources:
-  * **S3 Bucket**: contains the Terraform state files for each TDR workspace
-  * **DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **TDR state S3 Bucket**: contains the Terraform state files for each TDR workspace
+  * **TDR state DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **Jenkins state S3 Bucket**: contains the Terraform state files for Jenkins workspace
+  * **Jenkins state DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
 * AWS TDR Environment accounts resources:
-  * **Terraform IAM Roles**: IAM role to allow creation of AWS resource within the environment using Terraform (Terraform IAM role)
-  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform IAM role
+  * **TDR Terraform IAM Roles**: IAM role to allow creation of AWS resources within the environment using Terraform (Terraform IAM role)
+  * **Jenkins Terraform IAM Roles**: IAM role to allow running of Jenkins operations in AWS management account and TDR environment AWS accounts
+  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform and Jenkins IAM roles
 
 These resources are used by the TDR application Terraform code: https://github.com/nationalarchives/tdr-terraform-environments
 
@@ -100,30 +101,32 @@ Once the Terraform Backend project has been setup the following AWS backend reso
     * tdr-terraform-state-jenkins
   * DyanmoDb Tables: 
     * tdr-terraform-state-lock; 
-    * tdr-state-lock-jenkins
-  * IAM Groups: 
-    * TDRTerraformAdministrators; 
-    * TDRTerraformDevelopers
+    * tdr-state-lock-jenkins  
   * IAM Policies: 
-    * TDR[env name]AccessTerraformState; 
-    * TDR[env name]TerraformAssumeRolePolicy; 
+    * TDR[env name]AccessTerraformState;    
+    * TDRTerraformPolicy[env name] 
     * TDRReadTerraformState; 
     * TDRTerraformStateLockAccess
-    * TDRJenkinsNodePolicy
+    * TDRTerraformDescribeAccount
+    * TDRJenkinsNodePolicy[env name]
+  * IAM Groups:
+    * terraform-create-jenkins
+    * TDRDEnyAccess
   * IAM Roles:
-    * TDRJenkinsNodeRole 
+    * TDRJenkinsNodeRole[env name]
+    * TDRTerraformAssumeRole[env name] 
   
 In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
   * IAM Roles: 
     * TDRTerraformRole[env name]
-    * TDRJenkinsECSUpdateRole-*[env name]*
+    * TDRJenkinsECSUpdateRole[env name]
   
   * IAM Policies:
     * TDRFrontendTerraform[env name]-part-a
     * TDRFrontendTerraform[env name]-part-b
     * TDRKeycloakTerraform[env name]-part-a
     * TDRKeycloakTerraform[env name]-part-b
-    * TDRJenkinsUpdateECS-*[env name]*
+    * TDRJenkinsUpdateECS[env name]
     * *[further policies to be added as needed]*   
 
 The IAM policies are split into parts due to a limit on the size of the policies.
@@ -132,7 +135,7 @@ The IAM policies are split into parts due to a limit on the size of the policies
 
 ### TDR AWS Accounts
 
-Three TDR Application AWS accounts are used to host the different environments:
+Two TDR Application AWS accounts are used to host the different environments:
 * Integration (intg)
 * Staging (staging)
 * Production (prod)
@@ -141,7 +144,7 @@ In addition there is a TDR Management AWS account which is used to host the Terr
 
 ### IAM Role Delegation
 
-IAM role delegation is used to allow users in the AWS management account to have access to the TDR environment AWS accounts to perform terraforming operations.
+IAM role delegation is used to allow users in the AWS management account to have access to the TDR environment AWS accounts to perform development operations in the TDR environments without directly accessing the TDR environments.
 
 IAM policies are defined to create a trust relationship between the TDR environment AWS accounts (trusting account) and the management AWS account (trusted account).
 
@@ -189,10 +192,6 @@ provider "aws" {
 ...
 
 ```
-
-### IAM User Groups
-
-Two user groups are defined: "developer"; "administrator". This is to limit which users will have permission to apply Terraform changes to the "staging" and "production" TDR environments.
 
 ## Further Information
 
