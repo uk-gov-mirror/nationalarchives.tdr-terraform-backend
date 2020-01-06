@@ -7,9 +7,9 @@ The purpose of this repository is to setup the necessary Terraform backend and J
 Specific resources created:
 * AWS TDR Management account resources:
   * **TDR state S3 Bucket**: contains the Terraform state files for each TDR workspace
-  * **TDR state DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **TDR state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace
   * **Jenkins state S3 Bucket**: contains the Terraform state files for Jenkins workspace
-  * **Jenkins state DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **Jenkins state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace
 * AWS TDR Environment accounts resources:
   * **TDR Terraform IAM Roles**: IAM role to allow creation of AWS resources within the environment using Terraform (Terraform IAM role)
   * **Jenkins Terraform IAM Roles**: IAM role to allow running of Jenkins operations in AWS management account and TDR environment AWS accounts
