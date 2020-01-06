@@ -2,17 +2,18 @@
 
 ## Purpose
 
-The purpose of this repository is to setup the necessary Terraform backend AWS resources to support terraforming for the TDR application AWS resources.
-
-The Terraform scripts are to be used as a one off operation, and not to retain the state.
+The purpose of this repository is to setup the necessary Terraform backend and Jenkins permissions AWS resources to support development operations for the TDR application in the different environments, using cross account access.
 
 Specific resources created:
 * AWS TDR Management account resources:
-  * **S3 Bucket**: contains the Terraform state files for each TDR workspace
-  * **DyanmoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **TDR state S3 Bucket**: contains the Terraform state files for each TDR workspace
+  * **TDR state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **Jenkins state S3 Bucket**: contains the Terraform state files for Jenkins workspace
+  * **Jenkins state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace
 * AWS TDR Environment accounts resources:
-  * **Terraform IAM Roles**: IAM role to allow creation of AWS resource within the environment using Terraform (Terraform IAM role)
-  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform IAM role
+  * **TDR Terraform IAM Roles**: IAM role to allow creation of AWS resources within the environment using Terraform (Terraform IAM role)
+  * **Jenkins Terraform IAM Roles**: IAM role to allow running of Jenkins operations in AWS management account and TDR environment AWS accounts
+  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform and Jenkins IAM roles
 
 These resources are used by the TDR application Terraform code: https://github.com/nationalarchives/tdr-terraform-environments
 
@@ -40,50 +41,13 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
   * These credentials will be used to create the Terraform backend and set up the individual Terraform environments with IAM roles that will allow Terraform to create the AWS resources in that TDR environment.
   * See instructions here: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
 
-3. Add AWS profiles to the local config store (~/.aws/config):
-
-   ```
-   [profile intgaccess]
-   region = eu-west-2
-   role_arn = ... arn of the IAM role that provides admin access to the TDR intg AWS account ...
-   source_profile = management
-   
-   [profile prodaccess]
-   region = eu-west-2
-   role_arn = ... arn of the IAM role that provides admin access to the TDR staging/prod AWS account ...
-   source_profile = management
-   ```
-  * The profiles allow Terraform to assume IAM roles in the TDR environment accounts to create IAM roles and policies which give permissions for the creation of AWS resources by Terraform.
-  
-4. Open command terminal on local machine and navigate to the environment-roles module: ./modules/environment-roles
-
-5. Create Terraform workspaces in the environment-roles module for each of the TDR environments:
-
-   ```
-   [environment-roles] $ terraform workspace new intg
-   
-   [environment-roles] $ terraform workspace new staging
-   
-   [environment-roles] $ terraform workspace new prod
-   ```
-
-6. Run the following command to ensure Terraform uses the correct credentials:
+3. Run the following command to ensure Terraform uses the correct credentials:
 
    ```
    [environment-roles] $ export AWS_PROFILE=management
    ```
    
-7. Select each Terraform workspace and create the Terraform IAM roles for each of the TDR environments in their corresponding AWS accounts:
-
-   ```
-   [environment-roles] $ terraform workspace select intg
-   
-   [environment-roles] $ terrform apply
-   ```
-   
-   * This will create the IAM roles that will be assumed by the TDR AWS management account to give permission for Terraform to create the AWS resources for the TDR environment.
-
-8. Navigate back to the root of the project from the environment-roles module and run the Terraform root in the ***default*** Terraform workspace:
+4. From the root of the project run Terraform in the ***default*** Terraform workspace:
 
    ```
    [location of project] $ terraform workspace select default   
@@ -91,7 +55,9 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
    [location of project] $ terraform apply
    ```
 
-  * This will generate the Terraform backend (s3 bucket and DynamoDb) which will store the Terraform state for the TDR environments in each of the TDR AWS environment accounts.
+  * This will generate:
+    * IAM roles and policies in each of the TDR environments to allow Terraform to create the necessary AWS resources
+    * the Terraform backend (s3 bucket and DynamoDb) which will store the Terraform state for the TDR environments in each of the TDR AWS environment accounts.
 
 Once the Terraform Backend project has been setup the following AWS backend resources should be available in the AWS TDR Management account:
 
@@ -100,30 +66,32 @@ Once the Terraform Backend project has been setup the following AWS backend reso
     * tdr-terraform-state-jenkins
   * DyanmoDb Tables: 
     * tdr-terraform-state-lock; 
-    * tdr-state-lock-jenkins
-  * IAM Groups: 
-    * TDRTerraformAdministrators; 
-    * TDRTerraformDevelopers
+    * tdr-state-lock-jenkins  
   * IAM Policies: 
-    * TDR[env name]AccessTerraformState; 
-    * TDR[env name]TerraformAssumeRolePolicy; 
+    * TDR[env name]AccessTerraformState;    
+    * TDRTerraformPolicy[env name] 
     * TDRReadTerraformState; 
     * TDRTerraformStateLockAccess
-    * TDRJenkinsNodePolicy
+    * TDRTerraformDescribeAccount
+    * TDRJenkinsNodePolicy[env name]
+  * IAM Groups:
+    * terraform-create-jenkins
+    * TDRDEnyAccess
   * IAM Roles:
-    * TDRJenkinsNodeRole 
+    * TDRJenkinsNodeRole[env name]
+    * TDRTerraformAssumeRole[env name] 
   
 In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
   * IAM Roles: 
     * TDRTerraformRole[env name]
-    * TDRJenkinsECSUpdateRole-*[env name]*
+    * TDRJenkinsECSUpdateRole[env name]
   
   * IAM Policies:
     * TDRFrontendTerraform[env name]-part-a
     * TDRFrontendTerraform[env name]-part-b
     * TDRKeycloakTerraform[env name]-part-a
     * TDRKeycloakTerraform[env name]-part-b
-    * TDRJenkinsUpdateECS-*[env name]*
+    * TDRJenkinsUpdateECS[env name]
     * *[further policies to be added as needed]*   
 
 The IAM policies are split into parts due to a limit on the size of the policies.
@@ -132,16 +100,15 @@ The IAM policies are split into parts due to a limit on the size of the policies
 
 ### TDR AWS Accounts
 
-Three TDR Application AWS accounts are used to host the different environments:
-* Integration (intg)
-* Staging (staging)
-* Production (prod)
+Two TDR Application AWS accounts are used to host the different environments:
+* **Integration AWS Account**: hosts the TDR *Intg* environment
+* **Production AWS Account**: hosts the TDR *Staging* and *Prod* environments
 
 In addition there is a TDR Management AWS account which is used to host the Terraform backend and Jenkins.
 
 ### IAM Role Delegation
 
-IAM role delegation is used to allow users in the AWS management account to have access to the TDR environment AWS accounts to perform terraforming operations.
+IAM role delegation is used to allow users in the AWS management account to have access to the TDR environment AWS accounts to perform development operations in the TDR environments without directly accessing the TDR environments.
 
 IAM policies are defined to create a trust relationship between the TDR environment AWS accounts (trusting account) and the management AWS account (trusted account).
 
@@ -189,10 +156,6 @@ provider "aws" {
 ...
 
 ```
-
-### IAM User Groups
-
-Two user groups are defined: "developer"; "administrator". This is to limit which users will have permission to apply Terraform changes to the "staging" and "production" TDR environments.
 
 ## Further Information
 

@@ -1,43 +1,19 @@
-locals {
-  environment         = lookup(var.workspace_to_environment_map, terraform.workspace, "intg")
-  environment_profile = lookup(var.workspace_aws_profile_map, terraform.workspace, "intg")
-  common_tags = map(
-    "Owner", "TDR",
-    "Terraform", true
-  )
-}
-
 data "aws_caller_identity" "current" {}
 
-terraform {
-  backend "s3" {
-    bucket         = "tdr-bootstrap-terraform-state"
-    key            = "terraform.env.state"
-    region         = "eu-west-2"
-    encrypt        = true
-    dynamodb_table = "tdr-bootstrap-terraform-state-lock"
-  }
-}
-
-provider "aws" {
-  region  = "eu-west-2"
-  profile = local.environment_profile
-}
-
 data "template_file" "terraform_assume_role_policy" {
-  template = file("./templates/terraform_assume_role_policy.json.tpl")
+  template = file("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl")
   vars     = {}
 }
 
 resource "aws_iam_role" "terraform_role" {
-  name               = "TDRTerraformRole${title(local.environment)}"
-  description        = "Role to allow Terraform to create resources for the ${local.environment} environment"
+  name               = "TDRTerraformRole${title(var.tdr_environment)}"
+  description        = "Role to allow Terraform to create resources for the ${title(var.tdr_environment)} environment"
   assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
 
   tags = merge(
-    local.common_tags,
+    var.common_tags,
     map(
-      "Name", "${local.environment} Terraform Role",
+      "Name", "${title(var.tdr_environment)} Terraform Role",
     )
   )
 }
@@ -63,38 +39,38 @@ resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_part_b" {
 }
 
 data "template_file" "keycloak_terraform_policy_part_b" {
-  template = file("./templates/app_base_terraform_policy_part_b.json.tpl")
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_b.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
-    environment = local.environment
+    environment = var.tdr_environment
     app_name    = "keycloak"
   }
 }
 
 resource "aws_iam_policy" "keycloak_terraform_iam_part_b" {
   policy = data.template_file.keycloak_terraform_policy_part_b.rendered
-  name   = "TDRKeycloakTerraform${title(local.environment)}-part-b"
+  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}-part-b"
 }
 
 data "template_file" "keycloak_terraform_policy_part_a" {
-  template = file("./templates/app_base_terraform_policy_part_a.json.tpl")
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_a.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
-    environment = local.environment
+    environment = var.tdr_environment
     app_name    = "keycloak"
   }
 }
 
 resource "aws_iam_policy" "keycloak_terraform_iam_part_a" {
   policy = data.template_file.keycloak_terraform_policy_part_a.rendered
-  name   = "TDRKeycloakTerraform${title(local.environment)}-part-a"
+  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}-part-a"
 }
 
 data "template_file" "frontend_terraform_policy_part_b" {
-  template = file("./templates/app_base_terraform_policy_part_b.json.tpl")
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_b.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
-    environment = local.environment
+    environment = var.tdr_environment
     app_name    = "frontend"
   }
 }
@@ -125,7 +101,7 @@ data "aws_iam_policy_document" "frontend_storage_override" {
       "ssm:PutParameter"
     ]
     resources = [
-      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${local.environment}/frontend/play_secret"
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/play_secret"
     ]
   }
 }
@@ -137,25 +113,25 @@ data "aws_iam_policy_document" "frontend_terraform_iam_part_b" {
 
 resource "aws_iam_policy" "frontend_terraform_iam_part_b" {
   policy = data.aws_iam_policy_document.frontend_terraform_iam_part_b.json
-  name   = "TDRFrontendTerraform${title(local.environment)}-part-b"
+  name   = "TDRFrontendTerraform${title(var.tdr_environment)}-part-b"
 }
 
 data "template_file" "frontend_terraform_policy_part_a" {
-  template = file("./templates/app_base_terraform_policy_part_a.json.tpl")
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_a.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
-    environment = local.environment
+    environment = var.tdr_environment
     app_name    = "frontend"
   }
 }
 
 resource "aws_iam_policy" "frontend_terraform_iam_part_a" {
   policy = data.template_file.frontend_terraform_policy_part_a.rendered
-  name   = "TDRFrontendTerraform${title(local.environment)}-part-a"
+  name   = "TDRFrontendTerraform${title(var.tdr_environment)}-part-a"
 }
 
 resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
-  name               = "TDRJenkinsECSUpdateRole${title(local.environment)}"
+  name               = "TDRJenkinsECSUpdateRole${title(var.tdr_environment)}"
   assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
 }
 
@@ -165,7 +141,7 @@ resource "aws_iam_role_policy_attachment" "tdr_jenkins_ecs_update_role_attach" {
 }
 
 resource "aws_iam_policy" "tdr_jenkins_update_ecs_policy" {
-  name   = "TDRJenkinsUpdateECS${title(local.environment)}"
+  name   = "TDRJenkinsUpdateECS${title(var.tdr_environment)}"
   policy = data.aws_iam_policy_document.tdr_jenkins_update_ecs_service.json
 }
 
@@ -175,8 +151,8 @@ data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
       "ecs:UpdateService"
     ]
     resources = [
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${local.environment}/frontend_service_${local.environment}",
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/keycloak_${local.environment}/keycloak_service_${local.environment}"
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${var.tdr_environment}/frontend_service_${var.tdr_environment}",
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/keycloak_${var.tdr_environment}/keycloak_service_${var.tdr_environment}"
     ]
   }
 }
