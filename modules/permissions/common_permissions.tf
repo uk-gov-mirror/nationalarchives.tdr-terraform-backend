@@ -1,3 +1,14 @@
+//IAM Group: Deny All Access
+
+resource "aws_iam_group" "tdr_deny_access" {
+  name = "TDRDenyAccess"
+}
+
+resource "aws_iam_group_policy_attachment" "deny_all_access" {
+  group      = aws_iam_group.tdr_deny_access.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSDenyAll"
+}
+
 data "aws_iam_policy_document" "read_terraform_state_bucket" {
   version = "2012-10-17"
 
