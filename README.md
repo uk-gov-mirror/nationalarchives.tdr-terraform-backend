@@ -101,9 +101,8 @@ The IAM policies are split into parts due to a limit on the size of the policies
 ### TDR AWS Accounts
 
 Two TDR Application AWS accounts are used to host the different environments:
-* Integration (intg)
-* Staging (staging)
-* Production (prod)
+* **Integration AWS Account**: hosts the TDR *Intg* environment
+* **Production AWS Account**: hosts the TDR *Staging* and *Prod* environments
 
 In addition there is a TDR Management AWS account which is used to host the Terraform backend and Jenkins.
 
