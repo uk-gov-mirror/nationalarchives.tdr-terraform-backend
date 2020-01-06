@@ -41,50 +41,13 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
   * These credentials will be used to create the Terraform backend and set up the individual Terraform environments with IAM roles that will allow Terraform to create the AWS resources in that TDR environment.
   * See instructions here: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
 
-3. Add AWS profiles to the local config store (~/.aws/config):
-
-   ```
-   [profile intgaccess]
-   region = eu-west-2
-   role_arn = ... arn of the IAM role that provides admin access to the TDR intg AWS account ...
-   source_profile = management
-   
-   [profile prodaccess]
-   region = eu-west-2
-   role_arn = ... arn of the IAM role that provides admin access to the TDR staging/prod AWS account ...
-   source_profile = management
-   ```
-  * The profiles allow Terraform to assume IAM roles in the TDR environment accounts to create IAM roles and policies which give permissions for the creation of AWS resources by Terraform.
-  
-4. Open command terminal on local machine and navigate to the environment-roles module: ./modules/environment-roles
-
-5. Create Terraform workspaces in the environment-roles module for each of the TDR environments:
-
-   ```
-   [environment-roles] $ terraform workspace new intg
-   
-   [environment-roles] $ terraform workspace new staging
-   
-   [environment-roles] $ terraform workspace new prod
-   ```
-
-6. Run the following command to ensure Terraform uses the correct credentials:
+3. Run the following command to ensure Terraform uses the correct credentials:
 
    ```
    [environment-roles] $ export AWS_PROFILE=management
    ```
    
-7. Select each Terraform workspace and create the Terraform IAM roles for each of the TDR environments in their corresponding AWS accounts:
-
-   ```
-   [environment-roles] $ terraform workspace select intg
-   
-   [environment-roles] $ terrform apply
-   ```
-   
-   * This will create the IAM roles that will be assumed by the TDR AWS management account to give permission for Terraform to create the AWS resources for the TDR environment.
-
-8. Navigate back to the root of the project from the environment-roles module and run the Terraform root in the ***default*** Terraform workspace:
+4. From the root of the project run Terraform in the ***default*** Terraform workspace:
 
    ```
    [location of project] $ terraform workspace select default   
@@ -92,7 +55,9 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
    [location of project] $ terraform apply
    ```
 
-  * This will generate the Terraform backend (s3 bucket and DynamoDb) which will store the Terraform state for the TDR environments in each of the TDR AWS environment accounts.
+  * This will generate:
+    * IAM roles and policies in each of the TDR environments to allow Terraform to create the necessary AWS resources
+    * the Terraform backend (s3 bucket and DynamoDb) which will store the Terraform state for the TDR environments in each of the TDR AWS environment accounts.
 
 Once the Terraform Backend project has been setup the following AWS backend resources should be available in the AWS TDR Management account:
 
