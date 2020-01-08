@@ -50,8 +50,8 @@
       "Resource": [
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/app/tdr-${app_name}-load-balancer-${environment}/*/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/net/tdr-${app_name}_load-balancer-${environment}/*/*",
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/net/tdr-${app_name}-load-balancer-${environment}/*",
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/app/tdr-${app_name}-load-balancer-${environment}/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/net/tdr-${app_name}-lb-${environment}/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/app/tdr-${app_name}-lb-${environment}/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:targetgroup/*"
       ]
     },
