@@ -82,10 +82,14 @@ data "aws_iam_policy_document" "frontend_storage_override" {
     actions = [
       "elasticache:CreateCacheCluster",
       "elasticache:DeleteCacheCluster",
-      "elasticache:DescribeCacheCluster",
       "elasticache:DescribeCacheClusters",
       "elasticache:ModifyCacheCluster",
-      "elasticache:RebootCacheCluster"
+      "elasticache:RebootCacheCluster",
+      "elasticache:CreateCacheSubnetGroup",
+      "elasticache:CreateReplicationGroup",
+      "elasticache:DescribeCacheSubnetGroups",
+      "elasticache:DescribeReplicationGroups",
+      "elasticache:DeleteReplicationGroup"
     ]
     resources = ["*"]
   }
@@ -101,7 +105,9 @@ data "aws_iam_policy_document" "frontend_storage_override" {
       "ssm:PutParameter"
     ]
     resources = [
-      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/play_secret"
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/play_secret",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/redis/host",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/redis/password"
     ]
   }
 }
