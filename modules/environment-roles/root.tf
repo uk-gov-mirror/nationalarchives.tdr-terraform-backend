@@ -89,7 +89,8 @@ data "aws_iam_policy_document" "frontend_storage_override" {
       "elasticache:CreateReplicationGroup",
       "elasticache:DescribeCacheSubnetGroups",
       "elasticache:DescribeReplicationGroups",
-      "elasticache:DeleteReplicationGroup"
+      "elasticache:DeleteReplicationGroup",
+      "elasticache:DeleteCacheSubnetGroup"
     ]
     resources = ["*"]
   }
