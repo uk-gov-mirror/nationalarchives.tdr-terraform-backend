@@ -125,6 +125,7 @@
       ],
       "Resource": [
         "arn:aws:rds:eu-west-2:${account_id}:subgrp:main-${environment}",
+        "arn:aws:rds:eu-west-2:${account_id}:subgrp:tdr-${environment}",
         "arn:aws:rds:eu-west-2:${account_id}:cluster:*"
       ]
     },
