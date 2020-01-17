@@ -18,38 +18,28 @@ resource "aws_iam_role" "terraform_role" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_part_a" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.keycloak_terraform_iam_part_a.arn
-}
-
-resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment_part_b" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.keycloak_terraform_iam_part_b.arn
-}
-
-resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_part_a" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.frontend_terraform_iam_part_a.arn
-}
-
-resource "aws_iam_role_policy_attachment" "frontend_policy_attachment_part_b" {
-  role       = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.frontend_terraform_iam_part_b.arn
-}
-
-resource "aws_iam_role_policy_attachment" "consignment_api_attachment_part_a" {
+resource "aws_iam_role_policy_attachment" "shared_policy_attachment" {
+  policy_arn = aws_iam_policy.shared_terraform_policy.arn
   role = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.consignment_api_terraform_iam_part_a.arn
 }
 
-resource "aws_iam_role_policy_attachment" "consignment_api_attachment_part_b" {
+resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.keycloak_terraform_iam.arn
+}
+
+resource "aws_iam_role_policy_attachment" "frontend_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.frontend_terraform_iam.arn
+}
+
+resource "aws_iam_role_policy_attachment" "consignment_api_attachment" {
   role = aws_iam_role.terraform_role.name
-  policy_arn = aws_iam_policy.consignment_api_terraform_iam_part_b.arn
+  policy_arn = aws_iam_policy.consignment_api_terraform_iam.arn
 }
 
-data "template_file" "keycloak_terraform_policy_part_b" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_b.json.tpl")
+data "template_file" "keycloak_terraform_policy" {
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = var.tdr_environment
@@ -57,41 +47,26 @@ data "template_file" "keycloak_terraform_policy_part_b" {
   }
 }
 
-resource "aws_iam_policy" "keycloak_terraform_iam_part_b" {
-  policy = data.template_file.keycloak_terraform_policy_part_b.rendered
-  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}-part-b"
+resource "aws_iam_policy" "shared_terraform_policy" {
+  policy = data.template_file.shared_terraform_policy_template.rendered
+  name = "TDRSharedTerraform${title(var.tdr_environment)}"
 }
 
-data "template_file" "keycloak_terraform_policy_part_a" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_a.json.tpl")
+data "template_file" "shared_terraform_policy_template" {
+  template = file("${path.module}/templates/shared_terraform_policy.json.tpl")
   vars = {
-    account_id  = data.aws_caller_identity.current.account_id
-    environment = var.tdr_environment
-    app_name    = "keycloak"
+    environment = title(var.tdr_environment)
+    account_id = data.aws_caller_identity.current.account_id
   }
 }
 
-resource "aws_iam_policy" "keycloak_terraform_iam_part_a" {
-  policy = data.template_file.keycloak_terraform_policy_part_a.rendered
-  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}-part-a"
+resource "aws_iam_policy" "keycloak_terraform_iam" {
+  policy = data.template_file.keycloak_terraform_policy.rendered
+  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}"
 }
 
-data "template_file" "consignment_api_terraform_policy_part_b" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_b.json.tpl")
-  vars = {
-    account_id  = data.aws_caller_identity.current.account_id
-    environment = var.tdr_environment
-    app_name    = "consignmentapi"
-  }
-}
-
-resource "aws_iam_policy" "consignment_api_terraform_iam_part_b" {
-  policy = data.template_file.consignment_api_terraform_policy_part_b.rendered
-  name   = "TDRConsignmentApiTerraform${title(var.tdr_environment)}-part-b"
-}
-
-data "template_file" "consignment_api_terraform_policy_part_a" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_a.json.tpl")
+data "template_file" "consignment_api_terraform_policy" {
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = var.tdr_environment
@@ -99,18 +74,9 @@ data "template_file" "consignment_api_terraform_policy_part_a" {
   }
 }
 
-resource "aws_iam_policy" "consignment_api_terraform_iam_part_a" {
-  policy = data.template_file.consignment_api_terraform_policy_part_a.rendered
-  name   = "TDRConsignmentApiTerraform${title(var.tdr_environment)}-part-a"
-}
-
-data "template_file" "frontend_terraform_policy_part_b" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_b.json.tpl")
-  vars = {
-    account_id  = data.aws_caller_identity.current.account_id
-    environment = var.tdr_environment
-    app_name    = "frontend"
-  }
+resource "aws_iam_policy" "consignment_api_terraform_iam" {
+  policy = data.template_file.consignment_api_terraform_policy.rendered
+  name   = "TDRConsignmentApiTerraform${title(var.tdr_environment)}"
 }
 
 data "aws_iam_policy_document" "frontend_storage_override" {
@@ -150,18 +116,13 @@ data "aws_iam_policy_document" "frontend_storage_override" {
   }
 }
 
-data "aws_iam_policy_document" "frontend_terraform_iam_part_b" {
-  source_json   = data.template_file.frontend_terraform_policy_part_b.rendered
+data "aws_iam_policy_document" "frontend_terraform_iam" {
+  source_json   = data.template_file.frontend_terraform_policy.rendered
   override_json = data.aws_iam_policy_document.frontend_storage_override.json
 }
 
-resource "aws_iam_policy" "frontend_terraform_iam_part_b" {
-  policy = data.aws_iam_policy_document.frontend_terraform_iam_part_b.json
-  name   = "TDRFrontendTerraform${title(var.tdr_environment)}-part-b"
-}
-
-data "template_file" "frontend_terraform_policy_part_a" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy_part_a.json.tpl")
+data "template_file" "frontend_terraform_policy" {
+  template = file("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl")
   vars = {
     account_id  = data.aws_caller_identity.current.account_id
     environment = var.tdr_environment
@@ -169,9 +130,10 @@ data "template_file" "frontend_terraform_policy_part_a" {
   }
 }
 
-resource "aws_iam_policy" "frontend_terraform_iam_part_a" {
-  policy = data.template_file.frontend_terraform_policy_part_a.rendered
-  name   = "TDRFrontendTerraform${title(var.tdr_environment)}-part-a"
+resource "aws_iam_policy" "frontend_terraform_iam" {
+  policy = data.aws_iam_policy_document.frontend_terraform_iam.json
+  name   = "TDRFrontendTerraform${title(var.tdr_environment)}"
+
 }
 
 resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
