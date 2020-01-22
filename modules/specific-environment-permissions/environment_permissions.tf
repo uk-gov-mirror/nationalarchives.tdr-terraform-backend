@@ -18,6 +18,11 @@ data "aws_iam_policy_document" "ecs_assume_role" {
   }
 }
 
+resource "aws_iam_policy" "jenkins_ecs_policy" {
+  name   = "TDRJenkinsNodePolicy${local.env_title_case}"
+  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document.json
+}
+
 data "aws_iam_policy_document" "jenkins_node_assume_role_document" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -25,11 +30,6 @@ data "aws_iam_policy_document" "jenkins_node_assume_role_document" {
       "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsECSUpdateRole${local.env_title_case}"
     ]
   }
-}
-
-resource "aws_iam_policy" "jenkins_ecs_policy" {
-  name   = "TDRJenkinsNodePolicy${local.env_title_case}"
-  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document.json
 }
 
 resource "aws_iam_role" "jenkins_node_assume_role" {
@@ -47,6 +47,37 @@ resource "aws_iam_role" "jenkins_node_assume_role" {
 resource "aws_iam_role_policy_attachment" "jenkins_role_attachment" {
   policy_arn = aws_iam_policy.jenkins_ecs_policy.arn
   role       = aws_iam_role.jenkins_node_assume_role.name
+}
+
+resource "aws_iam_role" "jenkins_lambda_assume_role" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRJenkinsNodeLambdaRole${local.env_title_case}"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Node Lambda Role ${local.env_title_case}",
+    )
+  )
+}
+
+resource "aws_iam_policy" "jenkins_lambda_policy" {
+  name   = "TDRJenkinsNodeLambdaPolicy${local.env_title_case}"
+  policy = data.aws_iam_policy_document.jenkins_node_lambda_document.json
+}
+
+data "aws_iam_policy_document" "jenkins_node_lambda_document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    resources = [
+      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsLambdaRole${local.env_title_case}"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_role_lambda_attachment" {
+  policy_arn = aws_iam_policy.jenkins_lambda_policy.arn
+  role       = aws_iam_role.jenkins_lambda_assume_role.name
 }
 
 //IAM Policies: TDR Terraform Backend Permissions
