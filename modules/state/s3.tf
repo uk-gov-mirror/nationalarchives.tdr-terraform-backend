@@ -46,9 +46,9 @@ resource "aws_s3_bucket" "tdr_database_migrations" {
   acl    = "private"
   policy = file("${path.module}/policy.json.tpl")
   tags = merge(
-  var.common_tags,
-  map(
-  "Name", "TDR Jekins Terraform State",
-  )
+    var.common_tags,
+    map(
+      "Name", "TDR Jekins Terraform State",
+    )
   )
 }
