@@ -20,17 +20,6 @@
       ]
     },
     {
-      "Sid": "ecsglobal",
-      "Effect": "Allow",
-      "Action": [
-        "ecs:CreateCluster",
-        "ecs:DeregisterTaskDefinition",
-        "ecs:DescribeTaskDefinition",
-        "ecs:RegisterTaskDefinition"
-      ],
-      "Resource": "*"
-    },
-    {
       "Sid": "elb",
       "Effect": "Allow",
       "Action": [
@@ -53,23 +42,6 @@
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/net/tdr-${app_name}-lb-${environment}/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/app/tdr-${app_name}-lb-${environment}/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:targetgroup/*"
-      ]
-    },
-    {
-      "Sid": "elbglobal",
-      "Effect": "Allow",
-      "Action": [
-        "elasticloadbalancing:CreateTargetGroup",
-        "elasticloadbalancing:DescribeListeners",
-        "elasticloadbalancing:DescribeLoadBalancerAttributes",
-        "elasticloadbalancing:DescribeLoadBalancers",
-        "elasticloadbalancing:DescribeTags",
-        "elasticloadbalancing:DescribeTargetGroupAttributes",
-        "elasticloadbalancing:DescribeTargetGroups",
-        "elasticloadbalancing:DescribeTargetHealth"
-      ],
-      "Resource": [
-        "*"
       ]
     },
     {
@@ -99,23 +71,8 @@
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_task_policy_${environment}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_execution_role_${environment}",
-        "arn:aws:iam::${account_id}:role/${app_name}_ecs_task_role_${environment}",
-        "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing",
-        "arn:aws:iam::${account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*"
-
+        "arn:aws:iam::${account_id}:role/${app_name}_ecs_task_role_${environment}"
       ]
-    },
-    {
-      "Sid": "iamglobal",
-      "Effect": "Allow",
-      "Action": [
-        "iam:DeleteInstanceProfile",
-        "iam:RemoveRoleFromInstanceProfile"
-      ],
-      "Resource": ["*"]
     },
     {
       "Sid": "lambda",
@@ -127,19 +84,57 @@
         "lambda:GetFunction",
         "lambda:GetPolicy",
         "lambda:ListVersionsByFunction",
-        "lambda:RemovePermission"
+        "lambda:RemovePermission",
+        "lambda:UpdateFunctionConfiguration"
       ],
-      "Resource": "arn:aws:lambda:eu-west-2:${account_id}:function:${app_name}_${environment}"
+      "Resource": [
+        "arn:aws:lambda:eu-west-2:${account_id}:function:${app_name}_${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-database-migrations-${environment}"
+      ]
     },
     {
-      "Sid": "acm",
+      "Sid" : "storage",
       "Effect": "Allow",
       "Action" : [
-        "acm:ListCertificates",
-        "acm:ListCertificates",
-        "acm:DescribeCertificate"
+        "rds:DescribeDBSubnetGroups",
+        "rds:CreateDBSubnetGroup",
+        "rds:DeleteDBSubnetGroup",
+        "rds:ModifyDBSubnetGroup",
+        "rds:CreateDBCluster",
+        "rds:AddTagsToResource",
+        "rds:DescribeDBClusters",
+        "rds:ListTagsForResource",
+        "rds:DeleteDBCluster",
+        "rds:ModifyDBCluster",
+        "rds:CreateDBInstance",
+        "rds:DeleteDBInstance",
+        "rds:DescribeDBInstances"
       ],
-      "Resource": "*"
+      "Resource": [
+        "arn:aws:rds:eu-west-2:${account_id}:db:*",
+        "arn:aws:rds:eu-west-2:${account_id}:subgrp:main-${environment}",
+        "arn:aws:rds:eu-west-2:${account_id}:subgrp:tdr-${environment}",
+        "arn:aws:rds:eu-west-2:${account_id}:cluster:*"
+      ]
+    },
+    {
+      "Sid" : "ssm",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:AddTagsToResource",
+        "ssm:DeleteParameter",
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:ListTagsForResource",
+        "ssm:PutParameter"
+      ],
+      "Resource" : [
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/url",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/username",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/user"
+      ]
     }
   ]
 }
