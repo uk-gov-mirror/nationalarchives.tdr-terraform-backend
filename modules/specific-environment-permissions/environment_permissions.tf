@@ -54,10 +54,10 @@ resource "aws_iam_role" "jenkins_lambda_assume_role" {
   name               = "TDRJenkinsNodeLambdaRole${local.env_title_case}"
 
   tags = merge(
-  var.common_tags,
-  map(
-  "Name", "TDR Jenkins Node Lambda Role ${local.env_title_case}",
-  )
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Node Lambda Role ${local.env_title_case}",
+    )
   )
 }
 
@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "jenkins_node_lambda_document" {
 }
 
 resource "aws_iam_policy" "jenkins_migrations_bucket" {
-  name = "TDRJenkinsMigrationsBucketPolicy${local.env_title_case}"
+  name   = "TDRJenkinsMigrationsBucketPolicy${local.env_title_case}"
   policy = data.aws_iam_policy_document.jenkins_migrations_bucket_document.json
 }
 
