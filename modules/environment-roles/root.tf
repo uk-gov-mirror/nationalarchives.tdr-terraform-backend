@@ -2,7 +2,9 @@ data "aws_caller_identity" "current" {}
 
 data "template_file" "terraform_assume_role_policy" {
   template = file("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl")
-  vars     = {}
+  vars = {
+    account_id = data.aws_caller_identity.current.account_id
+  }
 }
 
 resource "aws_iam_role" "terraform_role" {
