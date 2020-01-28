@@ -46,17 +46,17 @@ resource "aws_iam_role" "jenkins_node_assume_role" {
 
 resource "aws_iam_role" "jenkins_publish_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name = "TDRJenkinsPublishRole${local.env_title_case}"
+  name               = "TDRJenkinsPublishRole${local.env_title_case}"
   tags = merge(
-  var.common_tags,
-  map(
-  "Name", "TDR Jenkins Publish Role ${local.env_title_case}",
-  )
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Publish Role ${local.env_title_case}",
+    )
   )
 }
 
 resource "aws_iam_policy" "jenkins_publish_policy" {
-  name = "TDRJenkinsPublishPolicy${local.env_title_case}"
+  name   = "TDRJenkinsPublishPolicy${local.env_title_case}"
   policy = data.aws_iam_policy_document.jenkins_publish_document.json
 }
 
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "jenkins_publish_document" {
 
 resource "aws_iam_role_policy_attachment" "jenkins_publish_attachment" {
   policy_arn = aws_iam_policy.jenkins_publish_policy.arn
-  role = aws_iam_role.jenkins_publish_role.name
+  role       = aws_iam_role.jenkins_publish_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_role_attachment" {
