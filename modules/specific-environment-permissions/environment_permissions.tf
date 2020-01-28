@@ -82,7 +82,6 @@ resource "aws_iam_role_policy_attachment" "jenkins_role_attachment" {
   role       = aws_iam_role.jenkins_node_assume_role.name
 }
 
-
 resource "aws_iam_role" "jenkins_lambda_assume_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsNodeLambdaRole${local.env_title_case}"
@@ -112,6 +111,37 @@ data "aws_iam_policy_document" "jenkins_node_lambda_document" {
 resource "aws_iam_role_policy_attachment" "jenkins_role_lambda_attachment" {
   policy_arn = aws_iam_policy.jenkins_lambda_policy.arn
   role       = aws_iam_role.jenkins_lambda_assume_role.name
+}
+
+resource aws_iam_role "jenkins_read_params_assume_role" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRJenkinsNodeReadParamsRole${local.env_title_case}"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Node Read Params Role ${local.env_title_case}",
+    )
+  )
+}
+
+resource "aws_iam_policy" "jenkins_read_params_policy" {
+  name   = "TDRJenkinsNodeReadParamsPolicy${local.env_title_case}"
+  policy = data.aws_iam_policy_document.jenkins_node_read_params_document.json
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_role_read_params_attachment" {
+  policy_arn = aws_iam_policy.jenkins_read_params_policy.arn
+  role       = aws_iam_role.jenkins_read_params_assume_role
+}
+
+data "aws_iam_policy_document" "jenkins_node_read_params_document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    resources = [
+      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsReadParamsRole${local.env_title_case}"
+    ]
+  }
 }
 
 //IAM Policies: TDR Terraform Backend Permissions
