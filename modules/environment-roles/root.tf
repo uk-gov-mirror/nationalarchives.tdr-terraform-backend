@@ -3,7 +3,7 @@ data "aws_caller_identity" "current" {}
 data "template_file" "terraform_assume_role_policy" {
   template = file("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl")
   vars = {
-    account_id = data.aws_caller_identity.current.account_id
+    account_id = var.tdr_mgmt_account_number
   }
 }
 
@@ -189,6 +189,49 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
     ]
     resources = [
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-database-migrations-${var.tdr_environment}",
+    ]
+  }
+}
+
+resource "aws_iam_role" "tdr_jenkins_read_params_role" {
+  name               = "TDRJenkinsReadParamsRole${title(var.tdr_environment)}"
+  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "${title(var.tdr_environment)} Read Parameters role",
+    )
+  )
+}
+
+resource aws_iam_role_policy_attachment "tdr_jenkins_read_params_role_attach" {
+  policy_arn = aws_iam_policy.tdr_jenkins_read_params_policy.arn
+  role       = aws_iam_role.tdr_jenkins_read_params_role.name
+}
+
+resource "aws_iam_policy" "tdr_jenkins_read_params_policy" {
+  name   = "TDRJenkinsReadParams${title(var.tdr_environment)}"
+  policy = data.aws_iam_policy_document.tdr_jenkins_read_params.json
+}
+
+data "aws_iam_policy_document" "tdr_jenkins_read_params" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:DescribeParameters"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameters"
+    ]
+    resources = [
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/keycloak/admin/*"
     ]
   }
 }
