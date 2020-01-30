@@ -1,7 +1,8 @@
 locals {
   common_tags = map(
     "Owner", "TDR Backend",
-    "Terraform", true
+    "Terraform", true,
+    "CostCentre", data.aws_ssm_parameter.cost_centre.value
   )
 }
 
@@ -19,6 +20,10 @@ data "aws_ssm_parameter" "prod_account_number" {
 
 data "aws_ssm_parameter" "mgmt_account_number" {
   name = "/mgmt/management_account"
+}
+
+data "aws_ssm_parameter" "cost_centre" {
+  name = "/mgmt/cost_centre"
 }
 
 terraform {
