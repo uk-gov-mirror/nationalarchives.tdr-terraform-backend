@@ -27,6 +27,9 @@ See: https://learn.hashicorp.com/terraform/getting-started/install.html
 
 ## Running the Project
 
+This project bootstraps management account and environments, so it needs to be
+run from a development machine.
+
 1. Clone the project to local machine: https://github.com/nationalarchives/tdr-terraform-backend
 
 2. Add AWS credentials to the local credential store (~/.aws/credentials):
