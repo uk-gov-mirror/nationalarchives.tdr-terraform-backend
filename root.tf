@@ -17,6 +17,10 @@ data "aws_ssm_parameter" "prod_account_number" {
   name = "/mgmt/prod_account"
 }
 
+data "aws_ssm_parameter" "mgmt_account_number" {
+  name = "/mgmt/management_account"
+}
+
 terraform {
   backend "s3" {
     bucket         = "tdr-bootstrap-terraform-state"
@@ -71,8 +75,9 @@ module "intg_environment_roles" {
     aws = aws.intg
   }
 
-  tdr_environment = "intg"
-  common_tags     = local.common_tags
+  tdr_environment         = "intg"
+  common_tags             = local.common_tags
+  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
 }
 
 module "staging_environment_role" {
@@ -81,8 +86,9 @@ module "staging_environment_role" {
     aws = aws.staging
   }
 
-  tdr_environment = "staging"
-  common_tags     = local.common_tags
+  tdr_environment         = "staging"
+  common_tags             = local.common_tags
+  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
 }
 
 module "prod_environment_role" {
@@ -91,8 +97,9 @@ module "prod_environment_role" {
     aws = aws.prod
   }
 
-  tdr_environment = "prod"
-  common_tags     = local.common_tags
+  tdr_environment         = "prod"
+  common_tags             = local.common_tags
+  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
 }
 
 //Set up Terraform Backend state
