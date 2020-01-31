@@ -139,7 +139,10 @@
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy",
         "iam:CreateServiceLinkedRole",
-        "iam:CreatePolicyVersion"
+        "iam:CreatePolicyVersion",
+        "iam:CreateOpenIDConnectProvider",
+        "iam:GetOpenIDConnectProvider",
+        "iam:DeleteOpenIDConnectProvider"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
@@ -148,8 +151,9 @@
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*",
         "arn:aws:iam::${account_id}:policy/TDRDbMigrationLambdaPolicy${environment}",
-        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}"
-
+        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
+        "arn:aws:iam::${account_id}:oidc-provider/auth.tdr-integration.nationalarchives.gov.uk",
+        "arn:aws:iam::${account_id}:oidc-provider/auth.tdr-integration.nationalarchives.gov.uk/auth/realms/tdr/.well-known/openid-configuration"
       ]
     },
     {
