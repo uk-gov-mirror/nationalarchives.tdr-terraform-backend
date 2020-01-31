@@ -169,6 +169,16 @@
         "cloudfront:UpdateDistribution"
       ],
       "Resource": "arn:aws:cloudfront::${account_id}:distribution/*"
+    },
+    {
+      "Sid": "cognito",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:CreateIdentityPool",
+        "cognito-identity:DescribeIdentityPool",
+        "cognito-identity:DeleteIdentityPool"
+      ],
+      "Resource": "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/*"
     }
   ]
 }
