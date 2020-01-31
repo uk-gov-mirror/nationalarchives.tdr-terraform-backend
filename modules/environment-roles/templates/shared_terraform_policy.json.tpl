@@ -68,7 +68,12 @@
         "ec2:RunInstances",
         "ec2:DescribeAvailabilityZones",
         "ec2:DescribeAccountAttributes",
-        "logs:DescribeLogGroups"
+        "logs:DescribeLogGroups",
+        "route53:ListHostedZones",
+        "route53:GetHostedZone",
+        "route53:ChangeResourceRecordSets",
+        "route53:GetChange",
+        "route53:ListResourceRecordSets"
       ],
       "Resource": "*"
     },
