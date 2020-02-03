@@ -114,7 +114,6 @@ module "intg_environment_parameters" {
     aws = aws.intg
   }
 
-  tdr_environment = "intg"
   common_tags     = local.common_tags
   cost_centre     = data.aws_ssm_parameter.cost_centre.value
 }
@@ -125,7 +124,6 @@ module "staging_environment_parameters" {
     aws = aws.staging
   }
 
-  tdr_environment = "staging"
   common_tags     = local.common_tags
   cost_centre     = data.aws_ssm_parameter.cost_centre.value
 }
@@ -136,7 +134,6 @@ module "prod_environment_parameters" {
     aws = aws.prod
   }
 
-  tdr_environment = "prod"
   common_tags     = local.common_tags
   cost_centre     = data.aws_ssm_parameter.cost_centre.value
 }

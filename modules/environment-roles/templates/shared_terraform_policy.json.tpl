@@ -124,7 +124,7 @@
           "ssm:GetParameter"
       ],
       "Resource" : [
-          "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/cost_centre"
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre"
       ]
     },
     {
