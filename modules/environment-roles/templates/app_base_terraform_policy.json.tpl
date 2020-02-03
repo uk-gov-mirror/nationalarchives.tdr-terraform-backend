@@ -70,8 +70,8 @@
       "Resource": [
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_task_policy_${environment}",
-        "arn:aws:iam::${account_id}:policy/keycloak_flowlog_policy_${environment}",
-        "arn:aws:iam::${account_id}:policy/tdr_flowlog_policy_${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRKeycloakFlowlogPolicy${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRVpcFlowlogPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_execution_role_${environment}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_task_role_${environment}",
         "arn:aws:iam::${account_id}:role/keycloak_flowlog_role_${environment}",
