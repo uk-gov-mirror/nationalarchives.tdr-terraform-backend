@@ -107,6 +107,37 @@ module "prod_environment_role" {
   tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
 }
 
+//Shared parameters to store in each environment
+module "intg_environment_parameters" {
+  source = "./modules/environment-parameters"
+  providers = {
+    aws = aws.intg
+  }
+
+  common_tags     = local.common_tags
+  cost_centre     = data.aws_ssm_parameter.cost_centre.value
+}
+
+module "staging_environment_parameters" {
+  source = "./modules/environment-parameters"
+  providers = {
+    aws = aws.staging
+  }
+
+  common_tags     = local.common_tags
+  cost_centre     = data.aws_ssm_parameter.cost_centre.value
+}
+
+module "prod_environment_parameters" {
+  source = "./modules/environment-parameters"
+  providers = {
+    aws = aws.prod
+  }
+
+  common_tags     = local.common_tags
+  cost_centre     = data.aws_ssm_parameter.cost_centre.value
+}
+
 //Set up Terraform Backend state
 module "terraform_state" {
   source = "./modules/state"

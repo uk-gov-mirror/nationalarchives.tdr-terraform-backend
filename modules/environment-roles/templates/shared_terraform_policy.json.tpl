@@ -121,6 +121,16 @@
       "Resource": "arn:aws:ssm:eu-west-2:${account_id}:*"
     },
     {
+      "Sid" : "ssm",
+      "Effect": "Allow",
+      "Action": [
+          "ssm:GetParameter"
+      ],
+      "Resource" : [
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre"
+      ]
+    },
+    {
       "Sid": "iam",
       "Effect": "Allow",
       "Action": [
