@@ -108,8 +108,8 @@ module "prod_environment_role" {
 }
 
 //Shared parameters to store in each environment
-module "intg_environment_parameters" {
-  source = "./modules/environment-parameters"
+module "intg_account_parameters" {
+  source = "./modules/account-parameters"
   providers = {
     aws = aws.intg
   }
@@ -118,18 +118,8 @@ module "intg_environment_parameters" {
   cost_centre     = data.aws_ssm_parameter.cost_centre.value
 }
 
-module "staging_environment_parameters" {
-  source = "./modules/environment-parameters"
-  providers = {
-    aws = aws.staging
-  }
-
-  common_tags     = local.common_tags
-  cost_centre     = data.aws_ssm_parameter.cost_centre.value
-}
-
-module "prod_environment_parameters" {
-  source = "./modules/environment-parameters"
+module "staging_prod_account_parameters" {
+  source = "./modules/account-parameters"
   providers = {
     aws = aws.prod
   }
