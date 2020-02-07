@@ -94,7 +94,8 @@
         "logs:DescribeLogStreams",
         "logs:CreateLogGroup",
         "logs:PutRetentionPolicy",
-        "logs:ListTagsLogGroup"
+        "logs:ListTagsLogGroup",
+        "logs:TagLogGroup"
       ],
       "Resource": "arn:aws:logs:eu-west-2:${account_id}:log-group:*"
     },

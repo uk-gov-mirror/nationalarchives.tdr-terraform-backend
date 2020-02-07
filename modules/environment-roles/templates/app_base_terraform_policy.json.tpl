@@ -10,13 +10,15 @@
         "ecs:DeleteService",
         "ecs:DescribeServices",
         "ecs:UpdateService",
-        "ecs:DescribeClusters"
+        "ecs:DescribeClusters",
+        "ecs:TagResource"
       ],
       "Resource": [
         "arn:aws:ecs:eu-west-2:${account_id}:cluster/${app_name}_${environment}",
         "arn:aws:ecs:eu-west-2:${account_id}:cluster/${app_name}-ecs-${environment}",
         "arn:aws:ecs:eu-west-2:${account_id}:service/${app_name}-ecs-${environment}/${app_name}-service-${environment}",
-        "arn:aws:ecs:eu-west-2:${account_id}:service/${app_name}_${environment}/${app_name}_service_${environment}"
+        "arn:aws:ecs:eu-west-2:${account_id}:service/${app_name}_${environment}/${app_name}_service_${environment}",
+        "arn:aws:ecs:eu-west-2:${account_id}:task-definition/${app_name}-${environment}:*"
       ]
     },
     {
