@@ -114,8 +114,8 @@ module "intg_account_parameters" {
     aws = aws.intg
   }
 
-  common_tags     = local.common_tags
-  cost_centre     = data.aws_ssm_parameter.cost_centre.value
+  common_tags = local.common_tags
+  cost_centre = data.aws_ssm_parameter.cost_centre.value
 }
 
 module "staging_prod_account_parameters" {
@@ -124,8 +124,8 @@ module "staging_prod_account_parameters" {
     aws = aws.prod
   }
 
-  common_tags     = local.common_tags
-  cost_centre     = data.aws_ssm_parameter.cost_centre.value
+  common_tags = local.common_tags
+  cost_centre = data.aws_ssm_parameter.cost_centre.value
 }
 
 //Set up Terraform Backend state

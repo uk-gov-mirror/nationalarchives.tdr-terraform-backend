@@ -10,5 +10,5 @@ variable "common_tags" {
 
 variable "tdr_mgmt_account_number" {
   description = "AWS management account number"
-  type = string
+  type        = string
 }
