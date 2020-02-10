@@ -171,6 +171,34 @@
       ]
     },
     {
+      "Sid" : "kms",
+      "Effect": "Allow",
+      "Action" : [
+        "kms:CreateAlias",
+        "kms:CreateKey",
+        "kms:Decrypt",
+        "kms:DeleteAlias",
+        "kms:DeleteKey",
+        "kms:DescribeKey",
+        "kms:EnableKey",
+        "kms:EnableKeyRotation",
+        "kms:Encrypt",
+        "kms:GetKeyPolicy",
+        "kms:GetKeyRotationStatus",
+        "kms:ListAliases",
+        "kms:ListKeyPolicies",
+        "kms:ListKeys",
+        "kms:ListResourceTags",
+        "kms:PutKeyPolicy",
+        "kms:ScheduleKeyDeletion",
+        "kms:TagResource",
+        "kms:UntagResource",
+        "kms:UpdateAlias",
+        "kms:UpdateKeyDescription"
+      ],
+      "Resource": "*"
+    },
+    {
       "Sid": "cloudfront",
       "Effect": "Allow",
       "Action": [
