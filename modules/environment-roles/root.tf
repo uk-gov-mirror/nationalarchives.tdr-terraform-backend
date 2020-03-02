@@ -20,8 +20,13 @@ resource "aws_iam_role" "terraform_role" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "shared_policy_attachment" {
-  policy_arn = aws_iam_policy.shared_terraform_policy.arn
+resource "aws_iam_role_policy_attachment" "shared_policy_attachment_1" {
+  policy_arn = aws_iam_policy.shared_terraform_policy_1.arn
+  role       = aws_iam_role.terraform_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "shared_policy_attachment_2" {
+  policy_arn = aws_iam_policy.shared_terraform_policy_2.arn
   role       = aws_iam_role.terraform_role.name
 }
 
@@ -49,13 +54,26 @@ data "template_file" "keycloak_terraform_policy" {
   }
 }
 
-resource "aws_iam_policy" "shared_terraform_policy" {
-  policy = data.template_file.shared_terraform_policy_template.rendered
-  name   = "TDRSharedTerraform${title(var.tdr_environment)}"
+resource "aws_iam_policy" "shared_terraform_policy_1" {
+  policy = data.template_file.shared_terraform_policy_template_1.rendered
+  name   = "TDRSharedTerraform1${title(var.tdr_environment)}"
 }
 
-data "template_file" "shared_terraform_policy_template" {
-  template = file("${path.module}/templates/shared_terraform_policy.json.tpl")
+data "template_file" "shared_terraform_policy_template_1" {
+  template = file("${path.module}/templates/shared_terraform_policy_1.json.tpl")
+  vars = {
+    environment = title(var.tdr_environment)
+    account_id  = data.aws_caller_identity.current.account_id
+  }
+}
+
+resource "aws_iam_policy" "shared_terraform_policy_2" {
+  policy = data.template_file.shared_terraform_policy_template_2.rendered
+  name   = "TDRSharedTerraform2${title(var.tdr_environment)}"
+}
+
+data "template_file" "shared_terraform_policy_template_2" {
+  template = file("${path.module}/templates/shared_terraform_policy_2.json.tpl")
   vars = {
     environment = title(var.tdr_environment)
     account_id  = data.aws_caller_identity.current.account_id
@@ -106,7 +124,10 @@ data "aws_iam_policy_document" "frontend_storage_override" {
     actions = [
       "ssm:AddTagsToResource",
       "ssm:DeleteParameter",
+      "ssm:DescribeParameters",
       "ssm:GetParameter",
+      "ssm:GetParameterByPath",
+      "ssm:GetParameterHistory",
       "ssm:GetParameters",
       "ssm:ListTagsForResource",
       "ssm:PutParameter"

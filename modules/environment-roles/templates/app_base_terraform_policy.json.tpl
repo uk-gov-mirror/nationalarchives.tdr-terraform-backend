@@ -32,6 +32,7 @@
         "elasticloadbalancing:DeleteLoadBalancer",
         "elasticloadbalancing:DeleteTargetGroup",
         "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:ModifyListener",
         "elasticloadbalancing:ModifyLoadBalancerAttributes",
         "elasticloadbalancing:ModifyTargetGroupAttributes",
         "elasticloadbalancing:RegisterTargets",
@@ -39,10 +40,10 @@
         "elasticloadbalancing:SetSecurityGroups"
       ],
       "Resource": [
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/app/tdr-${app_name}-lb-${environment}/*/*",
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/net/tdr-${app_name}_lb-${environment}/*/*",
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/net/tdr-${app_name}-lb-${environment}/*",
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/app/tdr-${app_name}-lb-${environment}/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/app/tdr-${app_name}-${environment}/*/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/net/tdr-${app_name}-${environment}/*/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/net/tdr-${app_name}-${environment}/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/app/tdr-${app_name}-${environment}/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:targetgroup/*"
       ]
     },
@@ -87,9 +88,16 @@
         "lambda:AddPermission",
         "lambda:CreateFunction",
         "lambda:DeleteFunction",
+        "lambda:GetAlias",
         "lambda:GetFunction",
+        "lambda:GetFunctionConcurrency",
+        "lambda:GetFunctionConfiguration",
+        "lambda:GetFunctionEventInvokeConfig",
+        "lambda:GetLayerVersion",
+        "lambda:GetLayerVersionPolicy",
         "lambda:GetPolicy",
         "lambda:ListVersionsByFunction",
+        "lambda:ListTags",
         "lambda:RemovePermission",
         "lambda:UpdateFunctionConfiguration"
       ],
