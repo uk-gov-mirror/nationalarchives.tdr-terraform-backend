@@ -16,7 +16,8 @@
           "ssm:GetParameter"
       ],
       "Resource" : [
-          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre"
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips"
       ]
     },
     {
@@ -127,18 +128,49 @@
       "Resource": "*"
     },
     {
-      "Sid": "cloudfront",
+      "Sid": "wafregional",
       "Effect": "Allow",
       "Action": [
-        "cloudfront:CreateDistribution",
-        "cloudfront:CreateDistributionWithTags",
-        "cloudfront:DeleteDistribution",
-        "cloudfront:GetDistribution",
-        "cloudfront:ListTagsForResource",
-        "cloudfront:TagResource",
-        "cloudfront:UpdateDistribution"
+        "waf-regional:AssociateWebACL",
+        "waf-regional:CreateByteMatchSet",
+        "waf-regional:CreateGeoMatchSet",
+        "waf-regional:CreateIPSet",
+        "waf-regional:CreateRegexMatchSet",
+        "waf-regional:CreateRule",
+        "waf-regional:CreateRuleGroup",
+        "waf-regional:CreateWebACL",
+        "waf-regional:DeleteByteMatchSet",
+        "waf-regional:DeleteGeoMatchSet",
+        "waf-regional:DeleteIPSet",
+        "waf-regional:DeleteRegexMatchSet",
+        "waf-regional:DeleteRule",
+        "waf-regional:DeleteRuleGroup",
+        "waf-regional:DeleteWebACL",
+        "waf-regional:DisassociateWebACL",
+        "waf-regional:GetByteMatchSet",
+        "waf-regional:GetChangeToken",
+        "waf-regional:GetChangeTokenStatus",
+        "waf-regional:GetGeoMatchSet",
+        "waf-regional:GetIPSet",
+        "waf-regional:GetLoggingConfiguration",
+        "waf-regional:GetPermissionPolicy",
+        "waf-regional:GetRule",
+        "waf-regional:GetRuleGroup",
+        "waf-regional:GetWebACL",
+        "waf-regional:GetWebACLForResource",
+        "waf-regional:ListTagsForResource",
+        "waf-regional:PutLoggingConfiguration",
+        "waf-regional:TagResource",
+        "waf-regional:UntagResource",
+        "waf-regional:UpdateByteMatchSet",
+        "waf-regional:UpdateGeoMatchSet",
+        "waf-regional:UpdateIPSet",
+        "waf-regional:UpdateRegexMatchSet",
+        "waf-regional:UpdateRule",
+        "waf-regional:UpdateRuleGroup",
+        "waf-regional:UpdateWebACL"
       ],
-      "Resource": "arn:aws:cloudfront::${account_id}:distribution/*"
+      "Resource": "*"
     }
   ]
 }
