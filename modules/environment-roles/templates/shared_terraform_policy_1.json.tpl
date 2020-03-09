@@ -140,6 +140,27 @@
         "arn:aws:ec2:eu-west-2:${account_id}:security-group/*",
         "arn:aws:ec2:eu-west-2:${account_id}:vpc/*"
       ]
+    },
+    {
+      "Sid": "config",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConfigRule",
+        "config:DescribeConfigRules",
+        "config:DescribeConfigurationRecorders",
+        "config:DescribeConfigurationRecorderStatus",
+        "config:DescribeDeliveryChannels",
+        "config:DescribeDeliveryChannelStatus",
+        "config:PutConfigRule",
+        "config:PutConfigurationRecorder",
+        "config:PutDeliveryChannel",
+        "config:PutEvaluations",
+        "config:PutRetentionConfiguration",
+        "config:StartConfigRulesEvaluation",
+        "config:StartConfigurationRecorder",
+        "config:StopConfigurationRecorder"
+      ],
+      "Resource": "*"
     }
   ]
 }

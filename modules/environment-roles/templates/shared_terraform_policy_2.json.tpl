@@ -51,8 +51,8 @@
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*",
         "arn:aws:iam::${account_id}:policy/TDRDbMigrationLambdaPolicy${environment}",
-        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}"
-
+        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
+        "arn:aws:iam::${account_id}:role/TDRConfig${environment}"
       ]
     },
     {
