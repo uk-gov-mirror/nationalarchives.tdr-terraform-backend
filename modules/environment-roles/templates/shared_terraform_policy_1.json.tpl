@@ -180,7 +180,7 @@
       "Resource": "*"
     },
     {
-      "Sid": "guarrdduty",
+      "Sid": "guardduty",
       "Effect": "Allow",
       "Action": [
         "guardduty:CreateDetector",
