@@ -49,6 +49,7 @@
         "iam:CreatePolicyVersion"
       ],
       "Resource": [
+        "arn:aws:iam::${account_id}:role/aws-service-role/guardduty.amazonaws.com/AWSServiceRoleForAmazonGuardDuty",
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "arn:aws:iam::${account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing",
         "arn:aws:iam::${account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS",
@@ -100,6 +101,10 @@
         "s3:CreateBucket",
         "s3:DeleteBucket",
         "s3:DeleteBucketPolicy",
+        "s3:DeleteObject",
+        "s3:DeleteObjectTagging",
+        "s3:DeleteObjectVersion",
+        "s3:DeleteObjectVersionTagging",
         "s3:GetAccelerateConfiguration",
         "s3:GetAccountPublicAccessBlock",
         "s3:GetBucketAcl",
@@ -119,6 +124,9 @@
         "s3:GetInventoryConfiguration",
         "s3:GetLifecycleConfiguration",
         "s3:GetMetricsConfiguration",
+        "s3:GetObject",
+        "s3:GetObjectTagging",
+        "s3:GetObjectVersion",
         "s3:GetReplicationConfiguration",
         "s3:ListBucket",
         "s3:PutBucketLogging",
@@ -129,7 +137,11 @@
         "s3:PutBucketTagging",
         "s3:PutBucketVersioning",
         "s3:PutBucketWebsite",
-        "s3:PutEncryptionConfiguration"
+        "s3:PutEncryptionConfiguration",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
       ],
       "Resource": "*"
     },
