@@ -92,19 +92,33 @@
         "elasticloadbalancing:DescribeTargetGroupAttributes",
         "elasticloadbalancing:DescribeTargetGroups",
         "elasticloadbalancing:DescribeTargetHealth",
+        "iam:AttachGroupPolicy",
+        "iam:CreateGroup",
+        "iam:CreateServiceLinkedRole",
         "iam:DeleteAccountPasswordPolicy",
         "iam:DeleteInstanceProfile",
+        "iam:DeleteGroup",
+        "iam:DetachGroupPolicy",
         "iam:GetAccountPasswordPolicy",
+        "iam:GetGroup",
+        "iam:GetGroupPolicy",
         "iam:ListAccountAliases",
+        "iam:ListAttachedGroupPolicies",
+        "iam:PutRolePolicy",
         "iam:RemoveRoleFromInstanceProfile",
         "iam:UpdateAccountPasswordPolicy",
+        "iam:UpdateGroup",
         "logs:DescribeLogGroups",
+        "route53:CreateHostedZone",
+        "route53:DeleteHostedZone",
         "route53:ListHostedZones",
         "route53:GetHostedZone",
         "route53:ChangeResourceRecordSets",
+        "route53:ChangeTagsForResource",
         "route53:GetChange",
         "route53:ListResourceRecordSets",
-        "route53:ListTagsForResource"
+        "route53:ListTagsForResource",
+        "route53:UpdateHostedZoneComment"
       ],
       "Resource": "*"
     },
@@ -140,6 +154,83 @@
         "arn:aws:ec2:eu-west-2:${account_id}:security-group/*",
         "arn:aws:ec2:eu-west-2:${account_id}:vpc/*"
       ]
+    },
+    {
+      "Sid": "config",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConfigRule",
+        "config:DeleteDeliveryChannel",
+        "config:DescribeConfigRules",
+        "config:DescribeConfigurationRecorders",
+        "config:DescribeConfigurationRecorderStatus",
+        "config:DescribeDeliveryChannels",
+        "config:DescribeDeliveryChannelStatus",
+        "config:ListTagsForResource",
+        "config:PutConfigRule",
+        "config:PutConfigurationRecorder",
+        "config:PutDeliveryChannel",
+        "config:PutEvaluations",
+        "config:PutRetentionConfiguration",
+        "config:StartConfigRulesEvaluation",
+        "config:StartConfigurationRecorder",
+        "config:StopConfigurationRecorder",
+        "config:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "guardduty",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateDetector",
+        "guardduty:CreateIPSet",
+        "guardduty:CreateThreatIntelSet",
+        "guardduty:DeleteDetector",
+        "guardduty:DeleteIPSet",
+        "guardduty:GetDetector",
+        "guardduty:GetIPSet",
+        "guardduty:GetThreatIntelSet",
+        "guardduty:ListTagsForResource",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdateIPSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ses",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateConfigurationSet",
+        "ses:DeleteConfigurationSet",
+        "ses:DeleteIdentity",
+        "ses:DeleteVerifiedEmailAddress",
+        "ses:DescribeConfigurationSet",
+        "ses:GetIdentityDkimAttributes",
+        "ses:GetIdentityVerificationAttributes",
+        "ses:SetIdentityDkimEnabled",
+        "ses:SetIdentityMailFromDomain",
+        "ses:VerifyDomainDkim",
+        "ses:VerifyDomainIdentity",
+        "ses:VerifyEmailAddress",
+        "ses:VerifyEmailIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "sns",
+      "Effect": "Allow",
+      "Action": [
+        "sns:CreateTopic",
+        "sns:DeleteTopic",
+        "sns:GetTopicAttributes",
+        "sns:ListTagsForResource",
+        "sns:SetTopicAttributes",
+        "sns:TagResource",
+        "sns:UntagResource"
+      ],
+      "Resource": "*"
     }
   ]
 }

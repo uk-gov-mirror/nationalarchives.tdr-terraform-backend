@@ -17,7 +17,8 @@
       ],
       "Resource" : [
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
-          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips"
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/external_ips"
       ]
     },
     {
@@ -31,6 +32,7 @@
         "iam:CreateRole",
         "iam:DeletePolicy",
         "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
         "iam:DetachRolePolicy",
         "iam:GetPolicy",
         "iam:GetPolicyVersion",
@@ -39,8 +41,10 @@
         "iam:ListInstanceProfilesForRole",
         "iam:ListPolicyVersions",
         "iam:PassRole",
+        "iam:PutRolePolicy",
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy",
+        "iam:UpdateRole",
         "iam:CreateServiceLinkedRole",
         "iam:CreatePolicyVersion"
       ],
@@ -51,8 +55,10 @@
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*",
         "arn:aws:iam::${account_id}:policy/TDRDbMigrationLambdaPolicy${environment}",
-        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}"
-
+        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRConfig${environment}",
+        "arn:aws:iam::${account_id}:role/TDRConfig${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRSNSPublish${environment}"
       ]
     },
     {
