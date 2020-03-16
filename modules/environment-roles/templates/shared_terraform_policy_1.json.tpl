@@ -194,7 +194,8 @@
         "guardduty:ListTagsForResource",
         "guardduty:TagResource",
         "guardduty:UntagResource",
-        "guardduty:UpdateIPSet"
+        "guardduty:UpdateIPSet",
+        "guardduty:UpdateThreatIntelSet"
       ],
       "Resource": "*"
     },
