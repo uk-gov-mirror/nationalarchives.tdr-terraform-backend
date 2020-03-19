@@ -189,6 +189,22 @@
         "waf-regional:UpdateWebACL"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "securityhub",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchDisableStandards",
+        "securityhub:BatchEnableStandards",
+        "securityhub:DescribeHub",
+        "securityhub:DescribeStandards",
+        "securityhub:DescribeStandardsControls",
+        "securityhub:DisableSecurityHub",
+        "securityhub:EnableSecurityHub",
+        "securityhub:GetEnabledStandards",
+        "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
     }
   ]
 }
