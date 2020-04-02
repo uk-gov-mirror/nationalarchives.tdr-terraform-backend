@@ -55,6 +55,8 @@
         "arn:aws:iam::${account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS",
         "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*",
+        "arn:aws:iam::${account_id}:policy/TDRCloudwatch${environment}",
+        "arn:aws:iam::${account_id}:role/TDRCloudTrail${environment}",
         "arn:aws:iam::${account_id}:policy/TDRDbMigrationLambdaPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRConfig${environment}",
@@ -203,6 +205,25 @@
         "securityhub:EnableSecurityHub",
         "securityhub:GetEnabledStandards",
         "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "cloudtrail",
+      "Effect": "Allow",
+      "Action": [
+        "cloudtrail:AddTags",
+        "cloudtrail:CreateTrail",
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:DescribeTrails",
+        "cloudtrail:GetEventSelectors",
+        "cloudtrail:GetTrail",
+        "cloudtrail:GetTrailStatus",
+        "cloudtrail:ListTags",
+        "cloudtrail:RemoveTags",
+        "cloudtrail:StartLogging",
+        "cloudtrail:StopLogging",
+        "cloudtrail:UpdateTrail"
       ],
       "Resource": "*"
     }
