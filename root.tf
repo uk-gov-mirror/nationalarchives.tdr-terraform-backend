@@ -212,7 +212,7 @@ module "release_artefacts_s3" {
 module "staging_artefacts_s3" {
   source        = "./tdr-terraform-modules/s3"
   project       = "tdr"
-  function      = "staging"
+  function      = "snapshots"
   access_logs   = false
   common_tags   = local.common_tags
 }
