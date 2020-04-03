@@ -63,11 +63,15 @@ resource "aws_iam_policy" "jenkins_publish_policy" {
 data "aws_iam_policy_document" "jenkins_publish_document" {
   statement {
     actions = [
-      "s3:GetObject"
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket"
     ]
     resources = [
-      "arn:aws:s3:::tdr-secrets/keys/sonatype.key",
-      "arn:aws:s3:::tdr-secrets/keys/sonatype_credential"
+      var.release_bucket_arn,
+      var.staging_bucket_arn,
+      "${var.release_bucket_arn}/*",
+      "${var.staging_bucket_arn}/*"
     ]
   }
 }

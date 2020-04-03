@@ -161,6 +161,8 @@ module "intg_specific_permissions" {
   read_terraform_state_policy_arn = module.terraform_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn = module.terraform_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn  = module.terraform_permissions.terraform_describe_account_arn
+  release_bucket_arn = module.release_artefacts_s3.s3_bucket_arn
+  staging_bucket_arn = module.staging_artefacts_s3.s3_bucket_arn
 }
 
 module "staging_specific_permissions" {
@@ -173,6 +175,8 @@ module "staging_specific_permissions" {
   read_terraform_state_policy_arn = module.terraform_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn = module.terraform_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn  = module.terraform_permissions.terraform_describe_account_arn
+  release_bucket_arn = module.release_artefacts_s3.s3_bucket_arn
+  staging_bucket_arn = module.staging_artefacts_s3.s3_bucket_arn
 }
 
 module "prod_specific_permissions" {
@@ -185,6 +189,8 @@ module "prod_specific_permissions" {
   read_terraform_state_policy_arn = module.terraform_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn = module.terraform_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn  = module.terraform_permissions.terraform_describe_account_arn
+  release_bucket_arn = module.release_artefacts_s3.s3_bucket_arn
+  staging_bucket_arn = module.staging_artefacts_s3.s3_bucket_arn
 }
 
 //Set up Jenkins permissions
@@ -193,4 +199,20 @@ module "jenkins_permissions" {
   environment                    = "mgmt"
   terraform_jenkins_state_bucket = module.terraform_state.terraform_jenkins_state_bucket
   terraform_jenkins_state_lock   = module.terraform_state_lock.terraform_jenkins_state_lock
+}
+
+module "release_artefacts_s3" {
+  source        = "./tdr-terraform-modules/s3"
+  project       = "tdr"
+  function      = "releases"
+  access_logs   = false
+  common_tags   = local.common_tags
+}
+
+module "staging_artefacts_s3" {
+  source        = "./tdr-terraform-modules/s3"
+  project       = "tdr"
+  function      = "staging"
+  access_logs   = false
+  common_tags   = local.common_tags
 }

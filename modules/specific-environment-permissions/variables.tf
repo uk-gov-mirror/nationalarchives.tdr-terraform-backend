@@ -37,3 +37,13 @@ variable "terraform_describe_account_arn" {
   description = "IAM policy ARN for describing account"
   type        = string
 }
+
+variable "release_bucket_arn" {
+  description = "The bucket arn for release artefacts"
+  type = string
+}
+
+variable "staging_bucket_arn" {
+  description = "The bucket arn for staging artefacts"
+  type = string
+}
