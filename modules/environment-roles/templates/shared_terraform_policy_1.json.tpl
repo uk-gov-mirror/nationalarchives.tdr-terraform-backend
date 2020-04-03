@@ -232,6 +232,22 @@
         "sns:UntagResource"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "sqs",
+      "Effect": "Allow",
+        "Action": [
+          "sqs:CreateQueue",
+          "sqs:DeleteQueue",
+          "sqs:GetQueueAttributes",
+          "sqs:GetQueueUrl",
+          "sqs:ListQueues",
+          "sqs:ListQueueTags",
+          "sqs:SetQueueAttributes",
+          "sqs:TagQueue",
+          "sqs:UntagQueue"
+        ],
+      "Resource": "*"
     }
   ]
 }

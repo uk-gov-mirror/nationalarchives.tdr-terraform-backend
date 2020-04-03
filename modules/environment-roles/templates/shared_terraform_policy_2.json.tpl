@@ -61,7 +61,9 @@
         "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRConfig${environment}",
         "arn:aws:iam::${account_id}:role/TDRConfig${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRSNSPublish${environment}"
+        "arn:aws:iam::${account_id}:policy/TDRSNSPublish${environment}",
+        "arn:aws:iam::${account_id}:role/Custodian*",
+        "arn:aws:iam::${account_id}:policy/TDRCustodian*"
       ]
     },
     {
