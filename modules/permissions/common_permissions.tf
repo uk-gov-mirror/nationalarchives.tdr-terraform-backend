@@ -56,3 +56,55 @@ resource "aws_iam_policy" "terraform_describe_account" {
   description = "Policy to allow terraform to describe the accounts"
   policy      = data.aws_iam_policy_document.terraform_describe_account.json
 }
+
+data "aws_iam_policy_document" "ecs_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "jenkins_publish_role" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRJenkinsPublishRole"
+  tags = merge(
+  var.common_tags,
+  map(
+  "Name", "TDR Jenkins Publish Role",
+  )
+  )
+}
+
+resource "aws_iam_policy" "jenkins_publish_policy" {
+  name   = "TDRJenkinsPublishPolicy"
+  policy = data.aws_iam_policy_document.jenkins_publish_document.json
+}
+
+data "aws_iam_policy_document" "jenkins_publish_document" {
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket"
+    ]
+    resources = [
+      var.release_bucket_arn,
+      var.staging_bucket_arn,
+      "${var.release_bucket_arn}/*",
+      "${var.staging_bucket_arn}/*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_publish_attachment" {
+  policy_arn = aws_iam_policy.jenkins_publish_policy.arn
+  role       = aws_iam_role.jenkins_publish_role.name
+}
+

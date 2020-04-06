@@ -4,3 +4,4 @@
 **.tfstate.*
 *.tfvars
 .DS_Store
+tdr-terraform-modules
