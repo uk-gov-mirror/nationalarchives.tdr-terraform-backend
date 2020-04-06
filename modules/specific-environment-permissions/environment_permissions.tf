@@ -44,6 +44,11 @@ resource "aws_iam_role" "jenkins_node_assume_role" {
   )
 }
 
+resource "aws_iam_role_policy_attachment" "jenkins_node_role_attachment" {
+  policy_arn = aws_iam_policy.jenkins_ecs_policy.arn
+  role       = aws_iam_role.jenkins_node_assume_role.name
+}
+
 resource "aws_iam_role" "jenkins_lambda_assume_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsNodeLambdaRole${local.env_title_case}"
