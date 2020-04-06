@@ -148,8 +148,8 @@ module "common_permissions" {
   common_tags            = local.common_tags
   terraform_state_bucket = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock   = module.terraform_state_lock.terraform_state_lock_arn
-  release_bucket_arn              = module.release_artefacts_s3.s3_bucket_arn
-  staging_bucket_arn              = module.staging_artefacts_s3.s3_bucket_arn
+  release_bucket_arn     = module.release_artefacts_s3.s3_bucket_arn
+  staging_bucket_arn     = module.staging_artefacts_s3.s3_bucket_arn
 }
 
 //Set up specific TDR environment IAM policies for Terraform
