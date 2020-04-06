@@ -182,3 +182,37 @@ resource "aws_iam_role_policy_attachment" "terraform_role_describe_accounts" {
   role       = aws_iam_role.terraform_assume_role.name
   policy_arn = var.terraform_describe_account_arn
 }
+
+//IAM Roles: Custodian Assume Roles
+
+data "aws_iam_policy_document" "custodian_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${var.tdr_account_number}:role/TDRCustodianDeployRole${local.env_title_case}"]
+  }
+}
+
+resource "aws_iam_policy" "custodian_ecs_policy" {
+  name   = "TDRCustodianPolicy${local.env_title_case}"
+  policy = data.aws_iam_policy_document.custodian_assume_role.json
+}
+
+resource "aws_iam_role" "custodian_assume_role" {
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+  name               = "TDRCustodianAssumeRole${local.env_title_case}"
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR Custodian Assume Role ${local.env_title_case}",
+    )
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "custodian_role_attachment" {
+  role       = aws_iam_role.custodian_assume_role.name
+  policy_arn = aws_iam_policy.custodian_ecs_policy.arn
+}
