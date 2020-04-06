@@ -12,3 +12,13 @@ variable "terraform_state_lock" {
   description = "DynamoDb table controlling the terraform state lock"
   type        = string
 }
+
+variable "release_bucket_arn" {
+  description = "The bucket arn for release artefacts"
+  type = string
+}
+
+variable "staging_bucket_arn" {
+  description = "The bucket arn for staging artefacts"
+  type = string
+}

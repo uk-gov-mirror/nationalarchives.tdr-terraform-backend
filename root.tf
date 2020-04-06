@@ -142,12 +142,14 @@ module "terraform_state_lock" {
   common_tags = local.common_tags
 }
 
-//Set up common IAM policies for Terraform
-module "terraform_permissions" {
+//Set up common IAM policies for Terraform and for publishing to S3
+module "common_permissions" {
   source                 = "./modules/permissions"
   common_tags            = local.common_tags
   terraform_state_bucket = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock   = module.terraform_state_lock.terraform_state_lock_arn
+  release_bucket_arn              = module.release_artefacts_s3.s3_bucket_arn
+  staging_bucket_arn              = module.staging_artefacts_s3.s3_bucket_arn
 }
 
 //Set up specific TDR environment IAM policies for Terraform
@@ -158,11 +160,9 @@ module "intg_specific_permissions" {
   terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
   tdr_account_number              = data.aws_ssm_parameter.intg_account_number.value
   tdr_environment                 = "intg"
-  read_terraform_state_policy_arn = module.terraform_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.terraform_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.terraform_permissions.terraform_describe_account_arn
-  release_bucket_arn              = module.release_artefacts_s3.s3_bucket_arn
-  staging_bucket_arn              = module.staging_artefacts_s3.s3_bucket_arn
+  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
 }
 
 module "staging_specific_permissions" {
@@ -172,11 +172,9 @@ module "staging_specific_permissions" {
   terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
   tdr_account_number              = data.aws_ssm_parameter.staging_account_number.value
   tdr_environment                 = "staging"
-  read_terraform_state_policy_arn = module.terraform_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.terraform_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.terraform_permissions.terraform_describe_account_arn
-  release_bucket_arn              = module.release_artefacts_s3.s3_bucket_arn
-  staging_bucket_arn              = module.staging_artefacts_s3.s3_bucket_arn
+  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
 }
 
 module "prod_specific_permissions" {
@@ -186,11 +184,9 @@ module "prod_specific_permissions" {
   terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
   tdr_account_number              = data.aws_ssm_parameter.prod_account_number.value
   tdr_environment                 = "prod"
-  read_terraform_state_policy_arn = module.terraform_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.terraform_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.terraform_permissions.terraform_describe_account_arn
-  release_bucket_arn              = module.release_artefacts_s3.s3_bucket_arn
-  staging_bucket_arn              = module.staging_artefacts_s3.s3_bucket_arn
+  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
 }
 
 //Set up Jenkins permissions
