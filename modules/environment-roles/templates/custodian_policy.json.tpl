@@ -21,6 +21,14 @@
       ]
     },
     {
+      "Sid": "route53",
+      "Effect": "Allow",
+      "Action" : [
+        "route53:ListHostedZones"
+      ],
+      "Resource": "*"
+    },
+    {
       "Sid": "lambda",
       "Effect": "Allow",
       "Action": [
