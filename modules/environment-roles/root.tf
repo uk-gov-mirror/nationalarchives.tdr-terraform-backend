@@ -256,3 +256,41 @@ data "aws_iam_policy_document" "tdr_jenkins_read_params" {
     ]
   }
 }
+
+data "template_file" "custodian_assume_role_deploy_policy" {
+  template = file("./modules/environment-roles/templates/custodian_assume_role_policy.json.tpl")
+  vars = {
+    account_id = var.tdr_mgmt_account_number
+  }
+}
+
+resource "aws_iam_role" "custodian_deploy_role" {
+  name               = "TDRCustodianDeployRole${title(var.tdr_environment)}"
+  description        = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment"
+  assume_role_policy = data.template_file.custodian_assume_role_deploy_policy.rendered
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "${title(var.tdr_environment)} Custodian Role",
+    )
+  )
+}
+
+data "template_file" "custodian_deploy_policy" {
+  template = file("${path.module}/templates/custodian_policy.json.tpl")
+  vars = {
+    environment = title(var.tdr_environment)
+    account_id  = data.aws_caller_identity.current.account_id
+  }
+}
+
+resource "aws_iam_policy" "custodian_deploy_policy" {
+  policy = data.template_file.custodian_deploy_policy.rendered
+  name   = "TDRCustodianDeployPolicy${title(var.tdr_environment)}"
+}
+
+resource aws_iam_role_policy_attachment "custodian_deploy_policy_attach" {
+  policy_arn = aws_iam_policy.custodian_deploy_policy.arn
+  role       = aws_iam_role.custodian_deploy_role.name
+}
