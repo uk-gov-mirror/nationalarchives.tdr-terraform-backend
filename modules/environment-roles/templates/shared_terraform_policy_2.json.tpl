@@ -46,7 +46,10 @@
         "iam:UpdateAssumeRolePolicy",
         "iam:UpdateRole",
         "iam:CreateServiceLinkedRole",
-        "iam:CreatePolicyVersion"
+        "iam:CreatePolicyVersion",
+        "iam:CreateOpenIDConnectProvider",
+        "iam:GetOpenIDConnectProvider",
+        "iam:DeleteOpenIDConnectProvider"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:role/aws-service-role/guardduty.amazonaws.com/AWSServiceRoleForAmazonGuardDuty",
@@ -57,13 +60,17 @@
         "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*",
         "arn:aws:iam::${account_id}:policy/TDRCloudwatch${environment}",
         "arn:aws:iam::${account_id}:role/TDRCloudTrail${environment}",
+        "arn:aws:iam::${account_id}:oidc-provider/auth.${sub_domain}.nationalarchives.gov.uk",
+        "arn:aws:iam::${account_id}:oidc-provider/auth.${sub_domain}.nationalarchives.gov.uk/auth/realms/tdr",
         "arn:aws:iam::${account_id}:policy/TDRDbMigrationLambdaPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRConfig${environment}",
         "arn:aws:iam::${account_id}:role/TDRConfig${environment}",
         "arn:aws:iam::${account_id}:policy/TDRSNSPublish${environment}",
         "arn:aws:iam::${account_id}:role/Custodian*",
-        "arn:aws:iam::${account_id}:policy/TDRCustodian*"
+        "arn:aws:iam::${account_id}:policy/TDRCustodian*",
+        "arn:aws:iam::${account_id}:role/TDRCognitoAuthorisedRole${environment}",
+        "arn:aws:iam::${account_id}:policy/CognitoAuthPolicy${environment}"
       ]
     },
     {

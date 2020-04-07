@@ -3,6 +3,8 @@ variable "tdr_environment" {
   type        = string
 }
 
+variable "sub_domain" {}
+
 variable "common_tags" {
   description = "Common tags to be applied to all resources"
   type        = map(string)
