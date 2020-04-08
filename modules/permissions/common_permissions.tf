@@ -108,3 +108,18 @@ resource "aws_iam_role_policy_attachment" "jenkins_publish_attachment" {
   role       = aws_iam_role.jenkins_publish_role.name
 }
 
+data "aws_iam_policy_document" "custodian_get_parameters" {
+  version = "2012-10-17"
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ssm:GetParameter"]
+    resources = ["arn:aws:ssm:eu-west-2:*:parameter/mgmt/cost_centre", "arn:aws:ssm:eu-west-2:*:parameter/mgmt/slack/webhook"]
+  }
+}
+
+resource "aws_iam_policy" "custodian_get_parameters" {
+  name        = "TDRCustodianGetParameters"
+  description = "Policy to allow Cloud Custodian to get SSM parameters"
+  policy      = data.aws_iam_policy_document.custodian_get_parameters.json
+}

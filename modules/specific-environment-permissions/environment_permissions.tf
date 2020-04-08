@@ -216,3 +216,8 @@ resource "aws_iam_role_policy_attachment" "custodian_role_attachment" {
   role       = aws_iam_role.custodian_assume_role.name
   policy_arn = aws_iam_policy.custodian_ecs_policy.arn
 }
+
+resource "aws_iam_role_policy_attachment" "custodian_get_parameters" {
+  role       = aws_iam_role.custodian_assume_role.name
+  policy_arn = var.custodian_get_parameters_arn
+}
