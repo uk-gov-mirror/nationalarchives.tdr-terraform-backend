@@ -37,3 +37,8 @@ variable "terraform_describe_account_arn" {
   description = "IAM policy ARN for describing account"
   type        = string
 }
+
+variable "custodian_get_parameters_arn" {
+  description = "IAM policy ARN for getting parameter values"
+  type        = string
+}
