@@ -163,6 +163,7 @@ module "intg_specific_permissions" {
   read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
 }
 
 module "staging_specific_permissions" {
@@ -175,6 +176,7 @@ module "staging_specific_permissions" {
   read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
 }
 
 module "prod_specific_permissions" {
@@ -187,6 +189,7 @@ module "prod_specific_permissions" {
   read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
 }
 
 //Set up Jenkins permissions
