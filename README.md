@@ -25,6 +25,14 @@ The Terraform IAM roles are assumed by the TDR AWS Management account user runni
 
 See: https://learn.hashicorp.com/terraform/getting-started/install.html
 
+### Add shared modules
+
+Some of the resources created by this project depend on the shared TDR Terraform
+modules.
+
+Clone the [tdr-terraform-modules](https://github.com/nationalarchives/tdr-terraform-modules/)
+project into this project's directory.
+
 ## Running the Project
 
 This project bootstraps management account and environments, so it needs to be
