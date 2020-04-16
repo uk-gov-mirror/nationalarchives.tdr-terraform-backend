@@ -2,6 +2,18 @@ resource "aws_s3_bucket" "tdr_terraform_state" {
   bucket = "tdr-terraform-state"
   acl    = "private"
 
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  versioning {
+    enabled = true
+  }
+
   tags = merge(
     var.common_tags,
     map(
@@ -22,6 +34,18 @@ resource "aws_s3_bucket_public_access_block" "public_access_block" {
 resource "aws_s3_bucket" "tdr_terraform_state_jenkins" {
   bucket = "tdr-terraform-state-jenkins"
   acl    = "private"
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  versioning {
+    enabled = true
+  }
 
   tags = merge(
     var.common_tags,
