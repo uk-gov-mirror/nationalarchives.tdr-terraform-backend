@@ -15,10 +15,10 @@ variable "terraform_state_lock" {
 
 variable "release_bucket_arn" {
   description = "The bucket arn for release artefacts"
-  type = string
+  type        = string
 }
 
 variable "staging_bucket_arn" {
   description = "The bucket arn for staging artefacts"
-  type = string
+  type        = string
 }

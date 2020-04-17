@@ -77,7 +77,7 @@ data "template_file" "shared_terraform_policy_template_2" {
   vars = {
     environment = title(var.tdr_environment)
     account_id  = data.aws_caller_identity.current.account_id
-    sub_domain = var.sub_domain
+    sub_domain  = var.sub_domain
   }
 }
 

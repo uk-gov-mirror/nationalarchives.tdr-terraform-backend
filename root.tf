@@ -83,7 +83,7 @@ module "intg_environment_roles" {
   tdr_environment         = "intg"
   common_tags             = local.common_tags
   tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-  sub_domain = "tdr-integration"
+  sub_domain              = "tdr-integration"
 }
 
 module "staging_environment_role" {
@@ -95,7 +95,7 @@ module "staging_environment_role" {
   tdr_environment         = "staging"
   common_tags             = local.common_tags
   tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-  sub_domain = "tdr-staging"
+  sub_domain              = "tdr-staging"
 }
 
 module "prod_environment_role" {
@@ -107,7 +107,7 @@ module "prod_environment_role" {
   tdr_environment         = "prod"
   common_tags             = local.common_tags
   tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-  sub_domain = "tdr"
+  sub_domain              = "tdr"
 }
 
 //Shared parameters to store in each environment
