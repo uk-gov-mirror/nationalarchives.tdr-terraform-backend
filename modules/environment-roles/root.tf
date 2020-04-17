@@ -77,6 +77,7 @@ data "template_file" "shared_terraform_policy_template_2" {
   vars = {
     environment = title(var.tdr_environment)
     account_id  = data.aws_caller_identity.current.account_id
+    sub_domain  = var.sub_domain
   }
 }
 
@@ -134,7 +135,8 @@ data "aws_iam_policy_document" "frontend_storage_override" {
     ]
     resources = [
       "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/play_secret",
-      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/redis/host"
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/redis/host",
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/frontend/auth/thumbprint"
     ]
   }
 }

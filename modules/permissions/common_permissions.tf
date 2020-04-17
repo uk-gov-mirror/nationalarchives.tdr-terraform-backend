@@ -75,10 +75,10 @@ resource "aws_iam_role" "jenkins_publish_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsPublishRole"
   tags = merge(
-  var.common_tags,
-  map(
-  "Name", "TDR Jenkins Publish Role",
-  )
+    var.common_tags,
+    map(
+      "Name", "TDR Jenkins Publish Role",
+    )
   )
 }
 
