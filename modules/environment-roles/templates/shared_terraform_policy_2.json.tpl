@@ -131,6 +131,7 @@
         "s3:GetBucketRequestPayment",
         "s3:GetBucketTagging",
         "s3:GetBucketVersioning",
+	"s3:ListBucketVersions",
         "s3:GetBucketWebsite",
         "s3:GetEncryptionConfiguration",
         "s3:GetInventoryConfiguration",
