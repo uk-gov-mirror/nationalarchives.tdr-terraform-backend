@@ -241,7 +241,6 @@ resource "aws_iam_role" "custodian_deploy_role" {
 }
 
 resource "aws_iam_policy" "custodian_deploy_policy" {
-  #  policy = data.template_file.custodian_deploy_policy.rendered
   policy = templatefile("${path.module}/templates/custodian_policy.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id })
   name   = "TDRCustodianDeployPolicy${title(var.tdr_environment)}"
 }
