@@ -51,6 +51,7 @@
       ],
       "Resource": [
         "arn:aws:lambda:eu-west-2:${account_id}:function:cloud-custodian-mailer",
+        "arn:aws:lambda:eu-west-1:${account_id}:function:custodian*",
         "arn:aws:lambda:eu-west-2:${account_id}:function:custodian*"
       ]
     },
