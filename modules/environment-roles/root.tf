@@ -1,16 +1,9 @@
 data "aws_caller_identity" "current" {}
 
-data "template_file" "terraform_assume_role_policy" {
-  template = file("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl")
-  vars = {
-    account_id = var.tdr_mgmt_account_number
-  }
-}
-
 resource "aws_iam_role" "terraform_role" {
   name               = "TDRTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow Terraform to create resources for the ${title(var.tdr_environment)} environment"
-  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 
   tags = merge(
     var.common_tags,
@@ -30,6 +23,11 @@ resource "aws_iam_role_policy_attachment" "shared_policy_attachment_2" {
   role       = aws_iam_role.terraform_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "shared_policy_attachment_3" {
+  policy_arn = aws_iam_policy.shared_terraform_policy_3.arn
+  role       = aws_iam_role.terraform_role.name
+}
+
 resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.keycloak_terraform_iam.arn
@@ -45,58 +43,28 @@ resource "aws_iam_role_policy_attachment" "consignment_api_attachment" {
   policy_arn = aws_iam_policy.consignment_api_terraform_iam.arn
 }
 
-data "template_file" "keycloak_terraform_policy" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl")
-  vars = {
-    account_id  = data.aws_caller_identity.current.account_id
-    environment = var.tdr_environment
-    app_name    = "keycloak"
-  }
-}
-
 resource "aws_iam_policy" "shared_terraform_policy_1" {
-  policy = data.template_file.shared_terraform_policy_template_1.rendered
+  policy = templatefile("${path.module}/templates/shared_terraform_policy_1.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id })
   name   = "TDRSharedTerraform1${title(var.tdr_environment)}"
 }
 
-data "template_file" "shared_terraform_policy_template_1" {
-  template = file("${path.module}/templates/shared_terraform_policy_1.json.tpl")
-  vars = {
-    environment = title(var.tdr_environment)
-    account_id  = data.aws_caller_identity.current.account_id
-  }
-}
-
 resource "aws_iam_policy" "shared_terraform_policy_2" {
-  policy = data.template_file.shared_terraform_policy_template_2.rendered
+  policy = templatefile("${path.module}/templates/shared_terraform_policy_2.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id, sub_domain = var.sub_domain })
   name   = "TDRSharedTerraform2${title(var.tdr_environment)}"
 }
 
-data "template_file" "shared_terraform_policy_template_2" {
-  template = file("${path.module}/templates/shared_terraform_policy_2.json.tpl")
-  vars = {
-    environment = title(var.tdr_environment)
-    account_id  = data.aws_caller_identity.current.account_id
-    sub_domain  = var.sub_domain
-  }
+resource "aws_iam_policy" "shared_terraform_policy_3" {
+  policy = templatefile("${path.module}/templates/shared_terraform_policy_3.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id, sub_domain = var.sub_domain })
+  name   = "TDRSharedTerraform3${title(var.tdr_environment)}"
 }
 
 resource "aws_iam_policy" "keycloak_terraform_iam" {
-  policy = data.template_file.keycloak_terraform_policy.rendered
+  policy = templatefile("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "keycloak" })
   name   = "TDRKeycloakTerraform${title(var.tdr_environment)}"
 }
 
-data "template_file" "consignment_api_terraform_policy" {
-  template = file("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl")
-  vars = {
-    account_id  = data.aws_caller_identity.current.account_id
-    environment = var.tdr_environment
-    app_name    = "consignmentapi"
-  }
-}
-
 resource "aws_iam_policy" "consignment_api_terraform_iam" {
-  policy = data.template_file.consignment_api_terraform_policy.rendered
+  policy = templatefile("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "consignmentapi" })
   name   = "TDRConsignmentApiTerraform${title(var.tdr_environment)}"
 }
 
@@ -163,7 +131,7 @@ resource "aws_iam_policy" "frontend_terraform_iam" {
 
 resource "aws_iam_role" "tdr_jenkins_ecs_update_role" {
   name               = "TDRJenkinsECSUpdateRole${title(var.tdr_environment)}"
-  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 }
 
 resource "aws_iam_role_policy_attachment" "tdr_jenkins_ecs_update_role_attach" {
@@ -191,7 +159,7 @@ data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
 
 resource "aws_iam_role" "tdr_jenkins_lambda_role" {
   name               = "TDRJenkinsLambdaRole${title(var.tdr_environment)}"
-  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 }
 
 resource "aws_iam_role_policy_attachment" "tdr_jenkins_lambda_role_attach" {
@@ -218,7 +186,7 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
 
 resource "aws_iam_role" "tdr_jenkins_read_params_role" {
   name               = "TDRJenkinsReadParamsRole${title(var.tdr_environment)}"
-  assume_role_policy = data.template_file.terraform_assume_role_policy.rendered
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 
   tags = merge(
     var.common_tags,
@@ -259,17 +227,10 @@ data "aws_iam_policy_document" "tdr_jenkins_read_params" {
   }
 }
 
-data "template_file" "custodian_assume_role_deploy_policy" {
-  template = file("./modules/environment-roles/templates/custodian_assume_role_policy.json.tpl")
-  vars = {
-    account_id = var.tdr_mgmt_account_number
-  }
-}
-
 resource "aws_iam_role" "custodian_deploy_role" {
   name               = "TDRCustodianDeployRole${title(var.tdr_environment)}"
   description        = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment"
-  assume_role_policy = data.template_file.custodian_assume_role_deploy_policy.rendered
+  assume_role_policy = templatefile("./modules/environment-roles/templates/custodian_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 
   tags = merge(
     var.common_tags,
@@ -279,16 +240,8 @@ resource "aws_iam_role" "custodian_deploy_role" {
   )
 }
 
-data "template_file" "custodian_deploy_policy" {
-  template = file("${path.module}/templates/custodian_policy.json.tpl")
-  vars = {
-    environment = title(var.tdr_environment)
-    account_id  = data.aws_caller_identity.current.account_id
-  }
-}
-
 resource "aws_iam_policy" "custodian_deploy_policy" {
-  policy = data.template_file.custodian_deploy_policy.rendered
+  policy = templatefile("${path.module}/templates/custodian_policy.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id })
   name   = "TDRCustodianDeployPolicy${title(var.tdr_environment)}"
 }
 
