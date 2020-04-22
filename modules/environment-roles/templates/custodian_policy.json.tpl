@@ -84,6 +84,7 @@
       ],
       "Resource": [
         "arn:aws:events:eu-west-2:${account_id}:rule/cloud-custodian-mailer",
+        "arn:aws:events:eu-west-1:${account_id}:rule/custodian*",
         "arn:aws:events:eu-west-2:${account_id}:rule/custodian*"
       ]
     }
