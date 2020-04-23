@@ -70,7 +70,7 @@
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy",
         "iam:CreateServiceLinkedRole",
-	 "iam:CreatePolicyVersion"
+	    "iam:CreatePolicyVersion"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
