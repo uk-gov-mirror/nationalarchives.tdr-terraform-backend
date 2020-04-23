@@ -131,8 +131,7 @@
         "s3:GetBucketRequestPayment",
         "s3:GetBucketTagging",
         "s3:GetBucketVersioning",
-	"s3:ListBucketVersions",
-        "s3:GetBucketWebsite",
+	    "s3:GetBucketWebsite",
         "s3:GetEncryptionConfiguration",
         "s3:GetInventoryConfiguration",
         "s3:GetLifecycleConfiguration",
@@ -154,7 +153,9 @@
         "s3:PutObject",
         "s3:PutObjectAcl",
         "s3:PutObjectTagging",
-        "s3:PutObjectVersionTagging"
+        "s3:PutObjectVersionTagging",
+        "s3:ListObjectVersions",
+        "s3:ListBucketVersions"
       ],
       "Resource": "*"
     }
