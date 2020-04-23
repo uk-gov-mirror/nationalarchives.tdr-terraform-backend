@@ -69,7 +69,8 @@
         "iam:PassRole",
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy",
-        "iam:CreateServiceLinkedRole"
+        "iam:CreateServiceLinkedRole",
+	    "iam:CreatePolicyVersion"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
@@ -148,7 +149,8 @@
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/username",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/password",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/password",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/user"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/user",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/client/secret"
       ]
     }
   ]
