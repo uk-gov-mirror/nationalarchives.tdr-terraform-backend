@@ -69,7 +69,8 @@
         "iam:PassRole",
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy",
-        "iam:CreateServiceLinkedRole"
+        "iam:CreateServiceLinkedRole",
+	    "iam:CreatePolicyVersion"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
