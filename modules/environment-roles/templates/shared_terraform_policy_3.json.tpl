@@ -81,6 +81,21 @@
         "cloudtrail:UpdateTrail"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "certificatemanager",
+      "Effect": "Allow",
+      "Action": [
+        "acm:AddTagsToCertificate",
+        "acm:DeleteCertificate",
+        "acm:DescribeCertificate",
+        "acm:GetCertificate",
+        "acm:ListTagsForCertificate",
+        "acm:RemoveTagsFromCertificate",
+        "acm:RequestCertificate",
+        "acm:UpdateCertificateOptions"
+      ],
+      "Resource": "*"
     }
   ]
 }
