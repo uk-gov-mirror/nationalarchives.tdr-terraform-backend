@@ -71,7 +71,9 @@
         "arn:aws:iam::${account_id}:role/Custodian*",
         "arn:aws:iam::${account_id}:policy/TDRCustodian*",
         "arn:aws:iam::${account_id}:role/TDRCognitoAuthorisedRole${environment}",
-        "arn:aws:iam::${account_id}:policy/CognitoAuthPolicy${environment}"
+        "arn:aws:iam::${account_id}:policy/CognitoAuthPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
+        "arn:aws:iam::${account_id}:role/TDRYaraAvRole"
       ]
     },
     {
