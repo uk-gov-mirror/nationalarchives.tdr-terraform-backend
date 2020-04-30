@@ -154,6 +154,7 @@
         "s3:PutBucketVersioning",
         "s3:PutBucketWebsite",
         "s3:PutEncryptionConfiguration",
+        "s3:PutLifecycleConfiguration",
         "s3:PutObject",
         "s3:PutObjectAcl",
         "s3:PutObjectTagging",
