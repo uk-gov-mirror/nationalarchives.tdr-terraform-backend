@@ -225,11 +225,15 @@
       "Action": [
         "sns:CreateTopic",
         "sns:DeleteTopic",
+        "sns:GetSubscriptionAttributes",
         "sns:GetTopicAttributes",
         "sns:ListTagsForResource",
+        "sns:SetSubscriptionAttributes",
         "sns:SetTopicAttributes",
+        "sns:Subscribe",
         "sns:TagResource",
-        "sns:UntagResource"
+        "sns:UntagResource",
+        "sns:Unsubscribe"
       ],
       "Resource": "*"
     },
@@ -248,21 +252,6 @@
         "sqs:UntagQueue"
       ],
       "Resource": "*"
-    },
-    {
-      "Sid": "cognito",
-      "Effect": "Allow",
-      "Action" : [
-        "cognito-identity:CreateIdentityPool",
-        "cognito-identity:DescribeIdentityPool",
-        "cognito-identity:DeleteIdentityPool",
-        "cognito-identity:SetIdentityPoolRoles",
-        "cognito-identity:GetIdentityPoolRoles"
-      ],
-      "Resource" : [
-        "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/",
-        "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/*"
-      ]
     }
   ]
 }

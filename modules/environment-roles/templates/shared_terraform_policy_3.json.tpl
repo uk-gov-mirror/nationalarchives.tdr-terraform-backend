@@ -96,6 +96,56 @@
         "acm:UpdateCertificateOptions"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "lambda",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:AddPermission",
+        "lambda:CreateFunction",
+        "lambda:DeleteFunction",
+        "lambda:GetAlias",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConcurrency",
+        "lambda:GetFunctionConfiguration",
+        "lambda:GetFunctionEventInvokeConfig",
+        "lambda:GetLayerVersion",
+        "lambda:GetLayerVersionPolicy",
+        "lambda:GetPolicy",
+        "lambda:ListVersionsByFunction",
+        "lambda:ListTags",
+        "lambda:RemovePermission",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration"
+      ],
+      "Resource": [
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-log-data-*"
+      ]
+    },
+    {
+      "Sid": "iam",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${environment}"
+      ]
+    },
+    {
+      "Sid": "cognito",
+      "Effect": "Allow",
+      "Action" : [
+        "cognito-identity:CreateIdentityPool",
+        "cognito-identity:DescribeIdentityPool",
+        "cognito-identity:DeleteIdentityPool",
+        "cognito-identity:SetIdentityPoolRoles",
+        "cognito-identity:GetIdentityPoolRoles"
+      ],
+      "Resource" : [
+        "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/",
+        "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/*"
+      ]
     }
   ]
 }

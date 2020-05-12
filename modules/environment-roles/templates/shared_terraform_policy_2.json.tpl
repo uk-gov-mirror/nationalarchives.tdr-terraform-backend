@@ -18,7 +18,8 @@
       "Resource" : [
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips",
-          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/external_ips"
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/external_ips",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/management_account"
       ]
     },
     {
@@ -73,7 +74,11 @@
         "arn:aws:iam::${account_id}:role/TDRCognitoAuthorisedRole${environment}",
         "arn:aws:iam::${account_id}:policy/CognitoAuthPolicy${environment}",
         "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
-        "arn:aws:iam::${account_id}:role/TDRYaraAvRole"
+        "arn:aws:iam::${account_id}:role/TDRYaraAvRole",
+        "arn:aws:iam::${account_id}:policy/TDRLogDataLambdaBase${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRLogData${environment}",
+        "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${environment}",
+        "arn:aws:iam::${account_id}:role/TDRLogDataCrossAccountRoleMgmt"
       ]
     },
     {
@@ -148,6 +153,7 @@
         "s3:PutBucketLogging",
         "s3:PutBucketAcl",
         "S3:PutBucketCORS",
+        "S3:PutBucketNotification",
         "s3:PutBucketPolicy",
         "s3:PutBucketPublicAccessBlock",
         "s3:PutBucketTagging",
