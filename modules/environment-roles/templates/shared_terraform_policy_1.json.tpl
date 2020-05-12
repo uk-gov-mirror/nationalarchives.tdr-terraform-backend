@@ -225,11 +225,15 @@
       "Action": [
         "sns:CreateTopic",
         "sns:DeleteTopic",
+        "sns:GetSubscriptionAttributes",
         "sns:GetTopicAttributes",
         "sns:ListTagsForResource",
+        "sns:SetSubscriptionAttributes",
         "sns:SetTopicAttributes",
+        "sns:Subscribe",
         "sns:TagResource",
-        "sns:UntagResource"
+        "sns:UntagResource",
+        "sns:Unsubscribe"
       ],
       "Resource": "*"
     },
@@ -241,14 +245,11 @@
         "sqs:DeleteQueue",
         "sqs:GetQueueAttributes",
         "sqs:GetQueueUrl",
-        "sns:GetSubscriptionAttributes",
         "sqs:ListQueues",
         "sqs:ListQueueTags",
         "sqs:SetQueueAttributes",
-        "sns:Subscribe",
         "sqs:TagQueue",
-        "sqs:UntagQueue",
-        "sns:Unsubscribe"
+        "sqs:UntagQueue"
       ],
       "Resource": "*"
     }
