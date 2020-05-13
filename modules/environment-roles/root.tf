@@ -176,13 +176,15 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
   statement {
     actions = [
       "lambda:InvokeFunction",
-      "lambda:UpdateFunctionCode"
+      "lambda:UpdateFunctionCode",
+      "s3:GetObject"
     ]
     resources = [
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-database-migrations-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-antivirus-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-checksum-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-fileformat-${var.tdr_environment}"
+      "arn:aws:s3:::tdr-backend-checks-${var.tdr_environment}/*"
     ]
   }
 }
