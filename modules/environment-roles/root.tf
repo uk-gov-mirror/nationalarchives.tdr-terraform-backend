@@ -180,6 +180,9 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
     ]
     resources = [
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-database-migrations-${var.tdr_environment}",
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-antivirus-${var.tdr_environment}",
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-checksum-${var.tdr_environment}",
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-fileformat-${var.tdr_environment}"
     ]
   }
 }
