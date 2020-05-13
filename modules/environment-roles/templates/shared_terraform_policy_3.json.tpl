@@ -114,6 +114,7 @@
         "lambda:GetPolicy",
         "lambda:ListVersionsByFunction",
         "lambda:ListTags",
+        "lambda:PublishVersion",
         "lambda:RemovePermission",
         "lambda:UpdateFunctionCode",
         "lambda:UpdateFunctionConfiguration"
