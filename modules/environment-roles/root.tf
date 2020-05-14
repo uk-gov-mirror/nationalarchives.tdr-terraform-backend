@@ -157,32 +157,6 @@ data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
   }
 }
 
-resource "aws_iam_role" "tdr_jenkins_s3_role" {
-  name               = "TDRJenkinsS3Role${title(var.tdr_environment)}"
-  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
-}
-
-resource "aws_iam_role_policy_attachment" "tdr_jenkins_s3_role_attach" {
-  policy_arn = aws_iam_policy.tdr_jenkins_s3_policy.arn
-  role       = aws_iam_role.tdr_jenkins_s3_role.name
-}
-
-resource "aws_iam_policy" "tdr_jenkins_s3_policy" {
-  name   = "TDRJenkinsS3${title(var.tdr_environment)}"
-  policy = data.aws_iam_policy_document.tdr_jenkins_s3.json
-}
-
-data "aws_iam_policy_document" "tdr_jenkins_s3" {
-  statement {
-    actions = [
-      "s3:PutObject"
-    ]
-    resources = [
-      "arn:aws:s3:::tdr-backend-checks-${var.tdr_environment}/*"
-    ]
-  }
-}
-
 resource "aws_iam_role" "tdr_jenkins_lambda_role" {
   name               = "TDRJenkinsLambdaRole${title(var.tdr_environment)}"
   assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
@@ -202,6 +176,7 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
   statement {
     actions = [
       "s3:GetObject",
+      "s3:PutObject",
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode"
     ]
