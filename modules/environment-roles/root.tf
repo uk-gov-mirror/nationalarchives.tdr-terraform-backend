@@ -193,7 +193,7 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
   }
   statement {
     actions = [
-    "lambda:ListEventSourceMappings"
+      "lambda:ListEventSourceMappings"
     ]
     resources = ["*"]
   }
