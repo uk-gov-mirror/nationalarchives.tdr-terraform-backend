@@ -88,6 +88,7 @@
       "Effect": "Allow",
       "Action": [
         "lambda:AddPermission",
+        "lambda:CreateEventSourceMapping",
         "lambda:CreateFunction",
         "lambda:DeleteFunction",
         "lambda:DeleteFunctionEventInvokeConfig",

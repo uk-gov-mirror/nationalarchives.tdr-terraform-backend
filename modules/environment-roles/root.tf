@@ -178,7 +178,8 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
       "s3:GetObject",
       "s3:PutObject",
       "lambda:InvokeFunction",
-      "lambda:UpdateFunctionCode"
+      "lambda:UpdateFunctionCode",
+      "lambda:PublishVersion"
     ]
     resources = [
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-database-migrations-${var.tdr_environment}",
