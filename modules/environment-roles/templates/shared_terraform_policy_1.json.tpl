@@ -252,6 +252,16 @@
         "sqs:UntagQueue"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "lambda",
+      "Effect" : "Allow",
+      "Action" : [
+        "lambda:CreateEventSourceMapping",
+        "lambda:GetEventSourceMapping",
+        "lambda:DeleteEventSourceMapping"
+      ],
+      "Resource": "*"
     }
   ]
 }
