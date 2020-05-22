@@ -68,9 +68,14 @@ resource "aws_iam_policy" "jenkins_lambda_policy" {
 
 data "aws_iam_policy_document" "jenkins_node_lambda_document" {
   statement {
-    actions = ["sts:AssumeRole"]
+    actions = [
+      "sts:AssumeRole",
+      "s3:PutObject",
+      "s3:CreateMultipartUpload"
+    ]
     resources = [
-      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsLambdaRole${local.env_title_case}"
+      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsLambdaRole${local.env_title_case}",
+      "arn:aws:s3:::tdr-backend-code-mgmt/*"
     ]
   }
 }

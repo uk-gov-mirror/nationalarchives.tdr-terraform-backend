@@ -218,3 +218,12 @@ module "staging_artefacts_s3" {
   access_logs = false
   common_tags = local.common_tags
 }
+
+module "backend_code_s3" {
+  source      = "./tdr-terraform-modules/s3"
+  project     = "tdr"
+  function    = "backend-code"
+  access_logs = false
+  common_tags = local.common_tags
+  bucket_policy = "lambda_update"
+}
