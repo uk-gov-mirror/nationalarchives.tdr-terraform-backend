@@ -46,6 +46,8 @@
         "lambda:ListVersionsByFunction",
         "lambda:ListTags",
         "lambda:RemovePermission",
+        "lambda:TagResource",
+        "lambda:UntagResource",
         "lambda:UpdateFunctionCode",
         "lambda:UpdateFunctionConfiguration"
       ],
