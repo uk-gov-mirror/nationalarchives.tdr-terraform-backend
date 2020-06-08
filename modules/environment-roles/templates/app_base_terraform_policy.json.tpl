@@ -105,6 +105,7 @@
         "lambda:ListVersionsByFunction",
         "lambda:ListTags",
         "lambda:RemovePermission",
+        "lambda:TagResource",
         "lambda:UpdateFunctionConfiguration",
         "lambda:PutFunctionEventInvokeConfig",
         "lambda:UpdateEventSourceMapping"
@@ -112,6 +113,7 @@
       "Resource": [
         "arn:aws:lambda:eu-west-2:${account_id}:function:${app_name}_${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-database-migrations-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-checksum-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-yara-av-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-api-update-antivirus-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:event-source-mapping:*"

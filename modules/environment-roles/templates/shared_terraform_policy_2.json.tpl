@@ -74,6 +74,8 @@
         "arn:aws:iam::${account_id}:role/TDRCognitoAuthorisedRole${environment}",
         "arn:aws:iam::${account_id}:policy/CognitoAuthPolicy${environment}",
         "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
+        "arn:aws:iam::${account_id}:policy/TDRChecksumPolicy",
+        "arn:aws:iam::${account_id}:role/TDRChecksumRole",
         "arn:aws:iam::${account_id}:role/TDRYaraAvRole",
         "arn:aws:iam::${account_id}:policy/TDRLogDataLambdaBase${environment}",
         "arn:aws:iam::${account_id}:policy/TDRLogData${environment}",
