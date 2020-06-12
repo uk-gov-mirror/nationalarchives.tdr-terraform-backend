@@ -81,7 +81,7 @@
         "arn:aws:iam::${account_id}:policy/TDRLogData${environment}",
         "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRLogDataCrossAccountRoleMgmt",
-        "arn:aws:iam::${account_id}:policy/TDRApiUpdateAvPolicy",
+        "arn:aws:iam::${account_id}:policy/TDRApiUpdatePolicy",
         "arn:aws:iam::${account_id}:role/TDRApiUpdateRole"
       ]
     },
