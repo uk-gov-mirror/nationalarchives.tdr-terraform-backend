@@ -108,7 +108,8 @@
         "lambda:TagResource",
         "lambda:UpdateFunctionConfiguration",
         "lambda:PutFunctionEventInvokeConfig",
-        "lambda:UpdateEventSourceMapping"
+        "lambda:UpdateEventSourceMapping",
+        "lambda:UpdateFunctionCode"
       ],
       "Resource": [
         "arn:aws:lambda:eu-west-2:${account_id}:function:${app_name}_${environment}",
