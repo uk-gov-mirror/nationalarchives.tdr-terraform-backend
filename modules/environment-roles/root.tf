@@ -191,7 +191,7 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
       "arn:aws:s3:::tdr-backend-code-mgmt/*",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
       "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/file-format-build-${var.tdr_environment}",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ecsTaskExecutionRole"
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/file_format_ecs_execution_role_${var.tdr_environment}"
     ]
   }
   statement {
