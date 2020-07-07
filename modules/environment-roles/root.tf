@@ -179,19 +179,26 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode",
       "lambda:PublishVersion",
-      "lambda:UpdateEventSourceMapping"
+      "lambda:UpdateEventSourceMapping",
+      "ecs:RunTask",
+      "iam:PassRole"
     ]
     resources = [
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-database-migrations-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-checksum-${var.tdr_environment}",
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-file-format-${var.tdr_environment}",
       "arn:aws:s3:::tdr-backend-code-mgmt/*",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:event-source-mapping:*"
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
+      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/file-format-build-${var.tdr_environment}",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/file_format_ecs_execution_role_${var.tdr_environment}"
     ]
   }
   statement {
     actions = [
-      "lambda:ListEventSourceMappings"
+      "lambda:ListEventSourceMappings",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSubnets"
     ]
     resources = ["*"]
   }
