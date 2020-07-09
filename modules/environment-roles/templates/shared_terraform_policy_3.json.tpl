@@ -147,6 +147,39 @@
         "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/",
         "arn:aws:cognito-identity:eu-west-2:${account_id}:identitypool/*"
       ]
+    },
+    {
+      "Sid": "efs",
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:CreateFileSystem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "efsdescribe",
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:CreateAccessPoint",
+        "elasticfilesystem:CreateMountTarget",
+        "elasticfilesystem:DescribeMountTargetSecurityGroups",
+        "elasticfilesystem:DeleteAccessPoint",
+        "elasticfilesystem:DeleteFileSystem",
+        "elasticfilesystem:DeleteFileSystemPolicy",
+        "elasticfilesystem:DeleteMountTarget",
+        "elasticfilesystem:DescribeAccessPoints",
+        "elasticfilesystem:DescribeMountTargets",
+        "elasticfilesystem:DescribeFileSystemPolicy",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeLifecycleConfiguration",
+        "elasticfilesystem:PutFileSystemPolicy",
+        "elasticfilesystem:PutLifecycleConfiguration"
+      ],
+      "Resource": [
+        "arn:aws:elasticfilesystem:eu-west-2:${account_id}:access-point/*",
+        "arn:aws:elasticfilesystem:eu-west-2:${account_id}:file-system/*"
+      ]
     }
+
   ]
 }
