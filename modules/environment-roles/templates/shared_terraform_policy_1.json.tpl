@@ -4,7 +4,7 @@
     {
       "Sid": "acm",
       "Effect": "Allow",
-      "Action" : [
+      "Action": [
         "acm:ListCertificates",
         "acm:ListCertificates",
         "acm:DescribeCertificate",
@@ -255,11 +255,19 @@
     },
     {
       "Sid": "lambda",
-      "Effect" : "Allow",
-      "Action" : [
+      "Effect": "Allow",
+      "Action": [
         "lambda:CreateEventSourceMapping",
         "lambda:GetEventSourceMapping",
         "lambda:DeleteEventSourceMapping"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "rds",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeGlobalClusters"
       ],
       "Resource": "*"
     }

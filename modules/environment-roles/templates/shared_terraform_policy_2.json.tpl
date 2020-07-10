@@ -82,7 +82,14 @@
         "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRLogDataCrossAccountRoleMgmt",
         "arn:aws:iam::${account_id}:policy/TDRApiUpdatePolicy",
-        "arn:aws:iam::${account_id}:role/TDRApiUpdateRole"
+        "arn:aws:iam::${account_id}:role/TDRApiUpdateRole",
+        "arn:aws:iam::${account_id}:role/TDRFileFormatEcsTaskRole${environment}",
+        "arn:aws:iam::${account_id}:role/TDRFileFormatECSExecutionRole${environment}",
+        "arn:aws:iam::${account_id}:role/TDRFileFormatRole${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRFileFormatLambdaPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRFileFormatECSTaskPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRFileFormatECSExecutionPolicy${environment}"
+
       ]
     },
     {
