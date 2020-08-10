@@ -223,28 +223,7 @@ resource aws_iam_role_policy_attachment "tdr_jenkins_read_params_role_attach" {
 
 resource "aws_iam_policy" "tdr_jenkins_read_params_policy" {
   name   = "TDRJenkinsReadParams${title(var.tdr_environment)}"
-  policy = data.aws_iam_policy_document.tdr_jenkins_read_params.json
-}
-
-data "aws_iam_policy_document" "tdr_jenkins_read_params" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "ssm:DescribeParameters"
-    ]
-    resources = [
-      "*"
-    ]
-  }
-  statement {
-    effect = "Allow"
-    actions = [
-      "ssm:GetParameters"
-    ]
-    resources = [
-      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/${var.tdr_environment}/keycloak/admin/*"
-    ]
-  }
+  policy = templatefile("${path.module}/templates/tdr_jenkins_read_params.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
 }
 
 resource "aws_iam_role" "custodian_deploy_role" {
