@@ -166,7 +166,8 @@
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/user",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/client/secret",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/backend_checks_client/secret",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/realm_admin_client/secret"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/realm_admin_client/secret",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/configuration_properties"
       ]
     }
   ]
