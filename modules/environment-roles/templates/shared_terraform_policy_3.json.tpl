@@ -179,6 +179,19 @@
         "arn:aws:elasticfilesystem:eu-west-2:${account_id}:access-point/*",
         "arn:aws:elasticfilesystem:eu-west-2:${account_id}:file-system/*"
       ]
+    },
+    {
+      "Sid": "ecr",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:CreateRepository",
+        "ecr:DescribeRepositories",
+        "ecr:ListTagsForResource",
+        "ecr:DeleteRepository"
+      ],
+      "Resource": [
+        "arn:aws:ecr:eu-west-2:${account_id}:repository/*"
+      ]
     }
 
   ]

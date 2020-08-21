@@ -227,3 +227,19 @@ module "backend_code_s3" {
   common_tags   = local.common_tags
   bucket_policy = "lambda_update"
 }
+
+module "ecr_yara_repository" {
+  source = "./tdr-terraform-modules/ecr"
+  name = "yara"
+}
+
+module "ecr_dependencies_repository" {
+  source = "./tdr-terraform-modules/ecr"
+  name = "yara-dependencies"
+}
+
+module "ecr_rules_repository" {
+  source = "./tdr-terraform-modules/ecr"
+  name = "yara-rules"
+}
+
