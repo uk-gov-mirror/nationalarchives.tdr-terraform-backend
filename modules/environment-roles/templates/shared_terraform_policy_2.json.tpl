@@ -88,7 +88,9 @@
         "arn:aws:iam::${account_id}:role/TDRFileFormatRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRFileFormatLambdaPolicy${environment}",
         "arn:aws:iam::${account_id}:policy/TDRFileFormatECSTaskPolicy${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRFileFormatECSExecutionPolicy${environment}"
+        "arn:aws:iam::${account_id}:policy/TDRFileFormatECSExecutionPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRDownloadFilesPolicy",
+        "arn:aws:iam::${account_id}:role/TDRDownloadFilesRole"
 
       ]
     },

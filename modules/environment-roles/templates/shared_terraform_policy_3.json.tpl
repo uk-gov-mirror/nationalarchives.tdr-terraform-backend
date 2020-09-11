@@ -172,6 +172,7 @@
         "elasticfilesystem:DescribeFileSystemPolicy",
         "elasticfilesystem:DescribeFileSystems",
         "elasticfilesystem:DescribeLifecycleConfiguration",
+        "elasticfilesystem:ModifyMountTargetSecurityGroups",
         "elasticfilesystem:PutFileSystemPolicy",
         "elasticfilesystem:PutLifecycleConfiguration"
       ],

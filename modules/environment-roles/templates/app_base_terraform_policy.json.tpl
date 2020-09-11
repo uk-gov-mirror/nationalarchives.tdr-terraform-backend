@@ -118,6 +118,7 @@
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-yara-av-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-api-update-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-file-format-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-download-files-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:event-source-mapping:*"
 
       ]
