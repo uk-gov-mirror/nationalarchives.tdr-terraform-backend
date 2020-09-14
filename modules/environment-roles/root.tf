@@ -252,3 +252,26 @@ resource aws_iam_role_policy_attachment "custodian_deploy_policy_attach" {
   policy_arn = aws_iam_policy.custodian_deploy_policy.arn
   role       = aws_iam_role.custodian_deploy_role.name
 }
+
+resource "aws_iam_role" "grafana_monitoring_iam_role" {
+  name               = "TDRGrafanaMonitoringRole${title(var.tdr_environment)}"
+  description        = "Role to permit Grafana to read Cloudwatch metrics and basic data like EC2 tags and regions."
+  assume_role_policy = templatefile("./modules/environment-roles/templates/grafana_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "${title(var.tdr_environment)} Grafana Monitoring Role",
+    )
+  )
+}
+
+resource "aws_iam_policy" "grafana_monitoring_policy" {
+  policy = templatefile("${path.module}/templates/grafana_monitoring_policy.json.tpl", {})
+  name   = "TDRGrafanaMonitoringPolicy${title(var.tdr_environment)}"
+}
+
+resource aws_iam_role_policy_attachment "grafana_monitoring_policy_attach" {
+  policy_arn = aws_iam_policy.grafana_monitoring_policy.arn
+  role       = aws_iam_role.grafana_monitoring_iam_role.name
+}
