@@ -229,17 +229,52 @@ module "backend_code_s3" {
 }
 
 module "ecr_yara_repository" {
-  source = "./tdr-terraform-modules/ecr"
-  name = "yara"
+  source      = "./tdr-terraform-modules/ecr"
+  name        = "yara"
+  common_tags = local.common_tags
+
 }
 
 module "ecr_dependencies_repository" {
-  source = "./tdr-terraform-modules/ecr"
-  name = "yara-dependencies"
+  source      = "./tdr-terraform-modules/ecr"
+  name        = "yara-dependencies"
+  common_tags = local.common_tags
 }
 
 module "ecr_rules_repository" {
-  source = "./tdr-terraform-modules/ecr"
-  name = "yara-rules"
+  source      = "./tdr-terraform-modules/ecr"
+  name        = "yara-rules"
+  common_tags = local.common_tags
 }
 
+module "ecr_consignment_api_repository" {
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "consignment-api"
+  policy_name      = "consignment_api_policy"
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  common_tags      = local.common_tags
+}
+
+module "ecr_transfer_frontend_repository" {
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "transfer-frontend"
+  policy_name      = "transfer_frontend_policy"
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  common_tags      = local.common_tags
+}
+
+module "ecr_auth_server_repository" {
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "auth-server"
+  policy_name      = "auth_server_policy"
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  common_tags      = local.common_tags
+}
+
+module "ecr_file_format_build_repository" {
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "file-format-build"
+  policy_name      = "file_format_policy"
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  common_tags      = local.common_tags
+}
