@@ -73,7 +73,15 @@ provider "aws" {
   }
 }
 
-//Set up TDR environment roles to provide permissions for Terraform
+module "management_roles" {
+  source = "./modules/management-roles"
+
+  common_tags             = local.common_tags
+  sub_domain              = "tdr-management"
+  tdr_environment         = "mgmt"
+  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
+}
+
 module "intg_environment_roles" {
   source = "./modules/environment-roles"
   providers = {
