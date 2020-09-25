@@ -286,3 +286,14 @@ module "ecr_file_format_build_repository" {
   policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
   common_tags      = local.common_tags
 }
+
+module "ecr_image_scan_log_group" {
+  source = "./tdr-terraform-modules/cloudwatch_logs"
+  name = "/aws/events/ecr-image-scans"
+}
+
+module "ecr_image_scan_event" {
+  source = "./tdr-terraform-modules/cloudwatch_events"
+  event_pattern = "ecr_image_scan"
+  event_target_arn = module.ecr_image_scan_log_group.log_group_arn
+}
