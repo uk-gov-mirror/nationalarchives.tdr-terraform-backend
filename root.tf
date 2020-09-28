@@ -73,15 +73,7 @@ provider "aws" {
   }
 }
 
-module "management_roles" {
-  source = "./modules/management-roles"
-
-  common_tags             = local.common_tags
-  sub_domain              = "tdr-management"
-  tdr_environment         = "mgmt"
-  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-}
-
+//Set up TDR environment roles to provide permissions for Terraform
 module "intg_environment_roles" {
   source = "./modules/environment-roles"
   providers = {
@@ -211,6 +203,17 @@ module "jenkins_permissions" {
   terraform_jenkins_state_lock   = module.terraform_state_lock.terraform_jenkins_state_lock
 }
 
+//Set up Grafana permissions
+module "grafana_permissions" {
+  source = "./modules/grafana"
+
+  common_tags                    = local.common_tags
+  tdr_environment                = "mgmt"
+  tdr_mgmt_account_number        = data.aws_ssm_parameter.mgmt_account_number.value
+  terraform_grafana_state_bucket = module.terraform_state.terraform_grafana_state_bucket_arn
+  terraform_grafana_state_lock   = module.terraform_state_lock.terraform_grafana_state_lock_arn
+}
+
 module "release_artefacts_s3" {
   source      = "./tdr-terraform-modules/s3"
   project     = "tdr"
@@ -289,11 +292,11 @@ module "ecr_file_format_build_repository" {
 
 module "ecr_image_scan_log_group" {
   source = "./tdr-terraform-modules/cloudwatch_logs"
-  name = "/aws/events/ecr-image-scans"
+  name   = "/aws/events/ecr-image-scans"
 }
 
 module "ecr_image_scan_event" {
-  source = "./tdr-terraform-modules/cloudwatch_events"
-  event_pattern = "ecr_image_scan"
+  source           = "./tdr-terraform-modules/cloudwatch_events"
+  event_pattern    = "ecr_image_scan"
   event_target_arn = module.ecr_image_scan_log_group.log_group_arn
 }
