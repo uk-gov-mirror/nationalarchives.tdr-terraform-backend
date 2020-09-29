@@ -11,9 +11,9 @@ resource "aws_iam_role_policy_attachment" "terraform_scripts_attachment" {
   role = aws_iam_role.terraform_scripts_role.name
 }
 
-//resource "aws_iam_policy" "terraform_scripts_policy" {
-//  policy = templatefile("${path.module}/templates/terraform_scripts_policy.json.tpl", )
-//}
+resource "aws_iam_policy" "terraform_scripts_policy" {
+  policy = templatefile("${path.module}/templates/terraform_scripts_policy.json.tpl", {})
+}
 
 resource "aws_iam_role" "terraform_role" {
   name               = "TDRTerraformRole${title(var.tdr_environment)}"
@@ -26,6 +26,11 @@ resource "aws_iam_role" "terraform_role" {
       "Name", "${title(var.tdr_environment)} Terraform Role",
     )
   )
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_scripts_policy_attachment" {
+  policy_arn = aws_iam_policy.terraform_scripts_policy.arn
+  role = aws_iam_role.terraform_scripts_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "shared_policy_attachment_1" {
