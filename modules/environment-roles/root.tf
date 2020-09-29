@@ -1,5 +1,20 @@
 data "aws_caller_identity" "current" {}
 
+resource "aws_iam_role" "terraform_scripts_role" {
+  name = "TDRScriptsTerraformRole${title(var.tdr_environment)}"
+  description = "Role to allow terraform to run temporary scripts in the tdr-scripts repository"
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_scripts_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role = aws_iam_role.terraform_scripts_role.name
+}
+
+//resource "aws_iam_policy" "terraform_scripts_policy" {
+//  policy = templatefile("${path.module}/templates/terraform_scripts_policy.json.tpl", )
+//}
+
 resource "aws_iam_role" "terraform_role" {
   name               = "TDRTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow Terraform to create resources for the ${title(var.tdr_environment)} environment"
