@@ -6,13 +6,9 @@ resource "aws_iam_role" "terraform_scripts_role" {
   assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 }
 
-resource "aws_iam_role_policy_attachment" "terraform_scripts_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role = aws_iam_role.terraform_scripts_role.name
-}
-
 resource "aws_iam_policy" "terraform_scripts_policy" {
-  policy = templatefile("${path.module}/templates/terraform_scripts_policy.json.tpl", {})
+  name = "TDRScriptsTerraformPolicy${title(var.tdr_environment)}"
+  policy = templatefile("${path.module}/templates/terraform_scripts_policy.json.tpl", {account_id = data.aws_caller_identity.current.account_id})
 }
 
 resource "aws_iam_role" "terraform_role" {
