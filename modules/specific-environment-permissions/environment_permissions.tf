@@ -124,7 +124,10 @@ data "aws_iam_policy_document" "write_terraform_state_bucket" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject", "s3:PutObject"]
-    resources = ["${var.terraform_state_bucket}/env:/${var.tdr_environment}/*"]
+    resources = [
+      "${var.terraform_state_bucket}/env:/${var.tdr_environment}/*",
+      "${var.terraform_scripts_state_bucket}/env:/${var.tdr_environment}/*"
+    ]
   }
 }
 
@@ -142,7 +145,10 @@ data "aws_iam_policy_document" "terraform_assume_role" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${var.tdr_account_number}:role/TDRTerraformRole${local.env_title_case}"]
+    resources = [
+      "arn:aws:iam::${var.tdr_account_number}:role/TDRTerraformRole${local.env_title_case}",
+      "arn:aws:iam::${var.tdr_account_number}:role/TDRScriptsTerraformRole${local.env_title_case}"
+    ]
   }
 }
 

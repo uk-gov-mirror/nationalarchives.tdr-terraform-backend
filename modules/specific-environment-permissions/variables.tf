@@ -42,3 +42,8 @@ variable "custodian_get_parameters_arn" {
   description = "IAM policy ARN for getting parameter values"
   type        = string
 }
+
+variable "terraform_scripts_state_bucket" {
+  description = "S3 bucket storing the terraform state for the TDR scripts terraform project"
+  type        = string
+}
