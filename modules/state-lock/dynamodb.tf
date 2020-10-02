@@ -67,9 +67,9 @@ resource "aws_dynamodb_table" "terraform_state_lock_scripts" {
   }
 
   tags = merge(
-  var.common_tags,
-  map(
-  "Name", "TDR Scripts Terraform State Lock Table",
-  )
+    var.common_tags,
+    map(
+      "Name", "TDR Scripts Terraform State Lock Table",
+    )
   )
 }

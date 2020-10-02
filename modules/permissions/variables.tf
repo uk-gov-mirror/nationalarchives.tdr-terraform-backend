@@ -19,7 +19,7 @@ variable "terraform_state_lock" {
 }
 
 variable "terraform_scripts_state_lock" {
-  description = "DynamoDb table controlling the tdr scripts terraform state lock"
+  description = "DynamoDb table controlling the TDR scripts terraform state lock"
   type        = string
 }
 

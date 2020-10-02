@@ -115,10 +115,10 @@ resource "aws_s3_bucket" "tdr_terraform_state_scripts" {
   }
 
   tags = merge(
-  var.common_tags,
-  map(
-  "Name", "TDR Scripts Terraform State",
-  )
+    var.common_tags,
+    map(
+      "Name", "TDR Scripts Terraform State",
+    )
   )
 }
 

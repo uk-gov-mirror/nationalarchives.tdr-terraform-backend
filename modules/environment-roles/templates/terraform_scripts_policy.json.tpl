@@ -69,15 +69,15 @@
       "Resource": [
         "arn:aws:dynamodb:eu-west-2:${account_id}:table/tdr-terraform-state-lock-scripts",
         "arn:aws:iam::${account_id}:instance-profile/bastion",
-        "arn:aws:iam::${account_id}:role/BastionEC2RoleIntg",
-        "arn:aws:kms:eu-west-2:${account_id}:alias/tdr-bastion-encryption-intg",
+        "arn:aws:iam::${account_id}:role/BastionEC2Role${title_environment}",
+        "arn:aws:kms:eu-west-2:${account_id}:alias/tdr-bastion-encryption-${environment}",
         "arn:aws:kms:eu-west-2:${account_id}:key/*",
         "arn:aws:s3:::tdr-terraform-state-scripts/*",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/intg/consignmentapi/database/password",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/intg/consignmentapi/database/url",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/intg/consignmentapi/database/username",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/url",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/username",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
-        "arn:aws:iam::${account_id}:policy/BastionEC2PolicyIntg",
+        "arn:aws:iam::${account_id}:policy/BastionEC2Policy${title_environment}",
         "arn:aws:logs:eu-west-2:${account_id}:log-group:*"
       ]
     },
