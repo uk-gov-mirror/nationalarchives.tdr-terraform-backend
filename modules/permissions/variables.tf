@@ -8,8 +8,18 @@ variable "terraform_state_bucket" {
   type        = string
 }
 
+variable "terraform_scripts_state_bucket" {
+  description = "S3 bucket storing the terraform state for TDR scripts terraform"
+  type        = string
+}
+
 variable "terraform_state_lock" {
   description = "DynamoDb table controlling the terraform state lock"
+  type        = string
+}
+
+variable "terraform_scripts_state_lock" {
+  description = "DynamoDb table controlling the TDR scripts terraform state lock"
   type        = string
 }
 
