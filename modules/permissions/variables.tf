@@ -32,3 +32,5 @@ variable "staging_bucket_arn" {
   description = "The bucket arn for staging artefacts"
   type        = string
 }
+
+variable "management_account_number" {}
