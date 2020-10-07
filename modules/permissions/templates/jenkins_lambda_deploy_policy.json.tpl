@@ -4,8 +4,16 @@
     {
       "Sid": "",
       "Effect": "Allow",
-      "Action": "lambda:UpdateFunctionCode",
-      "Resource": "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-ecr-scan-notifications-mgmt"
+      "Action": [
+        "lambda:UpdateFunctionCode",
+        "lambda:PublishVersion",
+        "s3:PutObject",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-ecr-scan-notifications-mgmt",
+        "arn:aws:s3:::tdr-backend-code-mgmt/*"
+      ]
     }
   ]
 }
