@@ -155,7 +155,7 @@ module "common_permissions" {
   release_bucket_arn             = module.release_artefacts_s3.s3_bucket_arn
   staging_bucket_arn             = module.staging_artefacts_s3.s3_bucket_arn
   terraform_scripts_state_bucket = module.terraform_state.terraform_scripts_state_bucket_arn
-  management_account_number = data.aws_ssm_parameter.mgmt_account_number.value
+  management_account_number      = data.aws_ssm_parameter.mgmt_account_number.value
 }
 
 //Set up specific TDR environment IAM policies for Terraform
