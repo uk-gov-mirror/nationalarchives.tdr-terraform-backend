@@ -11,8 +11,8 @@
         "s3:GetObject"
       ],
       "Resource": [
-        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-ecr-scan-notifications-mgmt",
-        "arn:aws:s3:::tdr-backend-code-mgmt/*"
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-ecr-scan-notifications-${environment}",
+        "arn:aws:s3:::tdr-backend-code-${environment}/*"
       ]
     }
   ]

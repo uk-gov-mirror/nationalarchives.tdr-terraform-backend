@@ -34,3 +34,5 @@ variable "staging_bucket_arn" {
 }
 
 variable "management_account_number" {}
+
+variable "environment" {}

@@ -124,15 +124,14 @@ resource "aws_iam_policy" "custodian_get_parameters" {
   policy      = data.aws_iam_policy_document.custodian_get_parameters.json
 }
 
-
 resource "aws_iam_role" "jenkins_lambda_deploy_role" {
-  name               = "TDRJenkinsNodeLambdaRoleMgmt"
+  name               = "TDRJenkinsNodeLambdaRole${title(var.environment)}"
   assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
 }
 
 resource "aws_iam_policy" "jenkins_lambda_deploy_policy" {
-  name   = "TDRJenkinsNodeLambdaPolicyMgmt"
-  policy = templatefile("${path.module}/templates/jenkins_lambda_deploy_policy.json.tpl", { account_id = var.management_account_number })
+  name   = "TDRJenkinsNodeLambdaPolicy${title(var.environment)}"
+  policy = templatefile("${path.module}/templates/jenkins_lambda_deploy_policy.json.tpl", { account_id = var.management_account_number, environment = var.environment })
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_lambda_deploy_attach" {
