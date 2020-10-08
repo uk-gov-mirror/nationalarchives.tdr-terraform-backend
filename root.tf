@@ -155,6 +155,8 @@ module "common_permissions" {
   release_bucket_arn             = module.release_artefacts_s3.s3_bucket_arn
   staging_bucket_arn             = module.staging_artefacts_s3.s3_bucket_arn
   terraform_scripts_state_bucket = module.terraform_state.terraform_scripts_state_bucket_arn
+  management_account_number      = data.aws_ssm_parameter.mgmt_account_number.value
+  environment                    = "mgmt"
 }
 
 //Set up specific TDR environment IAM policies for Terraform
@@ -301,7 +303,15 @@ module "ecr_image_scan_log_group" {
 }
 
 module "ecr_image_scan_event" {
-  source           = "./tdr-terraform-modules/cloudwatch_events"
-  event_pattern    = "ecr_image_scan"
-  event_target_arn = module.ecr_image_scan_log_group.log_group_arn
+  source                     = "./tdr-terraform-modules/cloudwatch_events"
+  event_pattern              = "ecr_image_scan"
+  log_group_event_target_arn = module.ecr_image_scan_log_group.log_group_arn
+  lambda_event_target_arn    = module.ecr_image_scan_notification_lambda.ecr_scan_notification_lambda_arn
+}
+
+module "ecr_image_scan_notification_lambda" {
+  source                        = "./tdr-terraform-modules/lambda"
+  common_tags                   = local.common_tags
+  project                       = "tdr"
+  lambda_ecr_scan_notifications = true
 }
