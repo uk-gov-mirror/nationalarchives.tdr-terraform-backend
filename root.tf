@@ -307,6 +307,17 @@ module "ecr_image_scan_event" {
   event_pattern              = "ecr_image_scan"
   log_group_event_target_arn = module.ecr_image_scan_log_group.log_group_arn
   lambda_event_target_arn    = module.ecr_image_scan_notification_lambda.ecr_scan_notification_lambda_arn
+  rule_name                  = "ecr-image-scan"
+  rule_description           = "Capture each ECR Image Scan"
+}
+
+module "jenkins_maintenance_window_event" {
+  source                  = "./tdr-terraform-modules/cloudwatch_events"
+  event_pattern           = "jenkins_maintenance_event_window"
+  lambda_event_target_arn = module.ecr_image_scan_notification_lambda.ecr_scan_notification_lambda_arn
+  rule_name               = "jenkins-backup-maintenance-window"
+  rule_description        = "Capture failed runs of the jenkins backup"
+  event_variables         = { window_id = module.jenkins_backup_maintenance_window.window_id }
 }
 
 module "ecr_image_scan_notification_lambda" {
@@ -315,3 +326,12 @@ module "ecr_image_scan_notification_lambda" {
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
 }
+
+module "jenkins_backup_maintenance_window" {
+  source        = "./tdr-terraform-modules/ssm_maintenance_window"
+  command       = "docker exec $(docker ps -aq -f ancestor=${data.aws_ssm_parameter.mgmt_account_number.value}.dkr.ecr.eu-west-2.amazonaws.com/jenkins) /opt/backup.sh"
+  instance_name = "jenkins-task-definition-mgmt"
+  name          = "tdr-jenkins-backup-window"
+  schedule      = "cron(0 0 18 ? * MON-FRI *)"
+}
+
