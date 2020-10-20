@@ -327,6 +327,20 @@ module "ecr_image_scan_notification_lambda" {
   lambda_ecr_scan_notifications = true
 }
 
+module "periodic_ecr_image_scan_lambda" {
+  source          = "./tdr-terraform-modules/lambda"
+  common_tags     = local.common_tags
+  project         = "tdr"
+  lambda_ecr_scan = true
+}
+
+module "periodic_ecr_image_scan_event" {
+  source                  = "./tdr-terraform-modules/cloudwatch_events"
+  schedule                = "rate(2 days)"
+  rule_name               = "ecr-scan"
+  lambda_event_target_arn = module.periodic_ecr_image_scan_lambda.ecr_scan_lambda_arn
+}
+
 module "jenkins_backup_maintenance_window" {
   source        = "./tdr-terraform-modules/ssm_maintenance_window"
   command       = "docker exec $(docker ps -aq -f ancestor=${data.aws_ssm_parameter.mgmt_account_number.value}.dkr.ecr.eu-west-2.amazonaws.com/jenkins) /opt/backup.sh"
