@@ -325,6 +325,7 @@ module "ecr_image_scan_notification_lambda" {
   common_tags                   = local.common_tags
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
+  event_rule_arns = [module.jenkins_maintenance_window_event.event_arn, module.ecr_image_scan_event.event_arn]
 }
 
 module "periodic_ecr_image_scan_lambda" {
