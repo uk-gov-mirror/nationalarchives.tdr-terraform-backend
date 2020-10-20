@@ -333,6 +333,7 @@ module "periodic_ecr_image_scan_lambda" {
   common_tags     = local.common_tags
   project         = "tdr"
   lambda_ecr_scan = true
+  periodic_ecr_image_scan_event_arn = module.periodic_ecr_image_scan_event.event_arn
 }
 
 module "periodic_ecr_image_scan_event" {
