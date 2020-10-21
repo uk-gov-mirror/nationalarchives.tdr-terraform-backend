@@ -26,6 +26,10 @@ data "aws_ssm_parameter" "cost_centre" {
   name = "/mgmt/cost_centre"
 }
 
+data "aws_ssm_parameter" "jenkins_backup_healthcheck_url" {
+  name = "/mgmt/jenkins/backup/healthcheck/url"
+}
+
 terraform {
   backend "s3" {
     bucket         = "tdr-bootstrap-terraform-state"
@@ -329,7 +333,7 @@ module "ecr_image_scan_notification_lambda" {
 
 module "jenkins_backup_maintenance_window" {
   source        = "./tdr-terraform-modules/ssm_maintenance_window"
-  command       = "docker exec $(docker ps -aq -f ancestor=${data.aws_ssm_parameter.mgmt_account_number.value}.dkr.ecr.eu-west-2.amazonaws.com/jenkins) /opt/backup.sh"
+  command       = "docker exec $(docker ps -aq -f ancestor=${data.aws_ssm_parameter.mgmt_account_number.value}.dkr.ecr.eu-west-2.amazonaws.com/jenkins) /opt/backup.sh ${data.aws_ssm_parameter.jenkins_backup_healthcheck_url.value}"
   instance_name = "jenkins-task-definition-mgmt"
   name          = "tdr-jenkins-backup-window"
   schedule      = "cron(0 0 18 ? * MON-FRI *)"
