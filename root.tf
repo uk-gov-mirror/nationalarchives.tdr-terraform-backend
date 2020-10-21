@@ -325,6 +325,22 @@ module "ecr_image_scan_notification_lambda" {
   common_tags                   = local.common_tags
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
+  event_rule_arns               = [module.jenkins_maintenance_window_event.event_arn, module.ecr_image_scan_event.event_arn]
+}
+
+module "periodic_ecr_image_scan_lambda" {
+  source                            = "./tdr-terraform-modules/lambda"
+  common_tags                       = local.common_tags
+  project                           = "tdr"
+  lambda_ecr_scan                   = true
+  periodic_ecr_image_scan_event_arn = module.periodic_ecr_image_scan_event.event_arn
+}
+
+module "periodic_ecr_image_scan_event" {
+  source                  = "./tdr-terraform-modules/cloudwatch_events"
+  schedule                = "rate(2 days)"
+  rule_name               = "ecr-scan"
+  lambda_event_target_arn = module.periodic_ecr_image_scan_lambda.ecr_scan_lambda_arn
 }
 
 module "jenkins_backup_maintenance_window" {
