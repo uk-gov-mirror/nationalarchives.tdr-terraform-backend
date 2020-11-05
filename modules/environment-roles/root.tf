@@ -44,6 +44,11 @@ resource "aws_iam_role_policy_attachment" "shared_policy_attachment_3" {
   role       = aws_iam_role.terraform_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "shared_policy_attachment_4" {
+  policy_arn = aws_iam_policy.shared_terraform_policy_4.arn
+  role       = aws_iam_role.terraform_role.name
+}
+
 resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.keycloak_terraform_iam.arn
@@ -72,6 +77,11 @@ resource "aws_iam_policy" "shared_terraform_policy_2" {
 resource "aws_iam_policy" "shared_terraform_policy_3" {
   policy = templatefile("${path.module}/templates/shared_terraform_policy_3.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id, sub_domain = var.sub_domain })
   name   = "TDRSharedTerraform3${title(var.tdr_environment)}"
+}
+
+resource "aws_iam_policy" "shared_terraform_policy_4" {
+  policy = templatefile("${path.module}/templates/shared_terraform_policy_4.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id, sub_domain = var.sub_domain })
+  name   = "TDRSharedTerraform4${title(var.tdr_environment)}"
 }
 
 resource "aws_iam_policy" "keycloak_terraform_iam" {

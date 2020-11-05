@@ -354,4 +354,3 @@ module "jenkins_backup_maintenance_window" {
   name          = "tdr-jenkins-backup-window"
   schedule      = "cron(0 0 18 ? * MON-FRI *)"
 }
-
