@@ -77,6 +77,7 @@
         "arn:aws:iam::${account_id}:policy/TDRConsignmentExportECSTaskPolicy${environment}",
         "arn:aws:iam::${account_id}:policy/TDRConsignmentExportECSExecutionPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRExportApiAuthoriserLambdaRole${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRExportApiAuthoriserLambdaPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRConsignmentExportECSExecutionRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRConsignmentExportEcsTaskRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRConsignmentExportRole${environment}",
