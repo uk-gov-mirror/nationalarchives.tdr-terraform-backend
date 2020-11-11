@@ -16,10 +16,10 @@
           "ssm:GetParameter"
       ],
       "Resource" : [
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/aws_elb_account",
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/external_ips",
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/management_account",
-          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/tna_organisation_root_account",
           "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips"
       ]
     },
