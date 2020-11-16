@@ -26,10 +26,6 @@ data "aws_ssm_parameter" "cost_centre" {
   name = "/mgmt/cost_centre"
 }
 
-data "aws_ssm_parameter" "jenkins_backup_healthcheck_url" {
-  name = "/mgmt/jenkins/backup/healthcheck/url"
-}
-
 terraform {
   backend "s3" {
     bucket         = "tdr-bootstrap-terraform-state"
@@ -323,21 +319,12 @@ module "ecr_image_scan_event" {
   rule_description           = "Capture each ECR Image Scan"
 }
 
-module "jenkins_maintenance_window_event" {
-  source                  = "./tdr-terraform-modules/cloudwatch_events"
-  event_pattern           = "jenkins_maintenance_event_window"
-  lambda_event_target_arn = module.ecr_image_scan_notification_lambda.ecr_scan_notification_lambda_arn
-  rule_name               = "jenkins-backup-maintenance-window"
-  rule_description        = "Capture failed runs of the jenkins backup"
-  event_variables         = { window_id = module.jenkins_backup_maintenance_window.window_id }
-}
-
 module "ecr_image_scan_notification_lambda" {
   source                        = "./tdr-terraform-modules/lambda"
   common_tags                   = local.common_tags
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
-  event_rule_arns               = [module.jenkins_maintenance_window_event.event_arn, module.ecr_image_scan_event.event_arn]
+  event_rule_arns               = [module.ecr_image_scan_event.event_arn]
 }
 
 module "periodic_ecr_image_scan_lambda" {

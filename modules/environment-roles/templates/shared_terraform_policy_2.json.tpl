@@ -10,16 +10,17 @@
       "Resource": "arn:aws:ssm:eu-west-2:${account_id}:*"
     },
     {
-      "Sid": "ssm",
+      "Sid" : "ssm",
       "Effect": "Allow",
       "Action": [
-        "ssm:GetParameter"
+          "ssm:GetParameter"
       ],
-      "Resource": [
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/external_ips",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/management_account"
+      "Resource" : [
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/aws_elb_account",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/external_ips",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/management_account",
+          "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/trusted_ips"
       ]
     },
     {
