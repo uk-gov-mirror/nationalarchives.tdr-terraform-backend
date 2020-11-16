@@ -341,11 +341,3 @@ module "periodic_ecr_image_scan_event" {
   rule_name               = "ecr-scan"
   lambda_event_target_arn = module.periodic_ecr_image_scan_lambda.ecr_scan_lambda_arn
 }
-
-module "jenkins_backup_maintenance_window" {
-  source        = "./tdr-terraform-modules/ssm_maintenance_window"
-  command       = "docker exec $(docker ps -aq -f ancestor=${data.aws_ssm_parameter.mgmt_account_number.value}.dkr.ecr.eu-west-2.amazonaws.com/jenkins) /opt/backup.sh ${data.aws_ssm_parameter.jenkins_backup_healthcheck_url.value}"
-  instance_name = "jenkins-task-definition-mgmt"
-  name          = "tdr-jenkins-backup-window"
-  schedule      = "cron(0 0 18 ? * MON-FRI *)"
-}
