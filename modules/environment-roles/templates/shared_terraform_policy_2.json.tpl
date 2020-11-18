@@ -111,7 +111,7 @@
       "Resource": "*"
     },
     {
-      "Sid": "apigateway",
+      "Sid": "ApiGatewayDeployment",
       "Effect": "Allow",
       "Action": [
         "apigateway:POST",
