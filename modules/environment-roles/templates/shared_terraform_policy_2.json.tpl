@@ -4,7 +4,7 @@
     {
       "Sid": "ssmglobal",
       "Effect": "Allow",
-      "Action" : [
+      "Action": [
         "ssm:DescribeParameters"
       ],
       "Resource": "arn:aws:ssm:eu-west-2:${account_id}:*"
@@ -24,81 +24,9 @@
       ]
     },
     {
-      "Sid": "iam",
+      "Sid": "kms",
       "Effect": "Allow",
       "Action": [
-        "iam:AddRoleToInstanceProfile",
-        "iam:AttachRolePolicy",
-        "iam:CreateInstanceProfile",
-        "iam:CreatePolicy",
-        "iam:CreateRole",
-        "iam:DeletePolicy",
-	    "iam:DeletePolicyVersion",
-        "iam:DeleteRole",
-        "iam:DeleteRolePolicy",
-        "iam:DetachRolePolicy",
-        "iam:GetPolicy",
-        "iam:GetPolicyVersion",
-        "iam:GetRole",
-        "iam:ListAttachedRolePolicies",
-        "iam:ListInstanceProfilesForRole",
-        "iam:ListPolicyVersions",
-        "iam:PassRole",
-        "iam:PutRolePolicy",
-        "iam:TagRole",
-        "iam:UpdateAssumeRolePolicy",
-        "iam:UpdateRole",
-        "iam:CreateServiceLinkedRole",
-        "iam:CreatePolicyVersion",
-        "iam:CreateOpenIDConnectProvider",
-        "iam:GetOpenIDConnectProvider",
-        "iam:DeleteOpenIDConnectProvider"
-      ],
-      "Resource": [
-        "arn:aws:iam::${account_id}:role/aws-service-role/guardduty.amazonaws.com/AWSServiceRoleForAmazonGuardDuty",
-        "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing",
-        "arn:aws:iam::${account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
-        "arn:aws:iam::${account_id}:role/aws-service-role/elasticache.amazonaws.com/AWSServiceRoleForElastiCache*",
-        "arn:aws:iam::${account_id}:policy/TDRCloudwatch${environment}",
-        "arn:aws:iam::${account_id}:role/TDRCloudTrail${environment}",
-        "arn:aws:iam::${account_id}:oidc-provider/auth.${sub_domain}.nationalarchives.gov.uk",
-        "arn:aws:iam::${account_id}:oidc-provider/auth.${sub_domain}.nationalarchives.gov.uk/auth/realms/tdr",
-        "arn:aws:iam::${account_id}:policy/TDRDbMigrationLambdaPolicy${environment}",
-        "arn:aws:iam::${account_id}:role/TDRDbMigrationLambdaRole${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRConfig${environment}",
-        "arn:aws:iam::${account_id}:role/TDRConfig${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRSNSPublish${environment}",
-        "arn:aws:iam::${account_id}:role/Custodian*",
-        "arn:aws:iam::${account_id}:policy/TDRCustodian*",
-        "arn:aws:iam::${account_id}:role/TDRCognitoAuthorisedRole${environment}",
-        "arn:aws:iam::${account_id}:policy/CognitoAuthPolicy${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
-        "arn:aws:iam::${account_id}:policy/TDRChecksumPolicy",
-        "arn:aws:iam::${account_id}:role/TDRChecksumRole",
-        "arn:aws:iam::${account_id}:role/TDRYaraAvRole",
-        "arn:aws:iam::${account_id}:policy/TDRLogDataLambdaBase${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRLogData${environment}",
-        "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${environment}",
-        "arn:aws:iam::${account_id}:role/TDRLogDataCrossAccountRoleMgmt",
-        "arn:aws:iam::${account_id}:policy/TDRApiUpdatePolicy",
-        "arn:aws:iam::${account_id}:role/TDRApiUpdateRole",
-        "arn:aws:iam::${account_id}:role/TDRFileFormatEcsTaskRole${environment}",
-        "arn:aws:iam::${account_id}:role/TDRFileFormatECSExecutionRole${environment}",
-        "arn:aws:iam::${account_id}:role/TDRFileFormatRole${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRFileFormatLambdaPolicy${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRFileFormatECSTaskPolicy${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRFileFormatECSExecutionPolicy${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRDownloadFilesPolicy",
-        "arn:aws:iam::${account_id}:role/TDRDownloadFilesRole"
-
-      ]
-    },
-    {
-      "Sid" : "kms",
-      "Effect": "Allow",
-      "Action" : [
         "kms:CreateAlias",
         "kms:CreateKey",
         "kms:CreateGrant",
@@ -181,6 +109,18 @@
         "s3:PutObjectVersionTagging"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDeployment",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:GET",
+        "apigateway:DELETE",
+        "apigateway:PATCH"
+      ],
+      "Resource": "arn:aws:apigateway:eu-west-2::*"
     }
   ]
 }

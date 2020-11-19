@@ -70,7 +70,7 @@
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy",
         "iam:CreateServiceLinkedRole",
-	    "iam:CreatePolicyVersion"
+        "iam:CreatePolicyVersion"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:policy/${app_name}_ecs_execution_policy_${environment}",
@@ -119,14 +119,14 @@
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-api-update-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-file-format-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-download-files-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-export-api-authoriser-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:event-source-mapping:*"
-
       ]
     },
     {
-      "Sid" : "storage",
+      "Sid": "storage",
       "Effect": "Allow",
-      "Action" : [
+      "Action": [
         "rds:DescribeDBSubnetGroups",
         "rds:CreateDBSubnetGroup",
         "rds:DeleteDBSubnetGroup",
@@ -149,7 +149,7 @@
       ]
     },
     {
-      "Sid" : "ssm",
+      "Sid": "ssm",
       "Effect": "Allow",
       "Action": [
         "ssm:AddTagsToResource",
@@ -159,7 +159,7 @@
         "ssm:ListTagsForResource",
         "ssm:PutParameter"
       ],
-      "Resource" : [
+      "Resource": [
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/url",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/username",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/password",

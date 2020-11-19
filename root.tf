@@ -297,6 +297,14 @@ module "ecr_file_format_build_repository" {
   common_tags      = local.common_tags
 }
 
+module "ecr_consignment_export_repository" {
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "consignment-export"
+  policy_name      = "consignment_export_policy"
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  common_tags      = local.common_tags
+}
+
 module "ecr_image_scan_log_group" {
   source = "./tdr-terraform-modules/cloudwatch_logs"
   name   = "/aws/events/ecr-image-scans"
