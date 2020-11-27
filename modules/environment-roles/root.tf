@@ -306,7 +306,7 @@ resource aws_iam_role_policy_attachment "grafana_monitoring_policy_attach" {
 resource "aws_iam_role" "jenkins_export_s3_role" {
   count              = var.tdr_environment == "prod" ? 0 : 1
   name               = "TDRJenkinsS3ExportRole${title(var.tdr_environment)}"
-  assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
+  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
   tags = merge(
     var.common_tags,
     map(
