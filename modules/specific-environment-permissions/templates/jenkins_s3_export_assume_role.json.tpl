@@ -12,7 +12,7 @@
         "s3:GetObject"
       ],
       "Resource": [
-        "arn:aws:iam::${account_number}:role/TDRJenkinsS3ExportRole${stage}",
+        "arn:aws:iam::${account_number}:role/TDRJenkinsS3ExportRole${env_title_case}",
         "arn:aws:s3:::tdr-releases-mgmt/*",
         "arn:aws:s3:::tdr-releases-mgmt"
       ]

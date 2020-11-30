@@ -248,7 +248,7 @@ resource "aws_iam_role" "jenkins_node_s3_export_role" {
 resource "aws_iam_policy" "jenkins_node_s3_export_policy" {
   count  = var.tdr_environment == "prod" ? 0 : 1
   name   = "TDRJenkinsNodeS3ExportPolicy${local.env_title_case}"
-  policy = templatefile("${path.module}/templates/jenkins_s3_export_assume_role.json.tpl", { account_number = var.tdr_account_number, stage = local.env_title_case })
+  policy = templatefile("${path.module}/templates/jenkins_s3_export_assume_role.json.tpl", { account_number = var.tdr_account_number, env_title_case = local.env_title_case })
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_node_s3_export_attach" {
