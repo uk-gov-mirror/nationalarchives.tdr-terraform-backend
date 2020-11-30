@@ -7,9 +7,9 @@
       "Effect": "Allow",
       "Action": [
         "sts:AssumeRole",
-        "s3:PutObject",
+        "s3:GetObject",
         "s3:ListBucket",
-        "s3:GetObject"
+        "s3:PutObject"
       ],
       "Resource": [
         "arn:aws:iam::${account_number}:role/TDRJenkinsS3ExportRole${env_title_case}",
