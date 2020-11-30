@@ -17,7 +17,7 @@
         "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::tdr-upload-files-${environment}"
+        "arn:aws:s3:::tdr-upload-files-${environment}/*"
       ]
     }
   ]
