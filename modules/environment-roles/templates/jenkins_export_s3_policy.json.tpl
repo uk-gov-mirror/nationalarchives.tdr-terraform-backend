@@ -10,6 +10,15 @@
       "Resource": [
         "arn:aws:s3:::tdr-consignment-export-${environment}/*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::tdr-upload-files-${environment}"
+      ]
     }
   ]
 }
