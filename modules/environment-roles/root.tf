@@ -302,3 +302,27 @@ resource aws_iam_role_policy_attachment "grafana_monitoring_policy_attach" {
   policy_arn = aws_iam_policy.grafana_monitoring_policy.arn
   role       = aws_iam_role.grafana_monitoring_iam_role.name
 }
+
+resource "aws_iam_role" "jenkins_export_s3_role" {
+  count              = var.tdr_environment == "prod" ? 0 : 1
+  name               = "TDRJenkinsS3ExportRole${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+  tags = merge(
+    var.common_tags,
+    map(
+      "Name", "TDR S3 Export Access Role for ECS ${var.tdr_environment}",
+    )
+  )
+}
+
+resource "aws_iam_policy" "jenkins_export_s3_policy" {
+  count  = var.tdr_environment == "prod" ? 0 : 1
+  name   = "TDRJenkinsS3ExportPolicy${title(var.tdr_environment)}"
+  policy = templatefile("${path.module}/templates/jenkins_export_s3_policy.json.tpl", { environment = var.tdr_environment })
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_export_s3_attach" {
+  count      = var.tdr_environment == "prod" ? 0 : 1
+  policy_arn = aws_iam_policy.jenkins_export_s3_policy[count.index].arn
+  role       = aws_iam_role.jenkins_export_s3_role[count.index].id
+}
