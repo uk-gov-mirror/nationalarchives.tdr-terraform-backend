@@ -337,7 +337,7 @@ module "periodic_ecr_image_scan_lambda" {
 
 module "periodic_ecr_image_scan_event" {
   source                  = "./tdr-terraform-modules/cloudwatch_events"
-  schedule                = "rate(2 days)"
+  schedule                = "rate(7 days)"
   rule_name               = "ecr-scan"
   lambda_event_target_arn = module.periodic_ecr_image_scan_lambda.ecr_scan_lambda_arn
 }
