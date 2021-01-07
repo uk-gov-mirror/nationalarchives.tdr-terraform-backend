@@ -247,27 +247,30 @@ module "backend_code_s3" {
 }
 
 module "ecr_yara_repository" {
-  source      = "./tdr-terraform-modules/ecr"
-  name        = "yara"
-  common_tags = local.common_tags
-
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "yara"
+  image_source_url = "https://github.com/nationalarchives/tdr-antivirus/blob/master/Dockerfile-yara"
+  common_tags      = local.common_tags
 }
 
 module "ecr_dependencies_repository" {
-  source      = "./tdr-terraform-modules/ecr"
-  name        = "yara-dependencies"
-  common_tags = local.common_tags
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "yara-dependencies"
+  image_source_url = "https://github.com/nationalarchives/tdr-antivirus/blob/master/Dockerfile-dependencies"
+  common_tags      = local.common_tags
 }
 
 module "ecr_rules_repository" {
-  source      = "./tdr-terraform-modules/ecr"
-  name        = "yara-rules"
-  common_tags = local.common_tags
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "yara-rules"
+  image_source_url = "https://github.com/nationalarchives/tdr-antivirus/blob/master/Dockerfile-compile"
+  common_tags      = local.common_tags
 }
 
 module "ecr_consignment_api_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "consignment-api"
+  image_source_url = "https://github.com/nationalarchives/tdr-consignment-api/blob/master/Dockerfile"
   policy_name      = "consignment_api_policy"
   policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
   common_tags      = local.common_tags
@@ -276,6 +279,7 @@ module "ecr_consignment_api_repository" {
 module "ecr_transfer_frontend_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "transfer-frontend"
+  image_source_url = "https://github.com/nationalarchives/tdr-transfer-frontend/blob/master/Dockerfile"
   policy_name      = "transfer_frontend_policy"
   policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
   common_tags      = local.common_tags
@@ -284,6 +288,7 @@ module "ecr_transfer_frontend_repository" {
 module "ecr_auth_server_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "auth-server"
+  image_source_url = "https://github.com/nationalarchives/tdr-auth-server/blob/master/Dockerfile"
   policy_name      = "auth_server_policy"
   policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
   common_tags      = local.common_tags
@@ -292,6 +297,7 @@ module "ecr_auth_server_repository" {
 module "ecr_file_format_build_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "file-format-build"
+  image_source_url = "https://github.com/nationalarchives/tdr-file-format/blob/master/Dockerfile"
   policy_name      = "file_format_policy"
   policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
   common_tags      = local.common_tags
@@ -300,6 +306,7 @@ module "ecr_file_format_build_repository" {
 module "ecr_consignment_export_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "consignment-export"
+  image_source_url = "https://github.com/nationalarchives/tdr-consignment-export/blob/master/Dockerfile"
   policy_name      = "consignment_export_policy"
   policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
   common_tags      = local.common_tags
