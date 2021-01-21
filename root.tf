@@ -332,6 +332,7 @@ module "notification_lambda" {
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
   event_rule_arns               = [module.ecr_image_scan_event.event_arn, "arn:aws:events:eu-west-2:${data.aws_ssm_parameter.mgmt_account_number.value}:rule/jenkins-backup-maintenance-window"]
+  sns_topic_arns                = ["arn:aws:sns:eu-west-2:${data.aws_ssm_parameter.intg_account_number.value}:tdr-notifications-intg", "arn:aws:sns:eu-west-2:${data.aws_ssm_parameter.staging_account_number.value}:tdr-notifications-staging", "arn:aws:sns:eu-west-2:${data.aws_ssm_parameter.prod_account_number.value}:tdr-notifications-prod"]
 }
 
 module "periodic_ecr_image_scan_lambda" {
