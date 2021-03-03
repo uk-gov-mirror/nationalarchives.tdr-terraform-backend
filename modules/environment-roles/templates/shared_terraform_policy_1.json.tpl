@@ -56,6 +56,7 @@
         "ec2:ImportKeyPair",
         "ec2:ModifyNetworkInterfaceAttribute",
         "ec2:ModifySubnetAttribute",
+        "ec2:ModifyVpcAttribute",
         "ec2:ReleaseAddress",
         "ec2:RunInstances",
         "ec2:DescribeAvailabilityZones",
