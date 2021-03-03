@@ -272,7 +272,7 @@ module "ecr_consignment_api_repository" {
   name             = "consignment-api"
   image_source_url = "https://github.com/nationalarchives/tdr-consignment-api/blob/master/Dockerfile"
   policy_name      = "consignment_api_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
   common_tags      = local.common_tags
 }
 
@@ -281,7 +281,7 @@ module "ecr_transfer_frontend_repository" {
   name             = "transfer-frontend"
   image_source_url = "https://github.com/nationalarchives/tdr-transfer-frontend/blob/master/Dockerfile"
   policy_name      = "transfer_frontend_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
   common_tags      = local.common_tags
 }
 
@@ -290,7 +290,7 @@ module "ecr_auth_server_repository" {
   name             = "auth-server"
   image_source_url = "https://github.com/nationalarchives/tdr-auth-server/blob/master/Dockerfile"
   policy_name      = "auth_server_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
   common_tags      = local.common_tags
 }
 
@@ -299,7 +299,7 @@ module "ecr_file_format_build_repository" {
   name             = "file-format-build"
   image_source_url = "https://github.com/nationalarchives/tdr-file-format/blob/master/Dockerfile"
   policy_name      = "file_format_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
   common_tags      = local.common_tags
 }
 
@@ -308,7 +308,7 @@ module "ecr_consignment_export_repository" {
   name             = "consignment-export"
   image_source_url = "https://github.com/nationalarchives/tdr-consignment-export/blob/master/Dockerfile"
   policy_name      = "consignment_export_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value }
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
   common_tags      = local.common_tags
 }
 
