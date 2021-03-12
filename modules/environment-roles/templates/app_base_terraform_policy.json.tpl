@@ -121,6 +121,7 @@
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-file-format-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-download-files-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-export-api-authoriser-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-db-users-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:event-source-mapping:*"
       ]
     },
@@ -164,6 +165,8 @@
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/url",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/username",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/api/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/database/migrations/password",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/password",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/admin/user",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/client/secret",

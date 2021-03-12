@@ -81,7 +81,9 @@
         "arn:aws:iam::${account_id}:role/TDRConsignmentExportECSExecutionRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRConsignmentExportEcsTaskRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRConsignmentExportRole${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRConsignmentExportPolicy${environment}"
+        "arn:aws:iam::${account_id}:policy/TDRConsignmentExportPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRCreateDbUsersPolicy${environment}",
+        "arn:aws:iam::${account_id}:role/TDRCreateDbUsersRole${environment}"
       ]
     },
     {
