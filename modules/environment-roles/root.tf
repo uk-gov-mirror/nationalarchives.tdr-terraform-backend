@@ -217,6 +217,7 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-file-format-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-yara-av-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-export-api-authoriser-${var.tdr_environment}",
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-create-db-users-${var.tdr_environment}",
       "arn:aws:s3:::tdr-backend-code-mgmt/*",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
       "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/file-format-build-${var.tdr_environment}",
