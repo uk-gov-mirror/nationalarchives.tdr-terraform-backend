@@ -62,23 +62,40 @@
         "logs:ListTagsLogGroup",
         "logs:PutRetentionPolicy",
         "logs:TagLogGroup",
+        "rds:DescribeDBClusters",
+        "rds:ListTagsForResource",
         "s3:GetObject",
         "s3:PutObject",
-        "ssm:GetParameter"
+        "ssm:CreateDocument",
+        "ssm:DeleteDocument",
+        "ssm:DescribeDocument",
+        "ssm:DescribeDocumentPermission",
+        "ssm:GetDocument",
+        "ssm:GetParameter",
+        "ssm:UpdateDocument",
+        "ssm:UpdateDocumentDefaultVersion"
       ],
       "Resource": [
         "arn:aws:dynamodb:eu-west-2:${account_id}:table/tdr-terraform-state-lock-scripts",
         "arn:aws:iam::${account_id}:instance-profile/bastion",
         "arn:aws:iam::${account_id}:role/BastionEC2Role${title_environment}",
+        "arn:aws:iam::${account_id}:role/TDRBastionAccessDbRole${title_environment}",
+        "arn:aws:iam::${account_id}:policy/TDRBastionAccessDbPolicy${title_environment}",
+        "arn:aws:iam::${account_id}:policy/TDRBastionAssumeDbRolePolicy${title_environment}",
+        "arn:aws:iam::${account_id}:role/TDRJenkinsRunDocumentRole${title_environment}",
+        "arn:aws:iam::${account_id}:policy/TDRJenkinsRunDocumentPolicy${title_environment}",
         "arn:aws:kms:eu-west-2:${account_id}:alias/tdr-bastion-encryption-${environment}",
         "arn:aws:kms:eu-west-2:${account_id}:key/*",
         "arn:aws:s3:::tdr-terraform-state-scripts/*",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/password",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/url",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/username",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/management_account",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
         "arn:aws:iam::${account_id}:policy/BastionEC2Policy${title_environment}",
-        "arn:aws:logs:eu-west-2:${account_id}:log-group:*"
+        "arn:aws:logs:eu-west-2:${account_id}:log-group:*",
+        "arn:aws:ssm:eu-west-2:${account_id}:document/deleteuser",
+        "arn:aws:rds:eu-west-2:${account_id}:cluster:*"
       ]
     },
     {
@@ -110,6 +127,8 @@
         "kms:CreateKey",
         "kms:ListAliases",
         "kms:ListKeys",
+        "rds:DescribeDBInstances",
+        "rds:ListTagsForResource",
         "s3:ListObjects",
         "sts:GetCallerIdentity"
       ],
