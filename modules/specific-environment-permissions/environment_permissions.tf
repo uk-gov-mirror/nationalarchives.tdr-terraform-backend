@@ -91,13 +91,13 @@ resource "aws_iam_role" "jenkins_run_ssm_role" {
   assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
 }
 
-resource "aws_iam_policy" "tdr_jenkins_run_ssm_policy" {
+resource "aws_iam_policy" "jenkins_run_ssm_policy" {
   name   = "TDRJenkinsRunSsmPolicy${local.env_title_case}"
   policy = templatefile("${path.module}/templates/jenkins_assume_role.json.tpl", { account_id = var.tdr_account_number, environment = local.env_title_case })
 }
 
 resource "aws_iam_role_policy_attachment" "jenkins_run_ssm_attach" {
-  policy_arn = aws_iam_policy.tdr_jenkins_run_ssm_policy.arn
+  policy_arn = aws_iam_policy.jenkins_run_ssm_policy.arn
   role       = aws_iam_role.jenkins_run_ssm_role.id
 }
 
