@@ -85,7 +85,6 @@
         "arn:aws:iam::${account_id}:policy/TDRCreateDbUsersPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRCreateDbUsersRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRConsignmentApiAllowIAMAuthPolicy${environment}"
-
       ]
     },
     {
