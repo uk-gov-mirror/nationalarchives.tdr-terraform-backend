@@ -33,6 +33,12 @@ modules.
 Clone the [tdr-terraform-modules](https://github.com/nationalarchives/tdr-terraform-modules/)
 project into this project's directory.
 
+### Add TDR Configurations
+
+This project depends on non-public values configured in the TDR configurations
+project. Clone [tdr-configurations](https://github.com/nationalarchives/tdr-configurations)
+into this project's directory.
+
 ## Running the Project
 
 This project bootstraps management account and environments, so it needs to be
