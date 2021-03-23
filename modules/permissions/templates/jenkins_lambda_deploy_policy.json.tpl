@@ -12,6 +12,7 @@
       ],
       "Resource": [
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-notifications-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-ecr-scan-${environment}",
         "arn:aws:s3:::tdr-backend-code-${environment}/*"
       ]
     }
