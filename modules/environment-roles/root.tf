@@ -54,6 +54,11 @@ resource "aws_iam_role_policy_attachment" "keycloak_policy_attachment" {
   policy_arn = aws_iam_policy.keycloak_terraform_iam.arn
 }
 
+resource "aws_iam_role_policy_attachment" "keycloak_ssm_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.keycloak_terraform_ssm_parameters_iam.arn
+}
+
 resource "aws_iam_role_policy_attachment" "frontend_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.frontend_terraform_iam.arn
@@ -62,6 +67,11 @@ resource "aws_iam_role_policy_attachment" "frontend_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "consignment_api_attachment" {
   role       = aws_iam_role.terraform_role.name
   policy_arn = aws_iam_policy.consignment_api_terraform_iam.arn
+}
+
+resource "aws_iam_role_policy_attachment" "consignment_api_ssm_policy_attachment" {
+  role       = aws_iam_role.terraform_role.name
+  policy_arn = aws_iam_policy.consignment_api_terraform_ssm_parameters_iam.arn
 }
 
 resource "aws_iam_policy" "shared_terraform_policy_1" {
@@ -89,9 +99,19 @@ resource "aws_iam_policy" "keycloak_terraform_iam" {
   name   = "TDRKeycloakTerraform${title(var.tdr_environment)}"
 }
 
+resource "aws_iam_policy" "keycloak_terraform_ssm_parameters_iam" {
+  policy = templatefile("./modules/environment-roles/templates/app_base_terraform_ssm_parameters_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "keycloak" })
+  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}"
+}
+
 resource "aws_iam_policy" "consignment_api_terraform_iam" {
   policy = templatefile("./modules/environment-roles/templates/app_base_terraform_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "consignmentapi" })
   name   = "TDRConsignmentApiTerraform${title(var.tdr_environment)}"
+}
+
+resource "aws_iam_policy" "consignment_api_terraform_ssm_parameters_iam" {
+  policy = templatefile("./modules/environment-roles/templates/app_base_terraform_ssm_parameters_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "keycloak" })
+  name   = "TDRKeycloakTerraform${title(var.tdr_environment)}"
 }
 
 data "aws_iam_policy_document" "frontend_storage_override" {
