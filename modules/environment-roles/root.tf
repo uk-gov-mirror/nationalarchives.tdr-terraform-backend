@@ -110,7 +110,7 @@ resource "aws_iam_policy" "consignment_api_terraform_iam" {
 }
 
 resource "aws_iam_policy" "consignment_api_terraform_ssm_parameters_iam" {
-  policy = templatefile("./modules/environment-roles/templates/app_base_terraform_ssm_parameters_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "keycloak" })
+  policy = templatefile("./modules/environment-roles/templates/app_base_terraform_ssm_parameters_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment, app_name = "consignmentapi" })
   name   = "TDRConsignmentApiTerraformSSM${title(var.tdr_environment)}"
 }
 
