@@ -28,8 +28,10 @@
         "elasticloadbalancing:AddTags",
         "elasticloadbalancing:CreateListener",
         "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:CreateRule",
         "elasticloadbalancing:DeleteListener",
         "elasticloadbalancing:DeleteLoadBalancer",
+        "elasticloadbalancing:DeleteRule",
         "elasticloadbalancing:DeleteTargetGroup",
         "elasticloadbalancing:DeregisterTargets",
         "elasticloadbalancing:ModifyListener",
@@ -45,7 +47,8 @@
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener/net/tdr-${app_name}-${environment}/*/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/net/tdr-${app_name}-${environment}/*",
         "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:loadbalancer/app/tdr-${app_name}-${environment}/*",
-        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:targetgroup/*"
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:targetgroup/*",
+        "arn:aws:elasticloadbalancing:eu-west-2:${account_id}:listener-rule/app/tdr-keycloak-${environment}/*"
       ]
     },
     {
