@@ -19,8 +19,7 @@
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/configuration_properties",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/user_admin_client/secret",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/govuk_notify/api_key",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/govuk_notify/template_id",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/user/password"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/govuk_notify/template_id"
       ]
     }
   ]
