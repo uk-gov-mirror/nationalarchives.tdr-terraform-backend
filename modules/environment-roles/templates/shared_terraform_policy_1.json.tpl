@@ -106,6 +106,7 @@
         "iam:GetGroupPolicy",
         "iam:ListAccountAliases",
         "iam:ListAttachedGroupPolicies",
+        "iam:ListRolePolicies",
         "iam:PutRolePolicy",
         "iam:RemoveRoleFromInstanceProfile",
         "iam:UpdateAccountPasswordPolicy",
