@@ -227,6 +227,11 @@ resource "aws_iam_policy" "custodian_ecs_policy" {
   policy = data.aws_iam_policy_document.custodian_assume_role.json
 }
 
+resource "aws_iam_policy" "custodian_ecr_policy" {
+  name   = "TDRCustodianECRPolicy${local.env_title_case}"
+  policy = templatefile("${path.module}/templates/custodian_ecr_scan_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+}
+
 resource "aws_iam_role" "custodian_assume_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRCustodianAssumeRole${local.env_title_case}"
@@ -247,6 +252,11 @@ resource "aws_iam_role_policy_attachment" "custodian_role_attachment" {
 resource "aws_iam_role_policy_attachment" "custodian_get_parameters" {
   role       = aws_iam_role.custodian_assume_role.name
   policy_arn = var.custodian_get_parameters_arn
+}
+
+resource "aws_iam_role_policy_attachment" "custodian_ecr_scan" {
+  role       = aws_iam_role.custodian_assume_role.name
+  policy_arn = aws_iam_policy.custodian_ecr_policy.arn
 }
 
 resource "aws_iam_role" "jenkins_node_s3_export_role" {

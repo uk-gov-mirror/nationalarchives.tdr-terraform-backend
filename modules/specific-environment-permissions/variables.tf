@@ -18,6 +18,11 @@ variable "tdr_account_number" {
   type        = string
 }
 
+variable "tdr_mgmt_account_number" {
+  description = "AWS management account number"
+  type        = string
+}
+
 variable "tdr_environment" {
   description = "TDR environment"
   type        = string
