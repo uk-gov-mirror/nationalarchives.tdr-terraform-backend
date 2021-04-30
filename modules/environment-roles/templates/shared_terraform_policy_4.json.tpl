@@ -21,6 +21,7 @@
         "iam:ListAttachedRolePolicies",
         "iam:ListInstanceProfilesForRole",
         "iam:ListPolicyVersions",
+        "iam:ListRolePolicies",
         "iam:PassRole",
         "iam:PutRolePolicy",
         "iam:TagRole",
@@ -86,8 +87,8 @@
         "arn:aws:iam::${account_id}:role/TDRCreateDbUsersRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRConsignmentApiAllowIAMAuthPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRCreateKeycloakDbUserRole${environment}",
-        "arn:aws:iam::${account_id}:policy/TDRCreateKeycloakDbUserPolicy${environment}"
-
+        "arn:aws:iam::${account_id}:policy/TDRCreateKeycloakDbUserPolicy${environment}",
+        "arn:aws:iam::${account_id}:role/Custodian*"
       ]
     },
     {

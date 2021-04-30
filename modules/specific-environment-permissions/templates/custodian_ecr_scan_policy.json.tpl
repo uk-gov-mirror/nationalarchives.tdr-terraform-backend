@@ -5,10 +5,10 @@
        "Sid": "",
        "Effect": "Allow",
        "Action": [
+         "lambda:AddPermission",
          "lambda:GetFunction",
-         "lambda:UpdateFunctionCode",
          "lambda:TagResource",
-         "lambda:AddPermission"
+         "lambda:UpdateFunctionCode"
        ],
        "Resource": "arn:aws:lambda:eu-west-2:${account_id}:function:custodian-ecr-vulnerability-scanning-enabled"
      },
@@ -17,8 +17,8 @@
        "Effect": "Allow",
        "Action": [
          "events:DescribeRule",
-         "events:PutRule",
-         "events:ListTargetsByRule"
+         "events:ListTargetsByRule",
+         "events:PutRule"
        ],
        "Resource": "arn:aws:events:eu-west-2:${account_id}:rule/custodian-ecr-vulnerability-scanning-enabled"
      }
