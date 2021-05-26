@@ -320,8 +320,9 @@ module "ecr_consignment_export_repository" {
 }
 
 module "ecr_image_scan_log_group" {
-  source = "./tdr-terraform-modules/cloudwatch_logs"
-  name   = "/aws/events/ecr-image-scans"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
+  name        = "/aws/events/ecr-image-scans"
+  common_tags = local.common_tags
 }
 
 module "ecr_image_scan_event" {
