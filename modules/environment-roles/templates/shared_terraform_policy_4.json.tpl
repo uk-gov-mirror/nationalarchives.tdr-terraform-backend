@@ -88,6 +88,8 @@
         "arn:aws:iam::${account_id}:policy/TDRConsignmentApiAllowIAMAuthPolicy${environment}",
         "arn:aws:iam::${account_id}:role/TDRCreateKeycloakDbUserRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRCreateKeycloakDbUserPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRNotificationsLambdaPolicy${environment}",
+        "arn:aws:iam::${account_id}:role/TDRNotificationsLambdaRole${environment}",
         "arn:aws:iam::${account_id}:role/Custodian*"
       ]
     },

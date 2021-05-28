@@ -27,7 +27,8 @@
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/user_admin_client/secret",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/govuk_notify/template_id",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/govuk_notify/api_key",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/password"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/${app_name}/password",
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/slack/notification/webhook"
       ]
     }
   ]
