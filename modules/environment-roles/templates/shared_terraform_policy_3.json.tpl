@@ -177,7 +177,8 @@
         "elasticfilesystem:DescribeLifecycleConfiguration",
         "elasticfilesystem:ModifyMountTargetSecurityGroups",
         "elasticfilesystem:PutFileSystemPolicy",
-        "elasticfilesystem:PutLifecycleConfiguration"
+        "elasticfilesystem:PutLifecycleConfiguration",
+        "elasticfilesystem:TagResource"
       ],
       "Resource": [
         "arn:aws:elasticfilesystem:eu-west-2:${account_id}:access-point/*",
