@@ -2,6 +2,7 @@ locals {
   common_tags = map(
     "Owner", "TDR Backend",
     "Terraform", true,
+    "TerraformSource", "https://github.com/nationalarchives/tdr-terraform-backend",
     "CostCentre", data.aws_ssm_parameter.cost_centre.value
   )
 }
