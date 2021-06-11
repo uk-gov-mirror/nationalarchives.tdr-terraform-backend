@@ -13,7 +13,8 @@
         "rds:ListTagsForResource",
         "rds:AddTagsToResource",
         "rds:DescribeDBClusters",
-        "rds:DescribeDBSubnetGroups"
+        "rds:DescribeDBSubnetGroups",
+        "rds:ModifyDBCluster"
       ],
       "Resource": [
         "arn:aws:rds:eu-west-2:${account_id}:cluster:*",
@@ -28,7 +29,8 @@
       "Action": [
         "ec2:DescribeSecurityGroups",
         "kms:CreateGrant",
-        "kms:DescribeKey"
+        "kms:DescribeKey",
+        "rds:DescribeGlobalClusters"
       ],
       "Resource": "*"
     },
