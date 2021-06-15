@@ -14,14 +14,17 @@
         "rds:AddTagsToResource",
         "rds:DescribeDBClusters",
         "rds:DescribeDBSubnetGroups",
-        "rds:ModifyDBCluster"
+        "rds:ModifyDBCluster",
+        "ssm:PutParameter",
+        "iam:CreatePolicy"
       ],
       "Resource": [
         "arn:aws:rds:eu-west-2:${account_id}:cluster:*",
         "arn:aws:iam::${account_id}:role/consignmentapi_ecs_task_role_${environment}",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/url",
-        "arn:aws:rds:eu-west-2:${account_id}:subgrp:*"
+        "arn:aws:rds:eu-west-2:${account_id}:subgrp:*",
+        "arn:aws:iam::${account_id}:policy/RestoredDbAccessPolicy$${environment}"
       ]
     },
     {
