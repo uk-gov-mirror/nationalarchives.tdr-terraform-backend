@@ -13,7 +13,7 @@ resource "aws_iam_policy" "terraform_restore_db_policy" {
 
 resource "aws_iam_role_policy_attachment" "terraform_restore_db_attach" {
   policy_arn = aws_iam_policy.terraform_restore_db_policy.arn
-  role = aws_iam_role.terraform_restore_db_role.id
+  role       = aws_iam_role.terraform_restore_db_role.id
 }
 
 resource "aws_iam_role" "terraform_scripts_role" {
