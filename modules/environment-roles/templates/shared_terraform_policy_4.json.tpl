@@ -111,6 +111,17 @@
         "arn:aws:states:eu-west-2:${account_id}:stateMachine:TDRConsignmentExport${environment}"
       ]
 
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkAcl",
+        "ec2:ReplaceNetworkAclAssociation",
+        "ec2:CreateNetworkAclEntry",
+        "ec2:ReplaceNetworkAclEntry",
+        "ec2:DeleteNetworkAclEntry"
+      ],
+      "Resource": "*"
     }
   ]
 }
