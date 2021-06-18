@@ -5,7 +5,7 @@
       "Effect": "Allow",
       "Action": "sts:AssumeRole",
       "Resource": [
-        "arn:aws:iam::${account_id}:role/TDRJenkinsRunDocumentRole${environment}"
+        "arn:aws:iam::${account_id}:role/${role_name}"
       ]
     }
   ]
