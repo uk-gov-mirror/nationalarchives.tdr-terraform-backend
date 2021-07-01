@@ -6,8 +6,8 @@ resource "aws_iam_role" "terraform_role" {
 
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "${title(var.tdr_environment)} Terraform Role",
+    tomap(
+      {"Name" = "${title(var.tdr_environment)} Terraform Role"}
     )
   )
 }
