@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "tdr_terraform_state" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Terraform State"}
+      { "Name" = "TDR Terraform State" }
     )
   )
 }
@@ -50,7 +50,7 @@ resource "aws_s3_bucket" "tdr_terraform_state_jenkins" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Jekins Terraform State"}
+      { "Name" = "TDR Jekins Terraform State" }
     )
   )
 }
@@ -83,7 +83,7 @@ resource "aws_s3_bucket" "tdr_terraform_state_grafana" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Grafana Terraform State"}
+      { "Name" = "TDR Grafana Terraform State" }
     )
   )
 }
@@ -117,7 +117,7 @@ resource "aws_s3_bucket" "tdr_terraform_state_scripts" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Scripts Terraform State"}
+      { "Name" = "TDR Scripts Terraform State" }
     )
   )
 }

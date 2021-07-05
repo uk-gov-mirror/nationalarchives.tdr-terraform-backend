@@ -39,7 +39,7 @@ resource "aws_iam_role" "jenkins_node_assume_role" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Jenkins Node Role ${local.env_title_case}"}
+      { "Name" = "TDR Jenkins Node Role ${local.env_title_case}" }
     )
   )
 }
@@ -56,7 +56,7 @@ resource "aws_iam_role" "jenkins_lambda_assume_role" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Jenkins Node Lambda Role ${local.env_title_case}"}
+      { "Name" = "TDR Jenkins Node Lambda Role ${local.env_title_case}" }
     )
   )
 }
@@ -122,7 +122,7 @@ resource aws_iam_role "jenkins_read_params_assume_role" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Jenkins Node Read Params Role ${local.env_title_case}"}
+      { "Name" = "TDR Jenkins Node Read Params Role ${local.env_title_case}" }
     )
   )
 }
@@ -194,7 +194,7 @@ resource "aws_iam_role" "terraform_assume_role" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Terraform Assume Role ${local.env_title_case}"}
+      { "Name" = "TDR Terraform Assume Role ${local.env_title_case}" }
     )
   )
 }
@@ -253,7 +253,7 @@ resource "aws_iam_role" "custodian_assume_role" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Custodian Assume Role ${local.env_title_case}"}
+      { "Name" = "TDR Custodian Assume Role ${local.env_title_case}" }
     )
   )
 }
@@ -280,7 +280,7 @@ resource "aws_iam_role" "jenkins_node_s3_export_role" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Jenkins Node S3 Export Assume Role"}
+      { "Name" = "TDR Jenkins Node S3 Export Assume Role" }
     )
   )
 }

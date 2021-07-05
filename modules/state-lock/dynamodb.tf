@@ -12,7 +12,7 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Terraform State Lock Table"}
+      { "Name" = "TDR Terraform State Lock Table" }
     )
   )
 }
@@ -31,7 +31,7 @@ resource "aws_dynamodb_table" "terraform_state_lock_jenkins" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Jenkins Terraform State Lock Table"}
+      { "Name" = "TDR Jenkins Terraform State Lock Table" }
     )
   )
 }
@@ -50,7 +50,7 @@ resource "aws_dynamodb_table" "terraform_state_lock_grafana" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Grafana Terraform State Lock Table"}
+      { "Name" = "TDR Grafana Terraform State Lock Table" }
     )
   )
 }
@@ -69,7 +69,7 @@ resource "aws_dynamodb_table" "terraform_state_lock_scripts" {
   tags = merge(
     var.common_tags,
     tomap(
-      {"Name" = "TDR Scripts Terraform State Lock Table"}
+      { "Name" = "TDR Scripts Terraform State Lock Table" }
     )
   )
 }
