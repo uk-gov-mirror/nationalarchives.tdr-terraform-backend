@@ -367,3 +367,19 @@ resource "aws_iam_role_policy_attachment" "jenkins_export_s3_attach" {
   policy_arn = aws_iam_policy.jenkins_export_s3_policy[count.index].arn
   role       = aws_iam_role.jenkins_export_s3_role[count.index].id
 }
+
+
+resource "aws_iam_role" "jenkins_describe_ec2_role" {
+  name               = "TDRJenkinsDescribeEC2Role${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+}
+
+resource "aws_iam_policy" "jenkins_describe_ec2_policy" {
+  name   = "TDRJenkinsDescribeEC2Policy${title(var.tdr_environment)}"
+  policy = templatefile("${path.module}/templates/run_ec2_describe.json.tpl", {})
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_describe_ec2_attach" {
+  policy_arn = aws_iam_policy.jenkins_describe_ec2_policy.arn
+  role       = aws_iam_role.jenkins_describe_ec2_role.id
+}
