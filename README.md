@@ -35,10 +35,8 @@ modules.
 Clone the [tdr-terraform-modules](https://github.com/nationalarchives/tdr-terraform-modules/)
 project into this project's directory.
 
-**Note**: tdr-terraform-backend uses Terraform v13. To provide backwards compatibility for other projects not yet upgraded, tdr-terraform-modules branch `terraform-v13` should be used until all projects are upgraded to use Terraform v13.
    ```
-   [location of project] $ git clone git@github.com:nationalarchives/tdr-terraform-modules.git
-   [location of project] $ git checkout -b terraform-v13
+   [location of project] $ git clone git@github.com:nationalarchives/tdr-terraform-modules.git   
    ```
 
 ### Add TDR Configurations
