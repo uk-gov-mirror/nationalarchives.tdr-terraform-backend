@@ -128,6 +128,7 @@
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-bastion-user-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-keycloak-db-user-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-notifications-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-service-unavailable-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:event-source-mapping:*"
       ]
     },

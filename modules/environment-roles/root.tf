@@ -257,6 +257,7 @@ data "aws_iam_policy_document" "tdr_jenkins_lambda" {
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-create-bastion-user-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-create-keycloak-db-user-${var.tdr_environment}",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-notifications-${var.tdr_environment}",
+      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-service-unavailable-${var.tdr_environment}",
       "arn:aws:s3:::tdr-backend-code-mgmt/*",
       "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
       "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/file-format-build-${var.tdr_environment}",
@@ -382,4 +383,19 @@ resource "aws_iam_policy" "jenkins_describe_ec2_policy" {
 resource "aws_iam_role_policy_attachment" "jenkins_describe_ec2_attach" {
   policy_arn = aws_iam_policy.jenkins_describe_ec2_policy.arn
   role       = aws_iam_role.jenkins_describe_ec2_role.id
+}
+
+resource "aws_iam_role" "service_unavailable_deploy_role" {
+  name = "TDRJenkinsDeployServiceUnavailableRole${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl",  { account_id = var.tdr_mgmt_account_number })
+}
+
+resource "aws_iam_policy" "service_unavailable_deploy_policy" {
+  name = "TDRJenkinsDeployServiceUnavailablePolicy${title(var.tdr_environment)}"
+  policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", {})
+}
+
+resource "aws_iam_role_policy_attachment" "service_unavailable_deploy_attach" {
+  policy_arn = aws_iam_policy.service_unavailable_deploy_policy.arn
+  role = aws_iam_role.service_unavailable_deploy_role.id
 }
