@@ -102,6 +102,7 @@
         "lambda:GetCodeSigningConfig",
         "lambda:GetEventSourceMapping",
         "lambda:GetFunction",
+        "lambda:GetFunctionCodeSigningConfig",
         "lambda:GetFunctionConcurrency",
         "lambda:GetFunctionConfiguration",
         "lambda:GetFunctionEventInvokeConfig",
