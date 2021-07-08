@@ -76,8 +76,8 @@ resource "aws_iam_role" "jenkins_check_ami_role" {
   name               = "TDRJenkinsCheckAmiRole"
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "TDR Jenkins Publish Role",
+    tomap(
+      { "Name" = "TDR Jenkins Publish Role" }
     )
   )
 }
@@ -97,8 +97,8 @@ resource "aws_iam_role" "jenkins_publish_role" {
   name               = "TDRJenkinsPublishRole"
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "TDR Jenkins Publish Role",
+    tomap(
+      { "Name" = "TDR Jenkins Publish Role" }
     )
   )
 }
