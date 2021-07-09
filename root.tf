@@ -256,27 +256,6 @@ module "backend_code_s3" {
   bucket_policy = "lambda_update"
 }
 
-module "ecr_yara_repository" {
-  source           = "./tdr-terraform-modules/ecr"
-  name             = "yara"
-  image_source_url = "https://github.com/nationalarchives/tdr-antivirus/blob/master/Dockerfile-yara"
-  common_tags      = local.common_tags
-}
-
-module "ecr_dependencies_repository" {
-  source           = "./tdr-terraform-modules/ecr"
-  name             = "yara-dependencies"
-  image_source_url = "https://github.com/nationalarchives/tdr-antivirus/blob/master/Dockerfile-dependencies"
-  common_tags      = local.common_tags
-}
-
-module "ecr_rules_repository" {
-  source           = "./tdr-terraform-modules/ecr"
-  name             = "yara-rules"
-  image_source_url = "https://github.com/nationalarchives/tdr-antivirus/blob/master/Dockerfile-compile"
-  common_tags      = local.common_tags
-}
-
 module "ecr_consignment_api_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "consignment-api"
