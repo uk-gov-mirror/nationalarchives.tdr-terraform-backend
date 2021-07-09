@@ -136,16 +136,17 @@ data "aws_iam_policy_document" "frontend_storage_override" {
     effect = "Allow"
     actions = [
       "elasticache:CreateCacheCluster",
-      "elasticache:DeleteCacheCluster",
-      "elasticache:DescribeCacheClusters",
-      "elasticache:ModifyCacheCluster",
-      "elasticache:RebootCacheCluster",
       "elasticache:CreateCacheSubnetGroup",
       "elasticache:CreateReplicationGroup",
+      "elasticache:DeleteCacheCluster",
+      "elasticache:DeleteCacheSubnetGroup",
+      "elasticache:DeleteReplicationGroup",
+      "elasticache:DescribeCacheClusters",
       "elasticache:DescribeCacheSubnetGroups",
       "elasticache:DescribeReplicationGroups",
-      "elasticache:DeleteReplicationGroup",
-      "elasticache:DeleteCacheSubnetGroup"
+      "elasticache:ListTagsForResource",
+      "elasticache:ModifyCacheCluster",
+      "elasticache:RebootCacheCluster"
     ]
     resources = ["*"]
   }
