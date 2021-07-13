@@ -43,6 +43,7 @@
         "iam:ListAttachedRolePolicies",
         "iam:ListInstanceProfilesForRole",
         "iam:ListPolicyVersions",
+        "iam:ListRolePolicies",
         "iam:PassRole",
         "iam:TagRole",
         "iam:UpdateAssumeRolePolicy"
