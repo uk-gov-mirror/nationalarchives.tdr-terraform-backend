@@ -387,16 +387,16 @@ resource "aws_iam_role_policy_attachment" "jenkins_describe_ec2_attach" {
 }
 
 resource "aws_iam_role" "service_unavailable_deploy_role" {
-  name = "TDRJenkinsDeployServiceUnavailableRole${title(var.tdr_environment)}"
-  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl",  { account_id = var.tdr_mgmt_account_number })
+  name               = "TDRJenkinsDeployServiceUnavailableRole${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 }
 
 resource "aws_iam_policy" "service_unavailable_deploy_policy" {
-  name = "TDRJenkinsDeployServiceUnavailablePolicy${title(var.tdr_environment)}"
+  name   = "TDRJenkinsDeployServiceUnavailablePolicy${title(var.tdr_environment)}"
   policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", {})
 }
 
 resource "aws_iam_role_policy_attachment" "service_unavailable_deploy_attach" {
   policy_arn = aws_iam_policy.service_unavailable_deploy_policy.arn
-  role = aws_iam_role.service_unavailable_deploy_role.id
+  role       = aws_iam_role.service_unavailable_deploy_role.id
 }
