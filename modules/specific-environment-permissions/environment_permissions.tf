@@ -296,3 +296,18 @@ resource "aws_iam_role_policy_attachment" "jenkins_node_s3_export_attach" {
   policy_arn = aws_iam_policy.jenkins_node_s3_export_policy[count.index].arn
   role       = aws_iam_role.jenkins_node_s3_export_role[count.index].id
 }
+
+resource "aws_iam_role" "service_unavailable_deploy_role" {
+  name               = "TDRJenkinsDeployServiceUnavailableRole${local.env_title_case}"
+  assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
+}
+
+resource "aws_iam_policy" "service_unavailable_deploy_policy" {
+  name   = "TDRJenkinsDeployServiceUnavailablePolicy${local.env_title_case}"
+  policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", { account_number = var.tdr_account_number, env_title_case = local.env_title_case })
+}
+
+resource "aws_iam_role_policy_attachment" "service_unavailable_deploy_attach" {
+  policy_arn = aws_iam_policy.service_unavailable_deploy_policy.arn
+  role       = aws_iam_role.service_unavailable_deploy_role.id
+}
