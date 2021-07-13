@@ -7,7 +7,8 @@
       "Action": [
         "elasticloadbalancing:DescribeLoadBalancers",
         "elasticloadbalancing:DescribeListeners",
-        "elasticloadbalancing:DescribeTargetGroups"
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:ModifyListener"
       ],
       "Resource": "*"
     }
