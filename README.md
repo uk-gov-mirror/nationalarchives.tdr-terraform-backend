@@ -1,5 +1,7 @@
 # TDR Terraform Backend
 
+**Important Note**: tdr-terraform-backend uses v13 of Terraform. Ensure that Terraform v13 is installed before proceeding.
+
 ## Purpose
 
 The purpose of this repository is to setup the necessary Terraform backend and Jenkins permissions AWS resources to support development operations for the TDR application in the different environments, using cross account access.
@@ -32,6 +34,10 @@ modules.
 
 Clone the [tdr-terraform-modules](https://github.com/nationalarchives/tdr-terraform-modules/)
 project into this project's directory.
+
+   ```
+   [location of project] $ git clone git@github.com:nationalarchives/tdr-terraform-modules.git   
+   ```
 
 ### Add TDR Configurations
 

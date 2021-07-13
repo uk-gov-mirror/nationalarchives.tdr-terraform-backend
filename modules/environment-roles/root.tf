@@ -34,8 +34,8 @@ resource "aws_iam_role" "terraform_role" {
 
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "${title(var.tdr_environment)} Terraform Role",
+    tomap(
+      { "Name" = "${title(var.tdr_environment)} Terraform Role" }
     )
   )
 }
@@ -136,16 +136,17 @@ data "aws_iam_policy_document" "frontend_storage_override" {
     effect = "Allow"
     actions = [
       "elasticache:CreateCacheCluster",
-      "elasticache:DeleteCacheCluster",
-      "elasticache:DescribeCacheClusters",
-      "elasticache:ModifyCacheCluster",
-      "elasticache:RebootCacheCluster",
       "elasticache:CreateCacheSubnetGroup",
       "elasticache:CreateReplicationGroup",
+      "elasticache:DeleteCacheCluster",
+      "elasticache:DeleteCacheSubnetGroup",
+      "elasticache:DeleteReplicationGroup",
+      "elasticache:DescribeCacheClusters",
       "elasticache:DescribeCacheSubnetGroups",
       "elasticache:DescribeReplicationGroups",
-      "elasticache:DeleteReplicationGroup",
-      "elasticache:DeleteCacheSubnetGroup"
+      "elasticache:ListTagsForResource",
+      "elasticache:ModifyCacheCluster",
+      "elasticache:RebootCacheCluster"
     ]
     resources = ["*"]
   }
@@ -283,8 +284,8 @@ resource "aws_iam_role" "tdr_jenkins_read_params_role" {
 
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "${title(var.tdr_environment)} Read Parameters role",
+    tomap(
+      { "Name" = "${title(var.tdr_environment)} Read Parameters role" }
     )
   )
 }
@@ -306,8 +307,8 @@ resource "aws_iam_role" "custodian_deploy_role" {
 
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "${title(var.tdr_environment)} Custodian Role",
+    tomap(
+      { "Name" = "${title(var.tdr_environment)} Custodian Role" }
     )
   )
 }
@@ -329,8 +330,8 @@ resource "aws_iam_role" "grafana_monitoring_iam_role" {
 
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "${title(var.tdr_environment)} Grafana Monitoring Role",
+    tomap(
+      { "Name" = "${title(var.tdr_environment)} Grafana Monitoring Role" }
     )
   )
 }
@@ -351,8 +352,8 @@ resource "aws_iam_role" "jenkins_export_s3_role" {
   assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
   tags = merge(
     var.common_tags,
-    map(
-      "Name", "TDR S3 Export Access Role for ECS ${var.tdr_environment}",
+    tomap(
+      { "Name" = "TDR S3 Export Access Role for ECS ${var.tdr_environment}" }
     )
   )
 }
