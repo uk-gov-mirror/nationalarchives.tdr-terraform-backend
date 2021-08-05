@@ -112,7 +112,6 @@
       "Resource": [
         "arn:aws:states:eu-west-2:${account_id}:stateMachine:TDRConsignmentExport${environment}"
       ]
-
     },
     {
       "Effect": "Allow",
@@ -124,6 +123,34 @@
         "ec2:DeleteNetworkAclEntry"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "athena:CreateNamedQuery",
+        "athena:CreateWorkGroup",
+        "athena:DeleteNamedQuery",
+        "athena:DeleteWorkGroup",
+        "athena:GetNamedQuery",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:GetWorkGroup",
+        "athena:ListTagsForResource",
+        "athena:StartQueryExecution",
+        "athena:TagResource",
+        "glue:CreateDatabase",
+        "glue:DeleteDatabase",
+        "glue:GetDatabase",
+        "glue:GetDatabases",
+        "glue:GetTables"
+      ],
+      "Resource": [
+        "arn:aws:athena:eu-west-2:${account_id}:workgroup/*",
+        "arn:aws:glue:eu-west-2:${account_id}:catalog",
+        "arn:aws:glue:eu-west-2:${account_id}:database/tdr_security_logs_${environment_lower}",
+        "arn:aws:glue:eu-west-2:${account_id}:table/tdr_security_logs_${environment_lower}/*",
+        "arn:aws:glue:eu-west-2:${account_id}:userDefinedFunction/tdr_security_logs_${environment_lower}/*"
+      ]
     }
   ]
 }
