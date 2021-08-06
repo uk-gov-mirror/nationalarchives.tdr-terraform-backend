@@ -147,9 +147,9 @@
       "Resource": [
         "arn:aws:athena:eu-west-2:${account_id}:workgroup/*",
         "arn:aws:glue:eu-west-2:${account_id}:catalog",
-        "arn:aws:glue:eu-west-2:${account_id}:database/tdr_security_logs_${environment_lower}",
-        "arn:aws:glue:eu-west-2:${account_id}:table/tdr_security_logs_${environment_lower}/*",
-        "arn:aws:glue:eu-west-2:${account_id}:userDefinedFunction/tdr_security_logs_${environment_lower}/*"
+        "arn:aws:glue:eu-west-2:${account_id}:database/tdr_security_logs_${environment_lower_case}",
+        "arn:aws:glue:eu-west-2:${account_id}:table/tdr_security_logs_${environment_lower_case}/*",
+        "arn:aws:glue:eu-west-2:${account_id}:userDefinedFunction/tdr_security_logs_${environment_lower_case}/*"
       ]
     }
   ]

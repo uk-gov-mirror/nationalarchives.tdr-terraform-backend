@@ -75,10 +75,10 @@ resource "aws_iam_policy" "shared_terraform_policy_4" {
   policy = templatefile(
     "./modules/environment-roles/templates/shared_terraform_policy_4.json.tpl",
     {
-      environment       = title(var.tdr_environment),
-      environment_lower = var.tdr_environment,
-      account_id        = var.tdr_mgmt_account_number,
-      sub_domain        = var.sub_domain
+      environment            = title(var.tdr_environment),
+      environment_lower_case = var.tdr_environment,
+      account_id             = var.tdr_mgmt_account_number,
+      sub_domain             = var.sub_domain
     }
   )
 }
