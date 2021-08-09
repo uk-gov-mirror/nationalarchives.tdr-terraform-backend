@@ -106,7 +106,7 @@ resource "aws_iam_policy" "shared_terraform_policy_3" {
 }
 
 resource "aws_iam_policy" "shared_terraform_policy_4" {
-  policy = templatefile("${path.module}/templates/shared_terraform_policy_4.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id, sub_domain = var.sub_domain })
+  policy = templatefile("${path.module}/templates/shared_terraform_policy_4.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id, sub_domain = var.sub_domain, environment_lower_case = var.tdr_environment })
   name   = "TDRSharedTerraform4${title(var.tdr_environment)}"
 }
 
