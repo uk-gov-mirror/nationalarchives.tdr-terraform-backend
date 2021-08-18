@@ -94,8 +94,7 @@
         "arn:aws:iam::${account_id}:role/TDRNotificationsLambdaRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRServiceUnavailableRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRServiceUnavailablePolicy${environment}",
-        "arn:aws:iam::${account_id}:role/Custodian*",
-        "arn:aws:iam::${account_id}:policy/TDRKeycloakECSTaskPolicy${environment}"
+        "arn:aws:iam::${account_id}:role/Custodian*"
       ]
     },
     {
