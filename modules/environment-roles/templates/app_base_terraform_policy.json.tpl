@@ -86,7 +86,8 @@
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_execution_role_${environment}",
         "arn:aws:iam::${account_id}:role/${app_name}_ecs_task_role_${environment}",
         "arn:aws:iam::${account_id}:role/keycloak_flowlog_role_${environment}",
-        "arn:aws:iam::${account_id}:role/tdr_flowlog_role_${environment}"
+        "arn:aws:iam::${account_id}:role/tdr_flowlog_role_${environment}",
+        "arn:aws:iam::${account_id}:role/BastionEC2Role${title(environment)}"
       ]
     },
     {
