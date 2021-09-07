@@ -7,6 +7,13 @@
       "Resource": [
         "arn:aws:iam::${account_id}:role/${role_name}"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:GetRole",
+      "Resource": [
+        "arn:aws:iam::${account_id}:role/${role_name}"
+      ]
     }
   ]
 }
