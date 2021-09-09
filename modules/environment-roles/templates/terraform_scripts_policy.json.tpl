@@ -120,10 +120,12 @@
         "ec2:DescribeInstanceCreditSpecifications",
         "ec2:DescribeInstances",
         "ec2:DescribeKeyPairs",
+        "ec2:DescribeNetworkInterfaces",
         "ec2:DescribeSecurityGroups",
         "ec2:DescribeSubnets",
         "ec2:DescribeTags",
         "ec2:DescribeVolumes",
+        "ec2:DescribeVpcAttribute",
         "ec2:DescribeVpcs",
         "ec2:ImportKeyPair",
         "ec2:RevokeSecurityGroupIngress",
@@ -135,9 +137,7 @@
         "rds:DescribeDBInstances",
         "rds:ListTagsForResource",
         "s3:ListObjects",
-        "sts:GetCallerIdentity",
-        "ec2:DescribeVpcAttribute",
-        "ec2:DescribeNetworkInterfaces"
+        "sts:GetCallerIdentity"
       ],
       "Resource": "*"
     },
