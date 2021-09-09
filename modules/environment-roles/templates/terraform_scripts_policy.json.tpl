@@ -83,6 +83,8 @@
         "arn:aws:iam::${account_id}:role/TDRBastionAccessDbRole${title_environment}",
         "arn:aws:iam::${account_id}:policy/TDRBastionAccessDbPolicy${title_environment}",
         "arn:aws:iam::${account_id}:policy/TDRBastionAssumeDbRolePolicy${title_environment}",
+        "arn:aws:iam::${account_id}:policy/TDRBastionBackendEFSConnectPolicy${title_environment}",
+        "arn:aws:iam::${account_id}:policy/TDRBastionExportEFSConnectPolicy${title_environment}",
         "arn:aws:iam::${account_id}:role/TDRJenkinsRunDocumentRole${title_environment}",
         "arn:aws:iam::${account_id}:role/TDRJenkinsDescribeEC2Role${title_environment}",
         "arn:aws:iam::${account_id}:policy/TDRJenkinsRunDocumentPolicy${title_environment}",
@@ -118,10 +120,12 @@
         "ec2:DescribeInstanceCreditSpecifications",
         "ec2:DescribeInstances",
         "ec2:DescribeKeyPairs",
+        "ec2:DescribeNetworkInterfaces",
         "ec2:DescribeSecurityGroups",
         "ec2:DescribeSubnets",
         "ec2:DescribeTags",
         "ec2:DescribeVolumes",
+        "ec2:DescribeVpcAttribute",
         "ec2:DescribeVpcs",
         "ec2:ImportKeyPair",
         "ec2:RevokeSecurityGroupIngress",
@@ -136,6 +140,31 @@
         "sts:GetCallerIdentity"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid":  "",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:CreateSecurityGroup",
+        "ec2:DeleteSecurityGroup",
+        "ec2:RevokeSecurityGroupEgress"
+      ],
+      "Resource": [
+        "arn:aws:ec2:eu-west-2:${account_id}:security-group/*",
+        "arn:aws:ec2:eu-west-2:${account_id}:vpc/*"
+      ]
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeLifecycleConfiguration"
+      ],
+      "Resource": [
+        "arn:aws:elasticfilesystem:eu-west-2:${account_id}:file-system/*"
+      ]
     }
   ]
 }
