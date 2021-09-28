@@ -4,6 +4,7 @@
     {
       "Effect": "Allow",
       "Action": [
+        "cloudfront:CreateCachePolicy",
         "cloudfront:CreateCloudFrontOriginAccessIdentity",
         "cloudfront:CreateKeyGroup",
         "cloudfront:CreateOriginRequestPolicy",
@@ -28,11 +29,10 @@
         "cloudfront:UpdateOriginRequestPolicy",
         "cloudfront:UpdatePublicKey",
         "ec2:CreateNetworkAcl",
-        "ec2:ReplaceNetworkAclAssociation",
         "ec2:CreateNetworkAclEntry",
-        "ec2:ReplaceNetworkAclEntry",
         "ec2:DeleteNetworkAclEntry",
-        "cloudfront:CreateCachePolicy"
+        "ec2:ReplaceNetworkAclAssociation",
+        "ec2:ReplaceNetworkAclEntry"
       ],
       "Resource": ["*"]
     },
@@ -63,12 +63,12 @@
       "Effect": "Allow",
       "Action" : [
         "states:CreateStateMachine",
-        "states:UpdateStateMachine",
         "states:DeleteStateMachine",
+        "states:DescribeStateMachine",
+        "states:ListTagsForResource",
         "states:TagResource",
         "states:UntagResource",
-        "states:DescribeStateMachine",
-        "states:ListTagsForResource"
+        "states:UpdateStateMachine"
       ],
       "Resource": [
         "arn:aws:states:eu-west-2:${account_id}:stateMachine:TDRConsignmentExport${environment}"
