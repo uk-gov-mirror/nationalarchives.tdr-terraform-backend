@@ -94,35 +94,14 @@
         "arn:aws:iam::${account_id}:role/TDRNotificationsLambdaRole${environment}",
         "arn:aws:iam::${account_id}:role/TDRServiceUnavailableRole${environment}",
         "arn:aws:iam::${account_id}:policy/TDRServiceUnavailablePolicy${environment}",
-        "arn:aws:iam::${account_id}:role/Custodian*"
+        "arn:aws:iam::${account_id}:policy/TDRSignCookiesLambdaPolicy",
+        "arn:aws:iam::${account_id}:policy/TDRSignedCookiesAPIPolicy${environment}",
+        "arn:aws:iam::${account_id}:policy/TDRSignedCookiesAPICloudwatchPolicy${environment}",
+        "arn:aws:iam::${account_id}:role/Custodian*",
+        "arn:aws:iam::${account_id}:role/TDRSignedCookiesAPICloudwatchRole${environment}",
+        "arn:aws:iam::${account_id}:role/TDRSignedCookiesAPIRole${environment}",
+        "arn:aws:iam::${account_id}:role/TDRSignCookiesLambdaRole"
       ]
-    },
-    {
-      "Sid": "states",
-      "Effect": "Allow",
-      "Action" : [
-        "states:CreateStateMachine",
-        "states:UpdateStateMachine",
-        "states:DeleteStateMachine",
-        "states:TagResource",
-        "states:UntagResource",
-        "states:DescribeStateMachine",
-        "states:ListTagsForResource"
-      ],
-      "Resource": [
-        "arn:aws:states:eu-west-2:${account_id}:stateMachine:TDRConsignmentExport${environment}"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:CreateNetworkAcl",
-        "ec2:ReplaceNetworkAclAssociation",
-        "ec2:CreateNetworkAclEntry",
-        "ec2:ReplaceNetworkAclEntry",
-        "ec2:DeleteNetworkAclEntry"
-      ],
-      "Resource": "*"
     },
     {
       "Effect": "Allow",
