@@ -219,6 +219,18 @@ resource "aws_iam_role_policy_attachment" "terraform_role_access_terraform_state
   policy_arn = var.terraform_state_lock_access_arn
 }
 
+resource "aws_iam_role_policy_attachment" "jenkins_publish_policy_attach" {
+  count      = var.jenkins_publish_policy_arn == "" ? 0 : 1
+  policy_arn = var.jenkins_publish_policy_arn
+  role       = aws_iam_role.terraform_assume_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_read_only_attach" {
+  count      = var.add_ssm_policy == true ? 1 : 0
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
+  role       = aws_iam_role.terraform_assume_role.name
+}
+
 resource "aws_iam_role_policy_attachment" "terraform_role_describe_accounts" {
   role       = aws_iam_role.terraform_assume_role.name
   policy_arn = var.terraform_describe_account_arn
