@@ -25,6 +25,10 @@ data "aws_ssm_parameter" "mgmt_account_number" {
   name = "/mgmt/management_account"
 }
 
+data "aws_ssm_parameter" "sandbox_account_number" {
+  name = "/mgmt/sandbox_account"
+}
+
 data "aws_ssm_parameter" "cost_centre" {
   name = "/mgmt/cost_centre"
 }
@@ -210,6 +214,23 @@ module "prod_specific_permissions" {
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
   custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
+}
+
+module "sbox_specific_permissions" {
+  source                          = "./modules/specific-environment-permissions"
+  common_tags                     = local.common_tags
+  terraform_state_bucket          = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
+  tdr_account_number              = data.aws_ssm_parameter.sandbox_account_number.value
+  tdr_mgmt_account_number         = data.aws_ssm_parameter.mgmt_account_number.value
+  tdr_environment                 = "sbox"
+  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
+  terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
+  jenkins_publish_policy_arn      = module.common_permissions.jenkins_publish_policy_arn
+  add_ssm_policy                  = true
 }
 
 //Set up Jenkins permissions
