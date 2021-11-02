@@ -5,10 +5,11 @@
       "Sid": "",
       "Effect": "Allow",
       "Action": [
-        "lambda:UpdateFunctionCode",
+        "lambda:GetFunctionConfiguration",
         "lambda:PublishVersion",
-        "s3:PutObject",
-        "s3:GetObject"
+        "lambda:UpdateFunctionCode",
+        "s3:GetObject",
+        "s3:PutObject"
       ],
       "Resource": [
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-notifications-${environment}",
