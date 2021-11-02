@@ -9,9 +9,9 @@
         "iam:PassRole",
         "lambda:GetFunctionConfiguration",
         "lambda:InvokeFunction",
+        "lambda:PublishVersion",
         "lambda:UpdateEventSourceMapping",
         "lambda:UpdateFunctionCode",
-        "lambda:PublishVersion",
         "s3:GetObject"
       ],
       "Resource": [
