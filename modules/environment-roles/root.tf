@@ -242,51 +242,7 @@ resource "aws_iam_role_policy_attachment" "tdr_jenkins_lambda_role_attach" {
 
 resource "aws_iam_policy" "tdr_jenkins_lambda_policy" {
   name   = "TDRJenkinsLambda${title(var.tdr_environment)}"
-  policy = data.aws_iam_policy_document.tdr_jenkins_lambda.json
-}
-
-data "aws_iam_policy_document" "tdr_jenkins_lambda" {
-  statement {
-    actions = [
-      "s3:GetObject",
-      "lambda:InvokeFunction",
-      "lambda:UpdateFunctionCode",
-      "lambda:PublishVersion",
-      "lambda:UpdateEventSourceMapping",
-      "ecs:RunTask",
-      "iam:PassRole"
-    ]
-    resources = [
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-database-migrations-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-api-update-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-checksum-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-download-files-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-file-format-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-yara-av-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-export-api-authoriser-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-create-db-users-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-create-bastion-user-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-create-keycloak-db-user-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-notifications-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-service-unavailable-${var.tdr_environment}",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:function:tdr-sign-cookies-${var.tdr_environment}",
-      "arn:aws:s3:::tdr-backend-code-mgmt/*",
-      "arn:aws:lambda:eu-west-2:${data.aws_caller_identity.current.account_id}:event-source-mapping:*",
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:task-definition/file-format-build-${var.tdr_environment}",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/file_format_ecs_execution_role_${var.tdr_environment}",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/TDRFileFormatECSExecutionRole${title(var.tdr_environment)}",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/TDRFileFormatEcsTaskRole${title(var.tdr_environment)}"
-
-    ]
-  }
-  statement {
-    actions = [
-      "lambda:ListEventSourceMappings",
-      "ec2:DescribeSecurityGroups",
-      "ec2:DescribeSubnets"
-    ]
-    resources = ["*"]
-  }
+  policy = templatefile("${path.module}/templates/jenkins_lambda_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, title_environment = title(var.tdr_environment), environment = var.tdr_environment })
 }
 
 resource "aws_iam_role" "tdr_jenkins_read_params_role" {
