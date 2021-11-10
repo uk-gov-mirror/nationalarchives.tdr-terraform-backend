@@ -62,7 +62,7 @@ resource "aws_iam_policy" "shared_terraform_policy_1" {
 
 resource "aws_iam_policy" "shared_iam_terraform_policy" {
   policy = templatefile("${path.module}/templates/shared_iam_terraform_policy.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
-  name   = "TDRSharedTerraform2${title(var.tdr_environment)}"
+  name   = "TDRSharedIamTerraform${title(var.tdr_environment)}"
 }
 
 data "aws_iam_policy_document" "frontend_storage_override" {

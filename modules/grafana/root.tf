@@ -56,7 +56,7 @@ resource "aws_iam_policy" "shared_iam_terraform_policy" {
       sub_domain  = var.sub_domain
     }
   )
-  name = "TDRSharedTerraform2${title(var.tdr_environment)}"
+  name = "TDRSharedIamTerraform${title(var.tdr_environment)}"
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_state_access_policy_attachment" {
