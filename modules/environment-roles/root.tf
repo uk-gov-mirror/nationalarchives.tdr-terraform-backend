@@ -51,7 +51,7 @@ resource "aws_iam_role_policy_attachment" "shared_policy_attachment_1" {
 }
 
 resource "aws_iam_role_policy_attachment" "shared_policy_attachment_2" {
-  policy_arn = aws_iam_policy.shared_terraform_policy_2.arn
+  policy_arn = aws_iam_policy.shared_iam_terraform_policy.arn
   role       = aws_iam_role.terraform_role.name
 }
 
@@ -60,8 +60,8 @@ resource "aws_iam_policy" "shared_terraform_policy_1" {
   name   = "TDRSharedTerraform1${title(var.tdr_environment)}"
 }
 
-resource "aws_iam_policy" "shared_terraform_policy_2" {
-  policy = templatefile("${path.module}/templates/shared_terraform_policy_2.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
+resource "aws_iam_policy" "shared_iam_terraform_policy" {
+  policy = templatefile("${path.module}/templates/shared_iam_terraform_policy.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
   name   = "TDRSharedTerraform2${title(var.tdr_environment)}"
 }
 
