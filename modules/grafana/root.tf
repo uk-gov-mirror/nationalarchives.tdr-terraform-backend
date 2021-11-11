@@ -40,47 +40,23 @@ resource "aws_iam_policy" "shared_terraform_policy_1" {
     "./modules/environment-roles/templates/shared_terraform_policy_1.json.tpl",
     {
       environment = title(var.tdr_environment),
-      account_id  = var.tdr_mgmt_account_number
+      account_id  = var.tdr_mgmt_account_number,
+      sub_domain  = var.sub_domain
     }
   )
   name = "TDRSharedTerraform1${title(var.tdr_environment)}"
 }
 
-resource "aws_iam_policy" "shared_terraform_policy_2" {
+resource "aws_iam_policy" "shared_iam_terraform_policy" {
   policy = templatefile(
-    "./modules/environment-roles/templates/shared_terraform_policy_2.json.tpl",
+    "./modules/environment-roles/templates/shared_iam_terraform_policy.json.tpl",
     {
-      environment = title(var.tdr_environment),
+      environment = var.tdr_environment,
       account_id  = var.tdr_mgmt_account_number,
       sub_domain  = var.sub_domain
     }
   )
-  name = "TDRSharedTerraform2${title(var.tdr_environment)}"
-}
-
-resource "aws_iam_policy" "shared_terraform_policy_3" {
-  policy = templatefile(
-    "./modules/environment-roles/templates/shared_terraform_policy_3.json.tpl",
-    {
-      environment = title(var.tdr_environment),
-      account_id  = var.tdr_mgmt_account_number,
-      sub_domain  = var.sub_domain
-    }
-  )
-  name = "TDRSharedTerraform3${title(var.tdr_environment)}"
-}
-
-resource "aws_iam_policy" "shared_terraform_policy_4" {
-  name = "TDRSharedTerraform4${title(var.tdr_environment)}"
-  policy = templatefile(
-    "./modules/environment-roles/templates/shared_terraform_policy_4.json.tpl",
-    {
-      environment            = title(var.tdr_environment),
-      environment_lower_case = var.tdr_environment,
-      account_id             = var.tdr_mgmt_account_number,
-      sub_domain             = var.sub_domain
-    }
-  )
+  name = "TDRSharedIamTerraform${title(var.tdr_environment)}"
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_state_access_policy_attachment" {
@@ -98,17 +74,7 @@ resource "aws_iam_role_policy_attachment" "shared_policy_attachment_1" {
   role       = aws_iam_role.terraform_role.name
 }
 
-resource "aws_iam_role_policy_attachment" "shared_policy_attachment_2" {
-  policy_arn = aws_iam_policy.shared_terraform_policy_2.arn
-  role       = aws_iam_role.terraform_role.name
-}
-
-resource "aws_iam_role_policy_attachment" "shared_policy_attachment_3" {
-  policy_arn = aws_iam_policy.shared_terraform_policy_3.arn
-  role       = aws_iam_role.terraform_role.name
-}
-
-resource "aws_iam_role_policy_attachment" "shared_policy_attachment_4" {
-  policy_arn = aws_iam_policy.shared_terraform_policy_4.arn
+resource "aws_iam_role_policy_attachment" "shared_iam_policy_attachment" {
+  policy_arn = aws_iam_policy.shared_iam_terraform_policy.arn
   role       = aws_iam_role.terraform_role.name
 }
