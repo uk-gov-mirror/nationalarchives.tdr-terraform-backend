@@ -74,7 +74,7 @@ resource "aws_iam_role_policy_attachment" "shared_policy_attachment_1" {
   role       = aws_iam_role.terraform_role.name
 }
 
-resource "aws_iam_role_policy_attachment" "shared_policy_attachment_2" {
+resource "aws_iam_role_policy_attachment" "shared_iam_policy_attachment" {
   policy_arn = aws_iam_policy.shared_iam_terraform_policy.arn
   role       = aws_iam_role.terraform_role.name
 }
