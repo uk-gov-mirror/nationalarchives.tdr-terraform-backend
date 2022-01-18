@@ -309,6 +309,12 @@ resource "aws_iam_role_policy_attachment" "jenkins_node_s3_export_attach" {
   role       = aws_iam_role.jenkins_node_s3_export_role[count.index].id
 }
 
+resource "aws_iam_role_policy_attachment" "jenkins_node_s3_export_read_params_attach" {
+  count      = var.tdr_environment == "prod" ? 0 : 1
+  policy_arn = aws_iam_policy.jenkins_read_params_policy.arn
+  role       = aws_iam_role.jenkins_node_s3_export_role[count.index].id
+}
+
 resource "aws_iam_role" "service_unavailable_deploy_role" {
   name               = "TDRJenkinsDeployServiceUnavailableRole${local.env_title_case}"
   assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
