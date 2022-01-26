@@ -8,6 +8,7 @@
          "lambda:AddPermission",
          "lambda:GetFunction",
          "lambda:TagResource",
+         "lambda:GetFunctionConfiguration",
          "lambda:UpdateFunctionCode"
        ],
        "Resource": "arn:aws:lambda:eu-west-2:${account_id}:function:custodian-ecr-vulnerability-scanning-enabled"
