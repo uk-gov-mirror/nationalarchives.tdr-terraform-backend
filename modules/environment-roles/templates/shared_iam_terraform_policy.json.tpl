@@ -36,6 +36,7 @@
         "iam:UpdateRole"
       ],
       "Resource": [
+        "arn:aws:iam::${account_id}:group/group/support",
         "arn:aws:iam::${account_id}:policy/consignmentapi_ecs_execution_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/consignmentapi_ecs_task_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/frontend_ecs_execution_policy_${environment}",
