@@ -86,6 +86,7 @@
         "elasticloadbalancing:*",
         "glue:*",
         "guardduty:*",
+        "iam:ListAccountAliases",
         "kms:*",
         "lambda:*",
         "logs:*",

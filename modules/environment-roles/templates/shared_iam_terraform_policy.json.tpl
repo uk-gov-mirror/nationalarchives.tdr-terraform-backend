@@ -120,14 +120,6 @@
         "arn:aws:iam::${account_id}:role/TDRSignedCookiesAPIRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRYaraAvRole"
       ]
-    },
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "iam:ListAccountAliases"
-      ],
-      "Resource": "*"
     }
   ]
 }
