@@ -5,38 +5,11 @@
       "Sid": "iam",
       "Effect": "Allow",
       "Action": [
-        "iam:AddRoleToInstanceProfile",
-        "iam:AttachGroupPolicy",
-        "iam:AttachRolePolicy",
-        "iam:CreateGroup",
-        "iam:CreateInstanceProfile",
-        "iam:CreatePolicy",
-        "iam:CreatePolicyVersion",
-        "iam:CreatePolicyVersion",
-        "iam:CreateRole",
-        "iam:CreateServiceLinkedRole",
-        "iam:DeleteAccountPasswordPolicy",
-        "iam:DeleteGroup",
-        "iam:DeleteInstanceProfile",
-        "iam:DeletePolicy",
-        "iam:DeletePolicyVersion",
-        "iam:DeleteRole",
-        "iam:DeleteRolePolicy",
-        "iam:DetachGroupPolicy",
-        "iam:DetachRolePolicy",
-        "iam:Get*",
-        "iam:List*",
-        "iam:PassRole",
-        "iam:PutRolePolicy",
-        "iam:RemoveRoleFromInstanceProfile",
-        "iam:TagRole",
-        "iam:UpdateAccountPasswordPolicy",
-        "iam:UpdateAssumeRolePolicy",
-        "iam:UpdateGroup",
-        "iam:UpdateRole"
+        "iam:*"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:group/group/support",
+        "arn:aws:iam::${account_id}:oidc-provider/token.actions.githubusercontent.com",
         "arn:aws:iam::${account_id}:policy/consignmentapi_ecs_execution_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/consignmentapi_ecs_task_policy_${environment}",
         "arn:aws:iam::${account_id}:policy/frontend_ecs_execution_policy_${environment}",
@@ -78,6 +51,7 @@
         "arn:aws:iam::${account_id}:policy/TDRSNSPublish${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRVpcFlowlogPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
+        "arn:aws:iam::${account_id}:policy/UpdateWAFAndSecurityGroupsPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:role/aws-service-role/*",
         "arn:aws:iam::${account_id}:role/BastionEC2Role${title(environment)}",
         "arn:aws:iam::${account_id}:role/consignmentapi_ecs_execution_role_${environment}",
@@ -111,6 +85,7 @@
         "arn:aws:iam::${account_id}:role/TDRFileFormatEcsTaskRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRFileFormatRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/tdr_flowlog_role_${environment}",
+        "arn:aws:iam::${account_id}:role/TDRGitHubECSUpdateRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRLogDataCrossAccountRoleMgmt",
         "arn:aws:iam::${account_id}:role/TDRNotificationsLambdaRole${title(environment)}",
@@ -118,7 +93,8 @@
         "arn:aws:iam::${account_id}:role/TDRSignCookiesLambdaRole",
         "arn:aws:iam::${account_id}:role/TDRSignedCookiesAPICloudwatchRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRSignedCookiesAPIRole${title(environment)}",
-        "arn:aws:iam::${account_id}:role/TDRYaraAvRole"
+        "arn:aws:iam::${account_id}:role/TDRYaraAvRole",
+        "arn:aws:iam::${account_id}:role/UpdateWAFAndSecurityGroupsRole${title(environment)}"
       ]
     }
   ]
