@@ -115,7 +115,7 @@ resource "aws_iam_role_policy_attachment" "jenkins_run_ssm_attach" {
   role       = aws_iam_role.jenkins_run_ssm_role.id
 }
 
-resource aws_iam_role "jenkins_read_params_assume_role" {
+resource "aws_iam_role" "jenkins_read_params_assume_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsNodeReadParamsRole${local.env_title_case}"
 
