@@ -105,7 +105,7 @@
         "ssm:ListTagsForResource",
         "ssm:PutParameter",
         "states:*",
-        "waf-regional:*"
+        "wafv2:*"
       ],
       "Resource": "*"
     }
