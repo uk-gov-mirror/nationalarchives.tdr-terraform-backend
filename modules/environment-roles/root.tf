@@ -162,7 +162,7 @@ resource "aws_iam_role" "tdr_jenkins_read_params_role" {
   )
 }
 
-resource aws_iam_role_policy_attachment "tdr_jenkins_read_params_role_attach" {
+resource "aws_iam_role_policy_attachment" "tdr_jenkins_read_params_role_attach" {
   policy_arn = aws_iam_policy.tdr_jenkins_read_params_policy.arn
   role       = aws_iam_role.tdr_jenkins_read_params_role.name
 }
@@ -190,7 +190,7 @@ resource "aws_iam_policy" "custodian_deploy_policy" {
   name   = "TDRCustodianDeployPolicy${title(var.tdr_environment)}"
 }
 
-resource aws_iam_role_policy_attachment "custodian_deploy_policy_attach" {
+resource "aws_iam_role_policy_attachment" "custodian_deploy_policy_attach" {
   policy_arn = aws_iam_policy.custodian_deploy_policy.arn
   role       = aws_iam_role.custodian_deploy_role.name
 }
@@ -213,7 +213,7 @@ resource "aws_iam_policy" "grafana_monitoring_policy" {
   name   = "TDRGrafanaMonitoringPolicy${title(var.tdr_environment)}"
 }
 
-resource aws_iam_role_policy_attachment "grafana_monitoring_policy_attach" {
+resource "aws_iam_role_policy_attachment" "grafana_monitoring_policy_attach" {
   policy_arn = aws_iam_policy.grafana_monitoring_policy.arn
   role       = aws_iam_role.grafana_monitoring_iam_role.name
 }
