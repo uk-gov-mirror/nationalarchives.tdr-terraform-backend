@@ -384,24 +384,31 @@ module "run_e2e_tests_role" {
 
 module "github_sbt_dependencies_policy" {
   source = "./tdr-terraform-modules/iam_policy"
-  name   = "GithubDependenciesPolicyMgmt"
+  name   = "TDRGithubDependenciesPolicyMgmt"
   policy_string = templatefile("${path.module}/templates/iam_policy/github_sbt_dependencies_policy.json.tpl", {})
 }
 
 module "github_ecr_policy" {
   source = "./tdr-terraform-modules/iam_policy"
-  name   = "GithubECRPolicyMgmt"
+  name   = "TDRGithubECRPolicyMgmt"
   policy_string = templatefile("${path.module}/templates/iam_policy/github_ecr_policy.json.tpl", {account_id = data.aws_ssm_parameter.mgmt_account_number.value})
+}
+
+module "github_actions_code_bucket_policy" {
+  source = "./tdr-terraform-modules/iam_policy"
+  name   = "TDRGithubActionsBackendCodeMgmt"
+  policy_string = templatefile("${path.module}/templates/iam_policy/github_code_bucket.json.tpl", {})
 }
 
 module "github_actions_role" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*"})
   common_tags = local.common_tags
-  name = "GithubActionsRoleMgmt"
+  name = "TDRGithubActionsRoleMgmt"
   policy_attachments = {
     dependencies = module.github_sbt_dependencies_policy.policy_arn,
     ecr = module.github_ecr_policy.policy_arn
+    backend_code = module.github_actions_code_bucket_policy.policy_arn
   }
 }
 
