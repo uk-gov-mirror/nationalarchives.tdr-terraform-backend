@@ -4,7 +4,7 @@
     {
       "Sid": "",
       "Effect": "Allow",
-      "Action": ["s3:GetObject","s3:PutObject", "s3:ListBucket"],
+      "Action": ["s3:GetObject", "s3:ListBucket", "s3:PutObject"],
       "Resource": [
         "arn:aws:s3:::tdr-backend-code-mgmt/*",
         "arn:aws:s3:::tdr-backend-code-mgmt"

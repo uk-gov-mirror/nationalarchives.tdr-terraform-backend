@@ -375,7 +375,7 @@ module "run_e2e_tests_role" {
   source             = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-e2e-tests:*" })
   common_tags        = local.common_tags
-  name               = "GithubActionsE2ETestsMgmt"
+  name               = "TDRGithubActionsE2ETestsMgmt"
   policy_attachments = {
     export_intg    = "arn:aws:iam::${data.aws_ssm_parameter.mgmt_account_number.value}:policy/TDRJenkinsNodeS3ExportPolicyIntg"
     export_staging = "arn:aws:iam::${data.aws_ssm_parameter.mgmt_account_number.value}:policy/TDRJenkinsNodeS3ExportPolicyStaging"
