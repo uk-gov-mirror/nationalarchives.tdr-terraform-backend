@@ -33,6 +33,14 @@ data "aws_ssm_parameter" "cost_centre" {
   name = "/mgmt/cost_centre"
 }
 
+data "aws_ssm_parameter" "workflow_pat" {
+  name = "/mgmt/workflow_pat"
+}
+
+data "aws_ssm_parameter" "slack_webhook_url" {
+  name = "/mgmt/release/slack/webhook"
+}
+
 module "global_parameters" {
   source = "./tdr-configurations/terraform"
 }
@@ -418,4 +426,24 @@ module "github_oidc_provider" {
   thumbprint  = "6938fd4d98bab03faadb97b34396831e3780aea1"
   url         = "https://token.actions.githubusercontent.com"
   common_tags = local.common_tags
+}
+
+module "github_transfer_frontend_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-transfer-frontend"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+  }
+}
+
+module "github_consignment_api_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-consignment-api"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+  }
 }
