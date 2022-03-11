@@ -35,6 +35,7 @@
         "arn:aws:iam::${account_id}:policy/TDRExport*",
         "arn:aws:iam::${account_id}:policy/TDRFileFormat*",
         "arn:aws:iam::${account_id}:policy/TDRGithubActions*",
+        "arn:aws:iam::${account_id}:policy/TDRGitHubECSUpdatePolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRKeycloakECSTaskPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRKeycloakFlowlogPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRLogData${title(environment)}",
