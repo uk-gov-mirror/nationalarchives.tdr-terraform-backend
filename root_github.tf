@@ -75,3 +75,12 @@ module "github_e2e_tests_repository" {
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
+
+module "github_checksum_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-checksum"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+  }
+}
