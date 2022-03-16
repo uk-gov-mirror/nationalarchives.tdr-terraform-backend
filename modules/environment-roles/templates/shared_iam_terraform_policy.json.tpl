@@ -85,6 +85,7 @@
         "arn:aws:iam::${account_id}:role/TDRLogDataAssumeRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRLogDataCrossAccountRoleMgmt",
         "arn:aws:iam::${account_id}:role/TDRNotificationsLambdaRole${title(environment)}",
+        "arn:aws:iam::${account_id}:role/TDRNotificationsTransformEngineLambdaRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRServiceUnavailableRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRSignCookiesLambdaRole",
         "arn:aws:iam::${account_id}:role/TDRSignedCookiesAPICloudwatchRole${title(environment)}",
