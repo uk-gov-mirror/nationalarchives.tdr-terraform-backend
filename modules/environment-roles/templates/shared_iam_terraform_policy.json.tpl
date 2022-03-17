@@ -41,6 +41,7 @@
         "arn:aws:iam::${account_id}:policy/TDRLogData${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRLogDataLambdaBase${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRNotificationsLambdaPolicy${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRNotificationsTransformEngineLambdaPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRServiceUnavailablePolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRSignCookiesLambdaPolicy",
         "arn:aws:iam::${account_id}:policy/TDRSignedCookiesAPICloudwatchPolicy${title(environment)}",

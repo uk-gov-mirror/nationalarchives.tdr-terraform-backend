@@ -64,10 +64,12 @@ run from a development machine.
   * These credentials will be used to create the Terraform backend and set up the individual Terraform environments with IAM roles that will allow Terraform to create the AWS resources in that TDR environment.
   * See instructions here: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
 
-3. Run the following command to ensure Terraform uses the correct credentials:
+3. Run the following command to ensure Terraform uses the correct credentials and environment variables:
 
    ```
-   [environment-roles] $ export AWS_PROFILE=management
+   [location of project] $ export AWS_PROFILE=management
+   [location of project] $ export export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github/jenkins-api-key]
+   [location of project] $ export export GITHUB_OWNER=nationalarchives
    ```
    
 4. From the root of the project run Terraform in the ***default*** Terraform workspace:
