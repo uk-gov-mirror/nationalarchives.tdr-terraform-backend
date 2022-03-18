@@ -85,3 +85,82 @@ module "github_checksum_repository" {
     WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
   }
 }
+
+module "github_terraform_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-terraform-environments"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
+
+module "github_cloudwatch_terraform_plan_outputs_intg" {
+  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-plan-outputs-intg"
+}
+
+module "github_cloudwatch_terraform_plan_outputs_staging" {
+  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-plan-outputs-staging"
+}
+
+module "github_cloudwatch_terraform_plan_outputs_prod" {
+  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-plan-outputs-prod"
+}
+
+module "github_cloudwatch_terraform_plan_policy" {
+  source        = "./tdr-terraform-modules/iam_policy"
+  name          = "TDRGithubCloudwatchTerraformPlanPolicy"
+  policy_string = templatefile("${path.module}/templates/iam_policy/github_cloudwatch_policy.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value })
+}
+
+module "github_terraform_assume_role_intg" {
+  source             = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-terraform*" })
+  common_tags        = local.common_tags
+  name               = "TDRGithubTerraformAssumeRoleIntg"
+  policy_attachments = {
+    terraform_ecs_policy_arn        = module.intg_specific_permissions.terraform_ecs_policy_arn
+    access_terraform_state_arn      = module.intg_specific_permissions.access_terraform_state_arn
+    read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+    terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+    terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+    cloudfront_policy               = module.github_cloudwatch_terraform_plan_policy.policy_arn
+  }
+}
+
+module "github_terraform_assume_role_staging" {
+  source             = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-terraform*" })
+  common_tags        = local.common_tags
+  name               = "TDRGithubTerraformAssumeRoleStaging"
+  policy_attachments = {
+    terraform_ecs_policy_arn        = module.staging_specific_permissions.terraform_ecs_policy_arn
+    access_terraform_state_arn      = module.staging_specific_permissions.access_terraform_state_arn
+    read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+    terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+    terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+    cloudfront_policy               = module.github_cloudwatch_terraform_plan_policy.policy_arn
+  }
+}
+
+module "github_terraform_assume_role_prod" {
+  source             = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-terraform*" })
+  common_tags        = local.common_tags
+  name               = "TDRGithubTerraformAssumeRoleProd"
+  policy_attachments = {
+    terraform_ecs_policy_arn        = module.prod_specific_permissions.terraform_ecs_policy_arn
+    access_terraform_state_arn      = module.prod_specific_permissions.access_terraform_state_arn
+    read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+    terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+    terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+    cloudfront_policy               = module.github_cloudwatch_terraform_plan_policy.policy_arn
+  }
+}
