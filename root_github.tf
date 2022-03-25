@@ -85,3 +85,14 @@ module "github_checksum_repository" {
     WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
   }
 }
+
+module "github_actions_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-github-actions"
+  secrets = {
+    GPG_KEY_ID      = data.aws_ssm_parameter.gpg_key_id.value
+    GPG_PASSPHRASE  = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY = data.aws_ssm_parameter.gpg_key.value
+    WORKFLOW_PAT    = data.aws_ssm_parameter.workflow_pat.value
+  }
+}

@@ -29,3 +29,15 @@ data "aws_ssm_parameter" "workflow_pat" {
 data "aws_ssm_parameter" "slack_webhook_url" {
   name = "/mgmt/release/slack/webhook"
 }
+
+data "aws_ssm_parameter" "gpg_passphrase" {
+  name = "	/mgmt/github/gpg/passphrase"
+}
+
+data "aws_ssm_parameter" "gpg_key" {
+  name = "	/mgmt/github/gpg/key"
+}
+
+data "aws_ssm_parameter" "gpg_key_id" {
+  name = "	/mgmt/github/gpg/id"
+}
