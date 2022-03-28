@@ -31,13 +31,13 @@ data "aws_ssm_parameter" "slack_webhook_url" {
 }
 
 data "aws_ssm_parameter" "gpg_passphrase" {
-  name = "	/mgmt/github/gpg/passphrase"
+  name = "/mgmt/github/gpg/passphrase"
 }
 
 data "aws_ssm_parameter" "gpg_key" {
-  name = "	/mgmt/github/gpg/key"
+  name = "/mgmt/github/gpg/key"
 }
 
 data "aws_ssm_parameter" "gpg_key_id" {
-  name = "	/mgmt/github/gpg/id"
+  name = "/mgmt/github/gpg/id"
 }
