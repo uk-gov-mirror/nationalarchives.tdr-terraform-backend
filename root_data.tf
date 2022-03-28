@@ -35,17 +35,17 @@ data "aws_ssm_parameter" "npm_token" {
 }
 
 data "aws_ssm_parameter" "gpg_passphrase" {
-  name = "	/mgmt/github/gpg/passphrase"
+  name = "/mgmt/github/gpg/passphrase"
 }
 
 data "aws_ssm_parameter" "gpg_key" {
-  name = "	/mgmt/github/gpg/key"
+  name = "/mgmt/github/gpg/key"
 }
 
 data "aws_ssm_parameter" "sonatype_username" {
-  name = "	/mgmt/sonatype/username"
+  name = "/mgmt/sonatype/username"
 }
 
 data "aws_ssm_parameter" "sonatype_password" {
-  name = "	/mgmt/sonatype/password"
+  name = "/mgmt/sonatype/password"
 }

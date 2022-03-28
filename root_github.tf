@@ -86,7 +86,7 @@ module "github_checksum_repository" {
   }
 }
 
-module "github_generated_grapqhl_environment" {
+module "github_generated_graphql_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-generated-graphql"
   secrets = {
