@@ -42,6 +42,10 @@ data "aws_ssm_parameter" "gpg_key" {
   name = "/mgmt/github/gpg/key"
 }
 
+data "aws_ssm_parameter" "gpg_key_id" {
+  name = "/mgmt/github/gpg/id"
+}
+
 data "aws_ssm_parameter" "sonatype_username" {
   name = "/mgmt/sonatype/username"
 }
