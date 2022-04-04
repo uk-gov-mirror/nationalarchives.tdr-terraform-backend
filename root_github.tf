@@ -174,3 +174,81 @@ module "github_terraform_assume_role_prod" {
     cloudfront_policy               = module.github_cloudwatch_terraform_plan_policy.policy_arn
   }
 }
+
+module "github_auth_utils_environment" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-auth-utils"
+  secrets = {
+    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
+    SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
+    SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
+  }
+}
+
+module "github_actions_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-github-actions"
+  secrets = {
+    GPG_KEY_ID      = data.aws_ssm_parameter.gpg_key_id.value
+    GPG_PASSPHRASE  = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY = data.aws_ssm_parameter.gpg_key.value
+    WORKFLOW_PAT    = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
+
+module "github_generated_graphql_environment" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-generated-graphql"
+  secrets = {
+    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    NPM_TOKEN         = data.aws_ssm_parameter.npm_token.value
+    SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
+    SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
+    SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
+  }
+}
+
+module "github_graphql_client_environment" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-graphql-client"
+  secrets = {
+    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
+    SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
+    SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
+  }
+}
+
+module "github_db_migration_environment" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-consignment-api-data"
+  secrets = {
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
+    SONATYPE_USERNAME  = data.aws_ssm_parameter.sonatype_username.value
+    SONATYPE_PASSWORD  = data.aws_ssm_parameter.sonatype_password.value
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+  }
+}
+
+module "github_aws_utils_environment" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-aws-utils"
+  secrets = {
+    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
+    SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
+    SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
+  }
+}
