@@ -106,6 +106,15 @@ module "github_terraform_modules_repository" {
   }
 }
 
+module "github_terraform_backend_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-terraform-backend"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
+
 module "github_cloudwatch_terraform_plan_outputs_intg" {
   source      = "../tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
