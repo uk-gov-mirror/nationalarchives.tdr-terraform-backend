@@ -116,19 +116,19 @@ module "github_terraform_backend_repository" {
 }
 
 module "github_cloudwatch_terraform_plan_outputs_intg" {
-  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
   name        = "terraform-plan-outputs-intg"
 }
 
 module "github_cloudwatch_terraform_plan_outputs_staging" {
-  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
   name        = "terraform-plan-outputs-staging"
 }
 
 module "github_cloudwatch_terraform_plan_outputs_prod" {
-  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
   name        = "terraform-plan-outputs-prod"
 }
