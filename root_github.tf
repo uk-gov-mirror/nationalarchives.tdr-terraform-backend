@@ -261,3 +261,13 @@ module "github_aws_utils_environment" {
     SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
   }
 }
+
+module "github_transfer_frontend_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-auth-server"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+  }
+}
