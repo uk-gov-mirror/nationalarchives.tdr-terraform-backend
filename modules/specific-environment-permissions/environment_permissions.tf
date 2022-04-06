@@ -156,7 +156,8 @@ data "aws_iam_policy_document" "write_terraform_state_bucket" {
     actions = ["s3:GetObject", "s3:PutObject"]
     resources = [
       "${var.terraform_state_bucket}/env:/${var.tdr_environment}/*",
-      "${var.terraform_scripts_state_bucket}/env:/${var.tdr_environment}/*"
+      "${var.terraform_scripts_state_bucket}/env:/${var.tdr_environment}/*",
+      "${var.terraform_backend_state_bucket}/*"
     ]
   }
 }
