@@ -23,6 +23,14 @@ variable "terraform_scripts_state_lock" {
   type        = string
 }
 
+variable "terraform_backend_state_bucket" {
+  description = "S3 bucket used for the backend state"
+}
+
+variable "terraform_backend_state_lock" {
+  description = "DynamoDb table controlling the backend terraform state lock"
+}
+
 variable "release_bucket_arn" {
   description = "The bucket arn for release artefacts"
   type        = string
