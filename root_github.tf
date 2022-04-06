@@ -262,7 +262,7 @@ module "github_aws_utils_environment" {
   }
 }
 
-module "github_transfer_frontend_repository" {
+module "github_auth_server_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-auth-server"
   secrets = {
