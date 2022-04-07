@@ -1,4 +1,6 @@
 locals {
+  backend_state_lock   = "tdr-bootstrap-terraform-state-lock"
+  backend_state_bucket = "tdr-bootstrap-terraform-state"
   common_tags = tomap(
     {
       "Owner"           = "TDR Backend",
@@ -139,6 +141,8 @@ module "common_permissions" {
   terraform_state_bucket         = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock           = module.terraform_state_lock.terraform_state_lock_arn
   terraform_scripts_state_lock   = module.terraform_state_lock.terraform_scripts_state_lock_arn
+  terraform_backend_state_bucket = data.aws_s3_bucket.state_bucket.arn
+  terraform_backend_state_lock   = data.aws_dynamodb_table.state_lock_table.arn
   release_bucket_arn             = module.release_artefacts_s3.s3_bucket_arn
   staging_bucket_arn             = module.staging_artefacts_s3.s3_bucket_arn
   terraform_scripts_state_bucket = module.terraform_state.terraform_scripts_state_bucket_arn
@@ -160,6 +164,7 @@ module "intg_specific_permissions" {
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
   custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
+  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
 }
 
 module "staging_specific_permissions" {
@@ -175,6 +180,7 @@ module "staging_specific_permissions" {
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
   custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
+  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
 }
 
 module "prod_specific_permissions" {
@@ -190,6 +196,7 @@ module "prod_specific_permissions" {
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
   custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
+  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
 }
 
 module "sbox_specific_permissions" {
@@ -207,6 +214,7 @@ module "sbox_specific_permissions" {
   terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
   jenkins_publish_policy_arn      = module.common_permissions.jenkins_publish_policy_arn
   add_ssm_policy                  = true
+  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
 }
 
 //Set up Jenkins permissions

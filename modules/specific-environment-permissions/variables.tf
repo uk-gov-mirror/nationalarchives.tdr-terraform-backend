@@ -63,3 +63,7 @@ variable "add_ssm_policy" {
   description = "Whether to add an SSM read only policy to the role"
   default     = false
 }
+
+variable "terraform_backend_state_bucket" {
+  description = "S3 bucket storing the terraform state for the backend terraform project"
+}

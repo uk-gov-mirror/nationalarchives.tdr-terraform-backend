@@ -116,19 +116,19 @@ module "github_terraform_backend_repository" {
 }
 
 module "github_cloudwatch_terraform_plan_outputs_intg" {
-  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
   name        = "terraform-plan-outputs-intg"
 }
 
 module "github_cloudwatch_terraform_plan_outputs_staging" {
-  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
   name        = "terraform-plan-outputs-staging"
 }
 
 module "github_cloudwatch_terraform_plan_outputs_prod" {
-  source      = "../tdr-terraform-modules/cloudwatch_logs"
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
   common_tags = local.common_tags
   name        = "terraform-plan-outputs-prod"
 }
@@ -259,5 +259,15 @@ module "github_aws_utils_environment" {
     GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
     SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
     SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
+  }
+}
+
+module "github_auth_server_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-auth-server"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }

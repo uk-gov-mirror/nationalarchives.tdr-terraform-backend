@@ -53,3 +53,11 @@ data "aws_ssm_parameter" "sonatype_username" {
 data "aws_ssm_parameter" "sonatype_password" {
   name = "/mgmt/sonatype/password"
 }
+
+data "aws_s3_bucket" "state_bucket" {
+  bucket = local.backend_state_bucket
+}
+
+data "aws_dynamodb_table" "state_lock_table" {
+  name = local.backend_state_lock
+}

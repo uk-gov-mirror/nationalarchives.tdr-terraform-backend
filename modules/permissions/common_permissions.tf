@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "read_terraform_state_bucket" {
   statement {
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
-    resources = [var.terraform_state_bucket, var.terraform_scripts_state_bucket]
+    resources = [var.terraform_state_bucket, var.terraform_scripts_state_bucket, var.terraform_backend_state_bucket]
   }
 }
 
@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "terraform_state_lock" {
   statement {
     effect    = "Allow"
     actions   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:DeleteItem"]
-    resources = [var.terraform_state_lock, var.terraform_scripts_state_lock]
+    resources = [var.terraform_state_lock, var.terraform_scripts_state_lock, var.terraform_backend_state_lock]
   }
 }
 
