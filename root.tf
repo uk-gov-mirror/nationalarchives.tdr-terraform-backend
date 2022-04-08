@@ -315,6 +315,15 @@ module "ecr_api_data_repository" {
   common_tags      = local.common_tags
 }
 
+module "ecr_update_keycloak_repository" {
+  source           = "./tdr-terraform-modules/ecr"
+  name             = "keycloak-update"
+  image_source_url = "https://github.com/nationalarchives/tdr-auth-server/blob/master/Dockerfile-update"
+  policy_name      = "keycloak_update_policy"
+  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
+  common_tags      = local.common_tags
+}
+
 module "ecr_image_scan_log_group" {
   source      = "./tdr-terraform-modules/cloudwatch_logs"
   name        = "/aws/events/ecr-image-scans"
