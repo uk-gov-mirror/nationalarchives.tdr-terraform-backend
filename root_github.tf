@@ -293,3 +293,19 @@ module "github_antivirus_repository" {
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
+
+module "github_av_rule_checks_policy" {
+  source        = "./tdr-terraform-modules/iam_policy"
+  name          = "TDRGithubAvRuleChecksPolicyMgmt"
+  policy_string = templatefile("${path.module}/templates/iam_policy/github_av_rule_checks.json.tpl", {})
+}
+
+module "github_av_rule_checks" {
+  source             = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-antivirus*" })
+  common_tags        = local.common_tags
+  name               = "TDRGithubAvRuleChecksMgmt"
+  policy_attachments = {
+    av_rule_check_policy = module.github_av_rule_checks_policy.policy_arn
+  }
+}
