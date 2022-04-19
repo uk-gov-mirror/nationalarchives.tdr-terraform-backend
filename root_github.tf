@@ -309,3 +309,13 @@ module "github_antivirus_rule_checks" {
     av_rule_check_policy = module.github_antivirus_rule_checks_policy.policy_arn
   }
 }
+
+module "github_backend_checks_performance_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-backend-check-performance"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+  }
+}
