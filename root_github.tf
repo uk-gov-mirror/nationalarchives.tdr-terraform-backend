@@ -306,6 +306,6 @@ module "github_antivirus_rule_checks" {
   common_tags        = local.common_tags
   name               = "TDRGithubAvRuleChecksMgmt"
   policy_attachments = {
-    av_rule_check_policy = module.github_av_rule_checks_policy.policy_arn
+    av_rule_check_policy = module.github_antivirus_rule_checks_policy.policy_arn
   }
 }
