@@ -279,5 +279,17 @@ module "github_consignment_export_repository" {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
+  }
+}
+
+module "github_antivirus_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-antivirus"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
