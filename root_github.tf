@@ -21,6 +21,12 @@ module "github_ecr_policy" {
   policy_string = templatefile("${path.module}/templates/iam_policy/github_ecr_policy.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value })
 }
 
+module "github_ecr_policy_sbox" {
+  source        = "./tdr-terraform-modules/iam_policy"
+  name          = "TDRGithubECRPolicySbox"
+  policy_string = templatefile("${path.module}/templates/iam_policy/github_ecr_policy.json.tpl", { account_id = data.aws_ssm_parameter.sandbox_account_number.value })
+}
+
 module "github_actions_code_bucket_policy" {
   source        = "./tdr-terraform-modules/iam_policy"
   name          = "TDRGithubActionsBackendCodeMgmt"
@@ -184,6 +190,23 @@ module "github_terraform_assume_role_prod" {
   }
 }
 
+module "github_terraform_assume_role_sbox" {
+  source             = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
+  common_tags        = local.common_tags
+  name               = "TDRGithubTerraformAssumeRoleSbox"
+  policy_attachments = {
+    terraform_ecs_policy_arn        = module.sbox_specific_permissions.terraform_ecs_policy_arn
+    access_terraform_state_arn      = module.sbox_specific_permissions.access_terraform_state_arn
+    read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
+    terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
+    terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
+    cloudfront_policy               = module.github_cloudwatch_terraform_plan_policy.policy_arn
+    ecr_mgmt_policy                 = module.github_ecr_policy.policy_arn
+    ecr_sbox_policy                 = module.github_ecr_policy_sbox.policy_arn
+  }
+}
+
 module "github_auth_utils_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-auth-utils"
@@ -315,6 +338,7 @@ module "github_backend_checks_performance_repository" {
   repository_name = "nationalarchives/tdr-backend-check-performance"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SANDBOX_ACCOUNT    = data.aws_ssm_parameter.sandbox_account_number.value
     WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
