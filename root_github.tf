@@ -141,7 +141,7 @@ module "github_cloudwatch_terraform_plan_policy" {
 
 module "github_terraform_assume_role_intg" {
   source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-terraform*" })
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
   common_tags        = local.common_tags
   name               = "TDRGithubTerraformAssumeRoleIntg"
   policy_attachments = {
