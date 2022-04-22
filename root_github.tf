@@ -204,6 +204,7 @@ module "github_terraform_assume_role_sbox" {
     cloudfront_policy               = module.github_cloudwatch_terraform_plan_policy.policy_arn
     ecr_mgmt_policy                 = module.github_ecr_policy.policy_arn
     ecr_sbox_policy                 = module.github_ecr_policy_sbox.policy_arn
+    ssm_policy                      = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
   }
 }
 
