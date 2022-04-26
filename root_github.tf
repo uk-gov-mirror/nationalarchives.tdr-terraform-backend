@@ -345,7 +345,7 @@ module "github_backend_checks_performance_repository" {
   }
 }
 
-module "github_antivirus_repository" {
+module "github_scripts_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-scripts"
   secrets = {
