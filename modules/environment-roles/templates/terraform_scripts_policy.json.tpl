@@ -30,6 +30,7 @@
         "iam:PassRole",
         "iam:RemoveRoleFromInstanceProfile",
         "iam:TagRole",
+        "iam:UpdateAssumeRolePolicy",
         "kms:CreateAlias",
         "kms:CreateGrant",
         "kms:Decrypt",
