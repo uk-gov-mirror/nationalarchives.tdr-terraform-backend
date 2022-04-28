@@ -243,19 +243,19 @@ resource "aws_iam_role_policy_attachment" "jenkins_export_s3_attach" {
 }
 
 
-resource "aws_iam_role" "jenkins_describe_ec2_role" {
-  name               = "TDRJenkinsDescribeEC2Role${title(var.tdr_environment)}"
-  assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+resource "aws_iam_role" "github_actions_describe_ec2_role" {
+  name               = "TDRGithubActionsDescribeEC2Role${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("${path.module}/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
 }
 
-resource "aws_iam_policy" "jenkins_describe_ec2_policy" {
-  name   = "TDRJenkinsDescribeEC2Policy${title(var.tdr_environment)}"
+resource "aws_iam_policy" "github_actions_describe_ec2_policy" {
+  name   = "TDRGithubActionsDescribeEC2Policy${title(var.tdr_environment)}"
   policy = templatefile("${path.module}/templates/run_ec2_describe.json.tpl", {})
 }
 
-resource "aws_iam_role_policy_attachment" "jenkins_describe_ec2_attach" {
-  policy_arn = aws_iam_policy.jenkins_describe_ec2_policy.arn
-  role       = aws_iam_role.jenkins_describe_ec2_role.id
+resource "aws_iam_role_policy_attachment" "github_actions_describe_ec2_attach" {
+  policy_arn = aws_iam_policy.github_actions_describe_ec2_policy.arn
+  role       = aws_iam_role.github_actions_describe_ec2_role.id
 }
 
 resource "aws_iam_role" "service_unavailable_deploy_role" {
