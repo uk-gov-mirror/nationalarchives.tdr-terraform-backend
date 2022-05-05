@@ -185,8 +185,26 @@ resource "aws_iam_role" "custodian_deploy_role" {
   )
 }
 
+resource "aws_iam_role" "custodian_github_actions_deploy_role" {
+  name               = "TDRGithubActionsCustodianDeployRole${title(var.tdr_environment)}"
+  description        = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment from GitHub actions"
+  assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
+
+  tags = merge(
+    var.common_tags,
+    tomap(
+      { "Name" = "${title(var.tdr_environment)} Custodian Role" }
+    )
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "custodian_github_actions_deploy_policy_attach" {
+  policy_arn = aws_iam_policy.custodian_deploy_policy.arn
+  role       = aws_iam_role.custodian_github_actions_deploy_role.name
+}
+
 resource "aws_iam_policy" "custodian_deploy_policy" {
-  policy = templatefile("${path.module}/templates/custodian_policy.json.tpl", { environment = title(var.tdr_environment), account_id = data.aws_caller_identity.current.account_id })
+  policy = templatefile("${path.module}/templates/custodian_policy.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
   name   = "TDRCustodianDeployPolicy${title(var.tdr_environment)}"
 }
 

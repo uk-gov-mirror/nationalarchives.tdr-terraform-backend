@@ -17,7 +17,7 @@
       ],
       "Resource" : [
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/slack/webhook"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/release/slack/webhook"
       ]
     },
     {

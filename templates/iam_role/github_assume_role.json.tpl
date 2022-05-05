@@ -11,8 +11,11 @@
         "StringEquals": {
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
-        "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:nationalarchives/${repo_name}"
+        "ForAnyValue:StringLike": {
+          "token.actions.githubusercontent.com:sub": [
+            "repo:nationalarchives/${repo_name}",
+            "repo:nationalarchives/tna-custodian*"
+          ]
         }
       }
     }
