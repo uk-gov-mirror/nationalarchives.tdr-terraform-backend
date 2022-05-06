@@ -425,3 +425,13 @@ module "github_dev_documentation_internal_repository" {
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
+
+module "github_download_files_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-download-files"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
