@@ -458,7 +458,7 @@ module "github_mgmt_lambda_role" {
   common_tags        = local.common_tags
   name               = "TDRGithubLambdaRoleMgmt"
   policy_attachments = {
-    mgmt_lambda_policy    = module.github_mgmt_lambda_policy.policy_arn
+    mgmt_lambda_policy = module.github_mgmt_lambda_policy.policy_arn
   }
 }
 
