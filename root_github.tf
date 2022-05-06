@@ -388,3 +388,24 @@ module "github_export_authoriser_repository" {
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
+
+module "github_create_db_users_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-create-db-users"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+  }
+}
+
+module "github_tna_custodian_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tna-custodian"
+  secrets = {
+    MANAGEMENT_ACCOUNT     = data.aws_ssm_parameter.mgmt_account_number.value
+    WORKFLOW_PAT           = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK          = data.aws_ssm_parameter.slack_webhook_url.value
+    SANDBOX_ACCOUNT_NUMBER = data.aws_ssm_parameter.sandbox_account_number.value
+  }
+}

@@ -25,6 +25,7 @@
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-download-files-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-database-migrations-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-keycloak-db-user-${environment}",
+        "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-keycloak-db-user-new-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-db-users-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-create-bastion-user-${environment}",
         "arn:aws:lambda:eu-west-2:${account_id}:function:tdr-checksum-${environment}",
