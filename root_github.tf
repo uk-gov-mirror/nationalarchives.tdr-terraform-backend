@@ -414,7 +414,7 @@ module "github_dev_documentation_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-dev-documentation"
   secrets = {
-    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    SLACK_WEBHOOK = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
 
@@ -422,7 +422,7 @@ module "github_dev_documentation_internal_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-dev-documentation-internal"
   secrets = {
-    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    SLACK_WEBHOOK = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
 
