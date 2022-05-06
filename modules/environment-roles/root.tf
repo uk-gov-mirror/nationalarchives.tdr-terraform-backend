@@ -185,7 +185,7 @@ resource "aws_iam_role" "custodian_deploy_role" {
   )
 }
 
-resource "aws_iam_role" "custodian_github_actions_deploy_role" {
+resource "aws_iam_role" "github_actions_custodian_deploy_role" {
   name               = "TDRGithubActionsCustodianDeployRole${title(var.tdr_environment)}"
   description        = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment from GitHub actions"
   assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
@@ -198,9 +198,9 @@ resource "aws_iam_role" "custodian_github_actions_deploy_role" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "custodian_github_actions_deploy_policy_attach" {
+resource "aws_iam_role_policy_attachment" "github_actions_custodian_deploy_policy_attach" {
   policy_arn = aws_iam_policy.custodian_deploy_policy.arn
-  role       = aws_iam_role.custodian_github_actions_deploy_role.name
+  role       = aws_iam_role.github_actions_custodian_deploy_role.name
 }
 
 resource "aws_iam_policy" "custodian_deploy_policy" {
