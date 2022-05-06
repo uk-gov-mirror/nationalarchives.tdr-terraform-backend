@@ -454,7 +454,7 @@ module "github_mgmt_lambda_policy" {
 
 module "github_mgmt_lambda_role" {
   source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-e2e-tests:*" })
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
   common_tags        = local.common_tags
   name               = "TDRGithubLambdaRoleMgmt"
   policy_attachments = {
