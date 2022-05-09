@@ -468,3 +468,13 @@ module "github_ecr_scan_environment" {
   repository_name = "nationalarchives/tdr-ecr-scan"
   team_slug       = "transfer-digital-records-admins"
 }
+
+module "github_file_format_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-file-format"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
