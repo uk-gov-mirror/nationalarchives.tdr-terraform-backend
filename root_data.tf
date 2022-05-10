@@ -30,6 +30,10 @@ data "aws_ssm_parameter" "slack_webhook_url" {
   name = "/mgmt/release/slack/webhook"
 }
 
+data "aws_ssm_parameter" "slack_pr_monitor_url" {
+  name = "/mgmt/pr_monitor/slack/webhook"
+}
+
 data "aws_ssm_parameter" "npm_token" {
   name = "/mgmt/npm_token"
 }
