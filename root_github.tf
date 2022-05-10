@@ -540,7 +540,7 @@ module "github_pr_monitor_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/pull-request-monitor"
   secrets = {
-    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_pr_monitor_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    SLACK_WEBHOOK = data.aws_ssm_parameter.slack_pr_monitor_url.value
+    WORKFLOW_PAT  = data.aws_ssm_parameter.workflow_pat.value
   }
 }
