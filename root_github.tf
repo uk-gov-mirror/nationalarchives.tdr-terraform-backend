@@ -168,7 +168,7 @@ module "github_terraform_assume_role_intg" {
 
 module "github_terraform_assume_role_staging" {
   source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-terraform*" })
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
   common_tags        = local.common_tags
   name               = "TDRGithubTerraformAssumeRoleStaging"
   policy_attachments = {
@@ -183,7 +183,7 @@ module "github_terraform_assume_role_staging" {
 
 module "github_terraform_assume_role_prod" {
   source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-terraform*" })
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
   common_tags        = local.common_tags
   name               = "TDRGithubTerraformAssumeRoleProd"
   policy_attachments = {
