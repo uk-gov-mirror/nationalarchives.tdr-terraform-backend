@@ -2,7 +2,7 @@ resource "aws_iam_role" "terraform_role" {
   name        = "TDRTerraformRole${title(var.tdr_environment)}"
   description = "Role to allow Terraform to create resources for the ${title(var.tdr_environment)} environment"
   assume_role_policy = templatefile(
-  "./modules/grafana/templates/ecs_assume_role_policy.json.tpl", {})
+  "./modules/grafana/templates/github_assume_role.json.tpl", { account_id = var.tdr_mgmt_account_number })
 
   tags = merge(
     var.common_tags,

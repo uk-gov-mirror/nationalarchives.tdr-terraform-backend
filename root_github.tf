@@ -139,6 +139,12 @@ module "github_cloudwatch_terraform_plan_outputs_prod" {
   name        = "terraform-plan-outputs-prod"
 }
 
+module "github_cloudwatch_terraform_plan_outputs_mgmt" {
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-plan-outputs-mgmt"
+}
+
 module "github_cloudwatch_terraform_plan_policy" {
   source        = "./tdr-terraform-modules/iam_policy"
   name          = "TDRGithubCloudwatchTerraformPlanPolicy"
@@ -489,4 +495,22 @@ module "github_file_metadata_repository" {
     GPG_PASSPHRASE  = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY = data.aws_ssm_parameter.gpg_key.value
   }
+}
+
+module "github_grafana_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-grafana"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
+
+module "github_grafana_environment" {
+  source                = "./tdr-terraform-modules/github_environments"
+  environment           = "mgmt"
+  repository_name       = "nationalarchives/tdr-grafana"
+  team_slug             = "transfer-digital-records-admins"
+  integration_team_slug = ["transfer-digital-records"]
 }
