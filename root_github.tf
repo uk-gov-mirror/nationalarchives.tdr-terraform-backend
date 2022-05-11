@@ -555,7 +555,7 @@ module "github_service_unavailable_repository" {
   }
 }
 
-module "github_service_unavailable_repository" {
+module "github_sign_cookies_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-sign-cookies"
   secrets = {
