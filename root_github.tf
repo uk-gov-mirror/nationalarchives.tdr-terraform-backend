@@ -462,7 +462,7 @@ module "github_mgmt_lambda_role" {
   source             = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
   common_tags        = local.common_tags
-  name               = "TDRGithubLambdaRoleMgmt"
+  name               = "TDRGithubActionsDeployLambdaMgmt"
   policy_attachments = {
     mgmt_lambda_policy = module.github_mgmt_lambda_policy.policy_arn
   }
@@ -513,4 +513,25 @@ module "github_grafana_environment" {
   repository_name       = "nationalarchives/tdr-grafana"
   team_slug             = "transfer-digital-records-admins"
   integration_team_slug = ["transfer-digital-records"]
+}
+
+module "github_notifications_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-notifications"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
+
+module "github_notifications_mgmt_environment" {
+  source                = "./tdr-terraform-modules/github_environments"
+  environment           = "mgmt"
+  repository_name       = "nationalarchives/tdr-notifications"
+  team_slug             = "transfer-digital-records-admins"
+  integration_team_slug = ["transfer-digital-records"]
+  secrets = {
+    ACCOUNT_NUMBER = data.aws_ssm_parameter.mgmt_account_number.value
+  }
 }
