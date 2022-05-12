@@ -554,3 +554,13 @@ module "github_service_unavailable_repository" {
     WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
   }
 }
+
+module "github_sign_cookies_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-sign-cookies"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+  }
+}
