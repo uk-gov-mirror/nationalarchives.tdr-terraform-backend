@@ -281,6 +281,21 @@ resource "aws_iam_role" "service_unavailable_deploy_role" {
   assume_role_policy = templatefile("${path.module}/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
 }
 
+resource "aws_iam_role" "github_service_unavailable_deploy_role" {
+  name               = "TDRGithubActionsDeployServiceUnavailableRole${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
+}
+
+resource "aws_iam_policy" "github_service_unavailable_deploy_policy" {
+  name   = "TDRGithubActionsDeployServiceUnavailablePolicy${title(var.tdr_environment)}"
+  policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", {})
+}
+
+resource "aws_iam_role_policy_attachment" "github_service_unavailable_attach" {
+  policy_arn = aws_iam_policy.github_service_unavailable_deploy_policy.arn
+  role       = aws_iam_role.github_service_unavailable_deploy_role.id
+}
+
 resource "aws_iam_policy" "service_unavailable_deploy_policy" {
   name   = "TDRJenkinsDeployServiceUnavailablePolicy${title(var.tdr_environment)}"
   policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", {})
