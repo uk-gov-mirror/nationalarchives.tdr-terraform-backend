@@ -5,8 +5,8 @@
       "Sid": "ServiceUnavailableDeploy",
       "Effect": "Allow",
       "Action": [
-        "elasticloadbalancing:DescribeLoadBalancers",
         "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeLoadBalancers",
         "elasticloadbalancing:DescribeTargetGroups",
         "elasticloadbalancing:ModifyListener"
       ],
