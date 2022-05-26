@@ -362,6 +362,7 @@ module "github_scripts_repository" {
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
+    SLACK_BOT_TOKEN    = data.aws_ssm_parameter.slack_bot_token.value
   }
 }
 
@@ -555,9 +556,9 @@ module "github_service_unavailable_repository" {
   }
 }
 
-module "github_sign_cookies_repository" {
+module "github_signed_cookies_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
-  repository_name = "nationalarchives/tdr-sign-cookies"
+  repository_name = "nationalarchives/tdr-signed-cookies"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
