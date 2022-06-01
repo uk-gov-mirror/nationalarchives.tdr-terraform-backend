@@ -42,6 +42,10 @@ data "aws_ssm_parameter" "gpg_passphrase" {
   name = "/mgmt/github/gpg/passphrase"
 }
 
+data "aws_ssm_parameter" "slack_bot_token" {
+  name = "/mgmt/slack/bot"
+}
+
 data "aws_ssm_parameter" "gpg_key" {
   name = "/mgmt/github/gpg/key"
 }
