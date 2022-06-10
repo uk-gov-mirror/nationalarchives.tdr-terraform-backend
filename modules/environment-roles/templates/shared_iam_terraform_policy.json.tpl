@@ -52,6 +52,7 @@
         "arn:aws:iam::${account_id}:policy/TDRUpdateWAFAndSecurityGroupsPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRVpcFlowlogPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
+        "arn:aws:iam::${account_id}:policy/TDRReporting*",
         "arn:aws:iam::${account_id}:role/aws-service-role/*",
         "arn:aws:iam::${account_id}:role/BastionEC2Role${title(environment)}",
         "arn:aws:iam::${account_id}:role/consignmentapi_ecs_execution_role_${environment}",
