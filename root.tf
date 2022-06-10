@@ -347,6 +347,16 @@ module "notification_lambda" {
   event_rule_arns               = [module.ecr_image_scan_event.event_arn, "arn:aws:events:eu-west-2:${data.aws_ssm_parameter.mgmt_account_number.value}:rule/jenkins-backup-maintenance-window"]
   sns_topic_arns                = []
   muted_scan_alerts             = module.global_parameters.muted_ecr_scan_alerts
+  kms_key_arn                   = module.mgmt_encryption_key.kms_key_arn
+}
+
+module "mgmt_encryption_key" {
+  source      = "./tdr-terraform-modules/kms"
+  project     = "tdr"
+  function    = "encryption"
+  environment = "mgmt"
+  common_tags = local.common_tags
+  key_policy  = "cloudwatch"
 }
 
 module "periodic_ecr_image_scan_lambda" {
