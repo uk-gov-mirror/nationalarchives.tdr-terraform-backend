@@ -97,6 +97,7 @@
         "arn:aws:iam::${account_id}:role/TDRUpdateWAFAndSecurityGroupsRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRYaraAvRole",
         "arn:aws:iam::${account_id}:role/TDRGithubActions*"
+        "arn:aws:iam::${account_id}:role/TDRReporting*",
       ]
     }
   ]
