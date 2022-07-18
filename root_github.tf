@@ -359,7 +359,7 @@ module "github_scripts_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
-    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_notifications_webhook_url.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
     SLACK_BOT_TOKEN    = data.aws_ssm_parameter.slack_bot_token.value
