@@ -84,6 +84,7 @@
         "elasticache:*",
         "elasticfilesystem:*",
         "elasticloadbalancing:*",
+        "events:*",
         "glue:*",
         "guardduty:*",
         "iam:ListAccountAliases",
