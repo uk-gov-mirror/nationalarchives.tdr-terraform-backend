@@ -96,6 +96,7 @@
         "arn:aws:iam::${account_id}:role/TDRNotificationsLambdaRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRRotateKeycloakSecretsLambdaRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRServiceUnavailableRole${title(environment)}",
+        "arn:aws:iam::${account_id}:role/TDRShieldResponseTeamRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRSign*",
         "arn:aws:iam::${account_id}:role/TDRUpdateWAFAndSecurityGroupsRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRYaraAvRole",
