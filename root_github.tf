@@ -579,6 +579,7 @@ module "github_signed_cookies_repository" {
 module "github_reporting_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-reporting"
+  collaborators   = module.global_parameters.collaborators
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
