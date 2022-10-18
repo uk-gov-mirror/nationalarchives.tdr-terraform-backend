@@ -1,6 +1,6 @@
 # TDR Terraform Backend
 
-**Important Note**: tdr-terraform-backend uses v1.1.3 of Terraform. Ensure that Terraform v1.1.3 is installed before proceeding.
+**Important Note**: tdr-terraform-backend uses v1.3.2 of Terraform. Ensure that Terraform v1.3.2 is installed before proceeding.
 
 ## Purpose
 
@@ -68,8 +68,8 @@ run from a development machine.
 
    ```
    [location of project] $ export AWS_PROFILE=management
-   [location of project] $ export export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github/jenkins-api-key]
-   [location of project] $ export export GITHUB_OWNER=nationalarchives
+   [location of project] $ export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github/jenkins-api-key]
+   [location of project] $ export GITHUB_OWNER=nationalarchives
    ```
    
 4. From the root of the project run Terraform in the ***default*** Terraform workspace:
