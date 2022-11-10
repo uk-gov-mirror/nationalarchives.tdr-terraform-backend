@@ -22,10 +22,6 @@ data "aws_ssm_parameter" "cost_centre" {
   name = "/mgmt/cost_centre"
 }
 
-data "aws_ssm_parameter" "workflow_pat" {
-  name = "/mgmt/workflow_pat"
-}
-
 data "aws_ssm_parameter" "slack_webhook_url" {
   name = "/mgmt/release/slack/webhook"
 }

@@ -58,7 +58,7 @@ module "github_transfer_frontend_repository" {
   repository_name = "nationalarchives/tdr-transfer-frontend"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -68,7 +68,7 @@ module "github_consignment_api_repository" {
   repository_name = "nationalarchives/tdr-consignment-api"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -88,7 +88,7 @@ module "github_checksum_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -98,7 +98,7 @@ module "github_terraform_environments_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -108,7 +108,7 @@ module "github_terraform_modules_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -117,7 +117,7 @@ module "github_terraform_backend_repository" {
   repository_name = "nationalarchives/tdr-terraform-backend"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -218,7 +218,7 @@ module "github_auth_utils_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-auth-utils"
   secrets = {
-    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT      = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
@@ -234,7 +234,7 @@ module "github_actions_repository" {
     GPG_KEY_ID      = data.aws_ssm_parameter.gpg_key_id.value
     GPG_PASSPHRASE  = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY = data.aws_ssm_parameter.gpg_key.value
-    WORKFLOW_PAT    = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT    = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -242,7 +242,7 @@ module "github_generated_graphql_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-generated-graphql"
   secrets = {
-    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT      = module.common_ssm_parameters.params[local.github_access_token_name].value
     NPM_TOKEN         = data.aws_ssm_parameter.npm_token.value
     SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
@@ -256,7 +256,7 @@ module "github_graphql_client_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-graphql-client"
   secrets = {
-    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT      = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
@@ -269,7 +269,7 @@ module "github_db_migration_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-consignment-api-data"
   secrets = {
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
@@ -283,7 +283,7 @@ module "github_aws_utils_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-aws-utils"
   secrets = {
-    WORKFLOW_PAT      = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT      = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
@@ -297,7 +297,7 @@ module "github_auth_server_repository" {
   repository_name = "nationalarchives/tdr-auth-server"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -307,7 +307,7 @@ module "github_consignment_export_repository" {
   repository_name = "nationalarchives/tdr-consignment-export"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
@@ -319,7 +319,7 @@ module "github_antivirus_repository" {
   repository_name = "nationalarchives/tdr-antivirus"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -346,7 +346,7 @@ module "github_backend_checks_performance_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SANDBOX_ACCOUNT    = data.aws_ssm_parameter.sandbox_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
@@ -358,7 +358,7 @@ module "github_scripts_repository" {
   repository_name = "nationalarchives/tdr-scripts"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_notifications_webhook_url.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
@@ -372,7 +372,7 @@ module "github_aws_accounts_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -381,7 +381,7 @@ module "github_api_update_repository" {
   repository_name = "nationalarchives/tdr-api-update"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -391,7 +391,7 @@ module "github_export_authoriser_repository" {
   repository_name = "nationalarchives/tdr-consignment-export-authoriser"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -401,7 +401,7 @@ module "github_create_db_users_repository" {
   repository_name = "nationalarchives/tdr-create-db-users"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -411,7 +411,7 @@ module "github_export_status_update_repository" {
   repository_name = "nationalarchives/tdr-export-status-update"
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
   }
 }
@@ -421,7 +421,7 @@ module "github_tna_custodian_repository" {
   repository_name = "nationalarchives/tna-custodian"
   secrets = {
     MANAGEMENT_ACCOUNT     = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT           = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT           = module.common_ssm_parameters.params[local.github_access_token_name].value
     SLACK_WEBHOOK          = data.aws_ssm_parameter.slack_webhook_url.value
     SANDBOX_ACCOUNT_NUMBER = data.aws_ssm_parameter.sandbox_account_number.value
   }
@@ -449,7 +449,7 @@ module "github_download_files_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -459,7 +459,7 @@ module "github_ecr_scan_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -492,7 +492,7 @@ module "github_file_format_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -501,7 +501,7 @@ module "github_file_metadata_repository" {
   repository_name = "nationalarchives/tdr-file-metadata"
   secrets = {
     SLACK_WEBHOOK   = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT    = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT    = module.common_ssm_parameters.params[local.github_access_token_name].value
     NPM_TOKEN       = data.aws_ssm_parameter.npm_token.value
     GPG_PASSPHRASE  = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY = data.aws_ssm_parameter.gpg_key.value
@@ -514,7 +514,7 @@ module "github_grafana_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -532,7 +532,7 @@ module "github_notifications_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -552,7 +552,7 @@ module "github_pr_monitor_repository" {
   repository_name = "nationalarchives/pull-request-monitor"
   secrets = {
     SLACK_WEBHOOK = data.aws_ssm_parameter.slack_pr_monitor_url.value
-    WORKFLOW_PAT  = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT  = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -562,7 +562,7 @@ module "github_service_unavailable_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -572,7 +572,7 @@ module "github_signed_cookies_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -583,7 +583,7 @@ module "github_reporting_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
@@ -593,6 +593,15 @@ module "github_rotate_keycloak_secrets_repository" {
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = data.aws_ssm_parameter.workflow_pat.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
+}
+
+module "github_rotate_personal_access_token_event" {
+  source                     = "./tdr-terraform-modules/cloudwatch_events"
+  event_pattern              = "ssm_parameter_policy_action"
+  sns_topic_event_target_arn = toset([module.notifications_topic.sns_arn])
+  rule_name                  = "rotate-github-personal-access-token"
+  rule_description           = "Notify to rotate github personal access token"
+  event_variables            = { parameter_name = local.github_access_token_name, policy_type = "ExpirationNotification" }
 }
