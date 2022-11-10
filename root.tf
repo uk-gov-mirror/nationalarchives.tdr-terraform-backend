@@ -1,7 +1,7 @@
 locals {
   backend_state_lock   = "tdr-bootstrap-terraform-state-lock"
   backend_state_bucket = "tdr-bootstrap-terraform-state"
-  common_tags          = tomap(
+  common_tags = tomap(
     {
       "Owner"           = "TDR Backend",
       "Terraform"       = true,
@@ -13,8 +13,8 @@ locals {
 }
 
 module "common_ssm_parameters" {
-  source            = "./tdr-terraform-modules/ssm_parameter"
-  common_tags       = local.common_tags
+  source      = "./tdr-terraform-modules/ssm_parameter"
+  common_tags = local.common_tags
   random_parameters = [
     {
       name = local.github_access_token_name, description = "The GitHub workflow token", value = "to_be_manually_added", type = "SecureString", tier = "Advanced"
@@ -75,7 +75,7 @@ provider "aws" {
 
 //Set up TDR environment roles to provide permissions for Terraform
 module "intg_environment_roles" {
-  source    = "./modules/environment-roles"
+  source = "./modules/environment-roles"
   providers = {
     aws = aws.intg
   }
@@ -87,7 +87,7 @@ module "intg_environment_roles" {
 }
 
 module "staging_environment_role" {
-  source    = "./modules/environment-roles"
+  source = "./modules/environment-roles"
   providers = {
     aws = aws.staging
   }
@@ -99,7 +99,7 @@ module "staging_environment_role" {
 }
 
 module "prod_environment_role" {
-  source    = "./modules/environment-roles"
+  source = "./modules/environment-roles"
   providers = {
     aws = aws.prod
   }
@@ -112,7 +112,7 @@ module "prod_environment_role" {
 
 //Shared parameters to store in each environment
 module "intg_account_parameters" {
-  source    = "./modules/account-parameters"
+  source = "./modules/account-parameters"
   providers = {
     aws = aws.intg
   }
@@ -122,7 +122,7 @@ module "intg_account_parameters" {
 }
 
 module "staging_prod_account_parameters" {
-  source    = "./modules/account-parameters"
+  source = "./modules/account-parameters"
   providers = {
     aws = aws.prod
   }
