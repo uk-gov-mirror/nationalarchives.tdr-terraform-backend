@@ -607,6 +607,7 @@ module "github_components_repository" {
     NPM_TOKEN          = data.aws_ssm_parameter.npm_token.value
     GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
     GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
+  }
 }
 
 module "github_rotate_personal_access_token_event" {
