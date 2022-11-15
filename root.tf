@@ -9,6 +9,17 @@ locals {
       "CostCentre"      = data.aws_ssm_parameter.cost_centre.value
     }
   )
+  github_access_token_name = "/mgmt/github/access_token"
+}
+
+module "common_ssm_parameters" {
+  source      = "./tdr-terraform-modules/ssm_parameter"
+  common_tags = local.common_tags
+  random_parameters = [
+    {
+      name = local.github_access_token_name, description = "The GitHub workflow token", value = "to_be_manually_added", type = "SecureString", tier = "Advanced"
+    }
+  ]
 }
 
 module "global_parameters" {
@@ -266,8 +277,12 @@ module "ecr_consignment_api_repository" {
   name             = "consignment-api"
   image_source_url = "https://github.com/nationalarchives/tdr-consignment-api/blob/master/Dockerfile"
   policy_name      = "consignment_api_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
-  common_tags      = local.common_tags
+  policy_variables = {
+    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
+    staging_account = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account    = data.aws_ssm_parameter.prod_account_number.value
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_transfer_frontend_repository" {
@@ -275,8 +290,12 @@ module "ecr_transfer_frontend_repository" {
   name             = "transfer-frontend"
   image_source_url = "https://github.com/nationalarchives/tdr-transfer-frontend/blob/master/Dockerfile"
   policy_name      = "transfer_frontend_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
-  common_tags      = local.common_tags
+  policy_variables = {
+    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
+    staging_account = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account    = data.aws_ssm_parameter.prod_account_number.value
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_auth_server_repository" {
@@ -284,8 +303,12 @@ module "ecr_auth_server_repository" {
   name             = "auth-server"
   image_source_url = "https://github.com/nationalarchives/tdr-auth-server/blob/master/Dockerfile"
   policy_name      = "auth_server_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
-  common_tags      = local.common_tags
+  policy_variables = {
+    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
+    staging_account = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account    = data.aws_ssm_parameter.prod_account_number.value
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_file_format_build_repository" {
@@ -293,8 +316,12 @@ module "ecr_file_format_build_repository" {
   name             = "file-format-build"
   image_source_url = "https://github.com/nationalarchives/tdr-file-format/blob/master/Dockerfile"
   policy_name      = "file_format_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
-  common_tags      = local.common_tags
+  policy_variables = {
+    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
+    staging_account = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account    = data.aws_ssm_parameter.prod_account_number.value
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_consignment_export_repository" {
@@ -302,8 +329,12 @@ module "ecr_consignment_export_repository" {
   name             = "consignment-export"
   image_source_url = "https://github.com/nationalarchives/tdr-consignment-export/blob/master/Dockerfile"
   policy_name      = "consignment_export_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
-  common_tags      = local.common_tags
+  policy_variables = {
+    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
+    staging_account = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account    = data.aws_ssm_parameter.prod_account_number.value
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_api_data_repository" {
@@ -320,8 +351,12 @@ module "ecr_update_keycloak_repository" {
   name             = "keycloak-update"
   image_source_url = "https://github.com/nationalarchives/tdr-auth-server/blob/master/Dockerfile-update"
   policy_name      = "keycloak_update_policy"
-  policy_variables = { intg_account = data.aws_ssm_parameter.intg_account_number.value, staging_account = data.aws_ssm_parameter.staging_account_number.value, prod_account = data.aws_ssm_parameter.prod_account_number.value }
-  common_tags      = local.common_tags
+  policy_variables = {
+    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
+    staging_account = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account    = data.aws_ssm_parameter.prod_account_number.value
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_image_scan_log_group" {
@@ -339,13 +374,22 @@ module "ecr_image_scan_event" {
   rule_description           = "Capture each ECR Image Scan"
 }
 
+module "notifications_topic" {
+  source      = "./tdr-terraform-modules/sns"
+  common_tags = local.common_tags
+  function    = "notifications"
+  project     = "tdr"
+  sns_policy  = "notifications"
+  kms_key_arn = module.mgmt_encryption_key.kms_key_arn
+}
+
 module "notification_lambda" {
   source                        = "./tdr-terraform-modules/lambda"
   common_tags                   = local.common_tags
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
   event_rule_arns               = [module.ecr_image_scan_event.event_arn, "arn:aws:events:eu-west-2:${data.aws_ssm_parameter.mgmt_account_number.value}:rule/jenkins-backup-maintenance-window"]
-  sns_topic_arns                = []
+  sns_topic_arns                = [module.notifications_topic.sns_arn]
   muted_scan_alerts             = module.global_parameters.muted_ecr_scan_alerts
   kms_key_arn                   = module.mgmt_encryption_key.kms_key_arn
 }
