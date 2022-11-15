@@ -616,5 +616,5 @@ module "github_rotate_personal_access_token_event" {
   sns_topic_event_target_arn = toset([module.notifications_topic.sns_arn])
   rule_name                  = "rotate-github-personal-access-token"
   rule_description           = "Notify to rotate github personal access token"
-  event_variables            = { parameter_name = local.github_access_token_name, policy_type = "ExpirationNotification" }
+  event_variables            = { parameter_name = local.github_access_token_name, policy_type = "NoChangeNotification" }
 }
