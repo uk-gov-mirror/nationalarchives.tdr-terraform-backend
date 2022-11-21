@@ -618,3 +618,13 @@ module "github_rotate_personal_access_token_event" {
   rule_description           = "Notify to rotate github personal access token"
   event_variables            = { parameter_name = local.github_access_token_name, policy_type = "NoChangeNotification" }
 }
+
+module "github_file_upload_data_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-file-upload-data"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+  }
+}
