@@ -8,6 +8,7 @@
         "iam:*"
       ],
       "Resource": [
+        "arn:aws:iam::${account_id}:group/group/security-audit",
         "arn:aws:iam::${account_id}:group/group/support",
         "arn:aws:iam::${account_id}:oidc-provider/token.actions.githubusercontent.com",
         "arn:aws:iam::${account_id}:policy/consignmentapi_ecs_execution_policy_${environment}",
