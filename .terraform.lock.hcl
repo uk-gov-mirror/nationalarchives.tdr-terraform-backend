@@ -55,7 +55,6 @@ provider "registry.terraform.io/hashicorp/github" {
     "zh:8a3abc6f6fadd99963ad9a593893b724ec2c98905f66fd1f627ca3aa55191dde",
     "zh:a0653c831705804d98db9d352341fee04ea6c7db6fa612f886b7284ce8a67023",
     "zh:a9b51b0c2e5026a4676b5ac71274eaa745ebef1de72a69667855edb8a9548347",
-    "zh:d7720e30f931f4069255e8d9d08332ccc2ee18b418e899fed55cd4f414f17bb6",
   ]
 }
 
