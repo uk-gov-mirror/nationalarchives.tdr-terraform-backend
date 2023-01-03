@@ -250,6 +250,9 @@ module "github_generated_graphql_environment" {
     SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
     SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
   }
+  dependabot_secrets = {
+    WORKFLOW_PAT = module.common_ssm_parameters.params[local.github_access_token_name].value
+  }
 }
 
 module "github_graphql_client_environment" {
