@@ -241,7 +241,7 @@ module "github_actions_repository" {
 module "github_generated_graphql_environment" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-generated-graphql"
-  secrets         = {
+  secrets = {
     WORKFLOW_PAT      = module.common_ssm_parameters.params[local.github_access_token_name].value
     NPM_TOKEN         = data.aws_ssm_parameter.npm_token.value
     SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
