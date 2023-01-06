@@ -39,6 +39,7 @@
         "arn:aws:iam::${account_id}:policy/TDRGitHubRunKeycloakUpdatePolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRGithubActionsInvokeCreateUserLambdaPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRGitHubRunFileFormatBuildPolicy${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRIAMUserManageCredentialsPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRKeycloakECSTaskPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRKeycloakFlowlogPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRKeycloakUpdateECSExecutionPolicy${title(environment)}",
