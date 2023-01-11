@@ -71,6 +71,7 @@
         "ec2:DisassociateRouteTable",
         "ec2:ImportKeyPair",
         "ec2:ModifyNetworkInterfaceAttribute",
+        "ec2:ModifySecurityGroupRules",
         "ec2:ModifySubnetAttribute",
         "ec2:ModifyVpcAttribute",
         "ec2:ModifyVpcEndpoint",
