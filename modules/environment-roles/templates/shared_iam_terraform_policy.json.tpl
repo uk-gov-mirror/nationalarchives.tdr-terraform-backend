@@ -21,6 +21,7 @@
         "arn:aws:iam::${account_id}:policy/KeycloakECSTaskPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRApiGatewayCloudwatchPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRApiUpdatePolicy",
+        "arn:aws:iam::${account_id}:policy/TDRBackendChecksAPIPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRChecksumPolicy",
         "arn:aws:iam::${account_id}:policy/TDRCloudwatch${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRConfig${title(environment)}",
