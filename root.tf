@@ -311,19 +311,6 @@ module "ecr_auth_server_repository" {
   common_tags = local.common_tags
 }
 
-module "ecr_file_format_build_repository" {
-  source           = "./tdr-terraform-modules/ecr"
-  name             = "file-format-build"
-  image_source_url = "https://github.com/nationalarchives/tdr-file-format/blob/master/Dockerfile"
-  policy_name      = "file_format_policy"
-  policy_variables = {
-    intg_account    = data.aws_ssm_parameter.intg_account_number.value,
-    staging_account = data.aws_ssm_parameter.staging_account_number.value,
-    prod_account    = data.aws_ssm_parameter.prod_account_number.value
-  }
-  common_tags = local.common_tags
-}
-
 module "ecr_consignment_export_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "consignment-export"
