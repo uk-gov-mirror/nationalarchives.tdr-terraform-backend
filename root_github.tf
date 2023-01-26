@@ -632,7 +632,7 @@ module "github_file_upload_data_repository" {
   }
 }
 
-module "github_backend_checks_utils_environment" {
+module "github_backend_checks_utils_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-backend-checks-utils"
   secrets = {
