@@ -631,3 +631,46 @@ module "github_file_upload_data_repository" {
     WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
+
+module "github_backend_checks_utils_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-backend-checks-utils"
+  secrets = {
+    WORKFLOW_PAT      = module.common_ssm_parameters.params[local.github_access_token_name].value
+    SLACK_WEBHOOK     = data.aws_ssm_parameter.slack_webhook_url.value
+    GPG_PASSPHRASE    = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY   = data.aws_ssm_parameter.gpg_key.value
+    SONATYPE_USERNAME = data.aws_ssm_parameter.sonatype_username.value
+    SONATYPE_PASSWORD = data.aws_ssm_parameter.sonatype_password.value
+  }
+}
+
+module "github_backend_checks_results_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-backend-checks-results"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+  }
+}
+
+module "github_redacted_files_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-redacted-files"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+  }
+}
+
+module "github_statuses_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-statuses"
+  secrets = {
+    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+  }
+}
