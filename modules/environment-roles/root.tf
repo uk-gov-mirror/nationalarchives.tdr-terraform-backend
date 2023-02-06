@@ -3,7 +3,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_iam_role" "terraform_restore_db_role" {
   name               = "TDRRestoreDbTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow terraform to create a new rds cluster from a snapshot"
-  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number, external_id = var.restore_db_external_id })
 }
 
 resource "aws_iam_policy" "terraform_restore_db_policy" {
@@ -19,7 +19,7 @@ resource "aws_iam_role_policy_attachment" "terraform_restore_db_attach" {
 resource "aws_iam_role" "terraform_scripts_role" {
   name               = "TDRScriptsTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow terraform to run temporary scripts in the tdr-scripts repository"
-  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number, external_id = var.terraform_scripts_external_id })
 }
 
 resource "aws_iam_policy" "terraform_scripts_policy" {
@@ -30,8 +30,7 @@ resource "aws_iam_policy" "terraform_scripts_policy" {
 resource "aws_iam_role" "terraform_role" {
   name               = "TDRTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow Terraform to create resources for the ${title(var.tdr_environment)} environment"
-  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
-
+  assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number, external_id = var.terraform_external_id })
   tags = merge(
     var.common_tags,
     tomap(
@@ -165,7 +164,7 @@ resource "aws_iam_role_policy_attachment" "custodian_deploy_policy_attach" {
 resource "aws_iam_role" "grafana_monitoring_iam_role" {
   name               = "TDRGrafanaMonitoringRole${title(var.tdr_environment)}"
   description        = "Role to permit Grafana to read Cloudwatch metrics and basic data like EC2 tags and regions."
-  assume_role_policy = templatefile("./modules/environment-roles/templates/grafana_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number })
+  assume_role_policy = templatefile("./modules/environment-roles/templates/grafana_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number, external_id = var.grafana_management_external_id })
 
   tags = merge(
     var.common_tags,
