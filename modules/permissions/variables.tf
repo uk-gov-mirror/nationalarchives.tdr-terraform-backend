@@ -31,16 +31,6 @@ variable "terraform_backend_state_lock" {
   description = "DynamoDb table controlling the backend terraform state lock"
 }
 
-variable "release_bucket_arn" {
-  description = "The bucket arn for release artefacts"
-  type        = string
-}
-
-variable "staging_bucket_arn" {
-  description = "The bucket arn for staging artefacts"
-  type        = string
-}
-
 variable "management_account_number" {}
 
 variable "environment" {}

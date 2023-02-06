@@ -109,7 +109,6 @@ Once the Terraform Backend project has been setup the following AWS backend reso
 In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
   * IAM Roles: 
     * TDRTerraformRole[env name]
-    * TDRJenkinsECSUpdateRole[env name]
   
   * IAM Policies:
     * TDRFrontendTerraform[env name]-part-a

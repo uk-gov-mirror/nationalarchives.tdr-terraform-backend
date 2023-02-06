@@ -53,12 +53,6 @@ variable "terraform_scripts_state_bucket" {
   type        = string
 }
 
-variable "jenkins_publish_policy_arn" {
-  description = "The policy to allow downloading scala dependencies from S3. If not provided, it is not attached to the role"
-  type        = string
-  default     = ""
-}
-
 variable "add_ssm_policy" {
   description = "Whether to add an SSM read only policy to the role"
   default     = false

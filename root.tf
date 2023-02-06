@@ -145,7 +145,7 @@ module "terraform_state_lock" {
   common_tags = local.common_tags
 }
 
-//Set up common IAM policies for Terraform and for publishing to S3
+//Set up common IAM policies for Terraform
 module "common_permissions" {
   source                         = "./modules/permissions"
   common_tags                    = local.common_tags
@@ -154,8 +154,6 @@ module "common_permissions" {
   terraform_scripts_state_lock   = module.terraform_state_lock.terraform_scripts_state_lock_arn
   terraform_backend_state_bucket = data.aws_s3_bucket.state_bucket.arn
   terraform_backend_state_lock   = data.aws_dynamodb_table.state_lock_table.arn
-  release_bucket_arn             = module.release_artefacts_s3.s3_bucket_arn
-  staging_bucket_arn             = module.staging_artefacts_s3.s3_bucket_arn
   terraform_scripts_state_bucket = module.terraform_state.terraform_scripts_state_bucket_arn
   management_account_number      = data.aws_ssm_parameter.mgmt_account_number.value
   environment                    = "mgmt"
@@ -223,44 +221,8 @@ module "sbox_specific_permissions" {
   terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
   custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
-  jenkins_publish_policy_arn      = module.common_permissions.jenkins_publish_policy_arn
   add_ssm_policy                  = true
   terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
-}
-
-//Set up Jenkins permissions
-module "jenkins_permissions" {
-  source                         = "./modules/jenkins"
-  environment                    = "mgmt"
-  terraform_jenkins_state_bucket = module.terraform_state.terraform_jenkins_state_bucket
-  terraform_jenkins_state_lock   = module.terraform_state_lock.terraform_jenkins_state_lock
-}
-
-//Set up Grafana permissions
-module "grafana_permissions" {
-  source = "./modules/grafana"
-
-  common_tags                    = local.common_tags
-  tdr_environment                = "mgmt"
-  tdr_mgmt_account_number        = data.aws_ssm_parameter.mgmt_account_number.value
-  terraform_grafana_state_bucket = module.terraform_state.terraform_grafana_state_bucket_arn
-  terraform_grafana_state_lock   = module.terraform_state_lock.terraform_grafana_state_lock_arn
-}
-
-module "release_artefacts_s3" {
-  source      = "./tdr-terraform-modules/s3"
-  project     = "tdr"
-  function    = "releases"
-  access_logs = false
-  common_tags = local.common_tags
-}
-
-module "staging_artefacts_s3" {
-  source      = "./tdr-terraform-modules/s3"
-  project     = "tdr"
-  function    = "snapshots"
-  access_logs = false
-  common_tags = local.common_tags
 }
 
 module "backend_code_s3" {

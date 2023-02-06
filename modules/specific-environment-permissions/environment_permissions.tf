@@ -18,73 +18,6 @@ data "aws_iam_policy_document" "ecs_assume_role" {
   }
 }
 
-resource "aws_iam_policy" "jenkins_ecs_policy" {
-  name   = "TDRJenkinsNodePolicy${local.env_title_case}"
-  policy = data.aws_iam_policy_document.jenkins_node_assume_role_document.json
-}
-
-data "aws_iam_policy_document" "jenkins_node_assume_role_document" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    resources = [
-      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsECSUpdateRole${local.env_title_case}"
-    ]
-  }
-}
-
-resource "aws_iam_role" "jenkins_node_assume_role" {
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name               = "TDRJenkinsNodeRole${local.env_title_case}"
-
-  tags = merge(
-    var.common_tags,
-    tomap(
-      { "Name" = "TDR Jenkins Node Role ${local.env_title_case}" }
-    )
-  )
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_node_role_attachment" {
-  policy_arn = aws_iam_policy.jenkins_ecs_policy.arn
-  role       = aws_iam_role.jenkins_node_assume_role.name
-}
-
-resource "aws_iam_role" "jenkins_lambda_assume_role" {
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name               = "TDRJenkinsNodeLambdaRole${local.env_title_case}"
-
-  tags = merge(
-    var.common_tags,
-    tomap(
-      { "Name" = "TDR Jenkins Node Lambda Role ${local.env_title_case}" }
-    )
-  )
-}
-
-resource "aws_iam_policy" "jenkins_lambda_policy" {
-  name   = "TDRJenkinsNodeLambdaPolicy${local.env_title_case}"
-  policy = data.aws_iam_policy_document.jenkins_node_lambda_document.json
-}
-
-data "aws_iam_policy_document" "jenkins_node_lambda_document" {
-  statement {
-    actions = [
-      "sts:AssumeRole",
-      "s3:PutObject",
-      "s3:CreateMultipartUpload"
-    ]
-    resources = [
-      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsLambdaRole${local.env_title_case}",
-      "arn:aws:s3:::tdr-backend-code-mgmt/*"
-    ]
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_role_lambda_attachment" {
-  policy_arn = aws_iam_policy.jenkins_lambda_policy.arn
-  role       = aws_iam_role.jenkins_lambda_assume_role.name
-}
-
 resource "aws_iam_role" "jenkins_run_ssm_role" {
   name               = "TDRJenkinsRunSsmRole${local.env_title_case}"
   assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
@@ -98,37 +31,6 @@ resource "aws_iam_policy" "jenkins_run_ssm_policy" {
 resource "aws_iam_role_policy_attachment" "jenkins_run_ssm_attach" {
   policy_arn = aws_iam_policy.jenkins_run_ssm_policy.arn
   role       = aws_iam_role.jenkins_run_ssm_role.id
-}
-
-resource "aws_iam_role" "jenkins_read_params_assume_role" {
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name               = "TDRJenkinsNodeReadParamsRole${local.env_title_case}"
-
-  tags = merge(
-    var.common_tags,
-    tomap(
-      { "Name" = "TDR Jenkins Node Read Params Role ${local.env_title_case}" }
-    )
-  )
-}
-
-resource "aws_iam_policy" "jenkins_read_params_policy" {
-  name   = "TDRJenkinsNodeReadParamsPolicy${local.env_title_case}"
-  policy = data.aws_iam_policy_document.jenkins_node_read_params_document.json
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_role_read_params_attachment" {
-  policy_arn = aws_iam_policy.jenkins_read_params_policy.arn
-  role       = aws_iam_role.jenkins_read_params_assume_role.name
-}
-
-data "aws_iam_policy_document" "jenkins_node_read_params_document" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    resources = [
-      "arn:aws:iam::${var.tdr_account_number}:role/TDRJenkinsReadParamsRole${local.env_title_case}"
-    ]
-  }
 }
 
 //IAM Policies: TDR Terraform Backend Permissions
@@ -205,12 +107,6 @@ resource "aws_iam_role_policy_attachment" "terraform_role_access_terraform_state
   policy_arn = var.terraform_state_lock_access_arn
 }
 
-resource "aws_iam_role_policy_attachment" "jenkins_publish_policy_attach" {
-  count      = var.jenkins_publish_policy_arn == "" ? 0 : 1
-  policy_arn = var.jenkins_publish_policy_arn
-  role       = aws_iam_role.terraform_assume_role.name
-}
-
 resource "aws_iam_role_policy_attachment" "ssm_read_only_attach" {
   count      = var.add_ssm_policy == true ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
@@ -269,49 +165,4 @@ resource "aws_iam_role_policy_attachment" "custodian_get_parameters" {
 resource "aws_iam_role_policy_attachment" "custodian_ecr_scan" {
   role       = aws_iam_role.custodian_assume_role.name
   policy_arn = aws_iam_policy.custodian_ecr_policy.arn
-}
-
-resource "aws_iam_role" "jenkins_node_s3_export_role" {
-  count              = var.tdr_environment == "prod" ? 0 : 1
-  name               = "TDRJenkinsNodeS3ExportRole${local.env_title_case}"
-  assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
-  tags = merge(
-    var.common_tags,
-    tomap(
-      { "Name" = "TDR Jenkins Node S3 Export Assume Role" }
-    )
-  )
-}
-
-resource "aws_iam_policy" "jenkins_node_s3_export_policy" {
-  count  = var.tdr_environment == "prod" ? 0 : 1
-  name   = "TDRJenkinsNodeS3ExportPolicy${local.env_title_case}"
-  policy = templatefile("${path.module}/templates/jenkins_s3_export_assume_role.json.tpl", { account_number = var.tdr_account_number, env_title_case = local.env_title_case })
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_node_s3_export_attach" {
-  count      = var.tdr_environment == "prod" ? 0 : 1
-  policy_arn = aws_iam_policy.jenkins_node_s3_export_policy[count.index].arn
-  role       = aws_iam_role.jenkins_node_s3_export_role[count.index].id
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_node_s3_export_read_params_attach" {
-  count      = var.tdr_environment == "prod" ? 0 : 1
-  policy_arn = aws_iam_policy.jenkins_read_params_policy.arn
-  role       = aws_iam_role.jenkins_node_s3_export_role[count.index].id
-}
-
-resource "aws_iam_role" "service_unavailable_deploy_role" {
-  name               = "TDRJenkinsDeployServiceUnavailableRole${local.env_title_case}"
-  assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
-}
-
-resource "aws_iam_policy" "service_unavailable_deploy_policy" {
-  name   = "TDRJenkinsDeployServiceUnavailablePolicy${local.env_title_case}"
-  policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", { account_number = var.tdr_account_number, env_title_case = local.env_title_case })
-}
-
-resource "aws_iam_role_policy_attachment" "service_unavailable_deploy_attach" {
-  policy_arn = aws_iam_policy.service_unavailable_deploy_policy.arn
-  role       = aws_iam_role.service_unavailable_deploy_role.id
 }

@@ -13,7 +13,3 @@ output "terraform_describe_account_arn" {
 output "custodian_get_parameters_arn" {
   value = aws_iam_policy.custodian_get_parameters.arn
 }
-
-output "jenkins_publish_policy_arn" {
-  value = aws_iam_policy.jenkins_publish_policy.arn
-}
