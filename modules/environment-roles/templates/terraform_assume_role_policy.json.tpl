@@ -7,7 +7,11 @@
         "AWS": "arn:aws:iam::${account_id}:root"
       },
       "Action": "sts:AssumeRole",
-      "Condition": {}
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "${external_id}"
+        }
+      }
     }
   ]
 }

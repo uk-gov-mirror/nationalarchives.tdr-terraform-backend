@@ -80,10 +80,14 @@ module "intg_environment_roles" {
     aws = aws.intg
   }
 
-  tdr_environment         = "intg"
-  common_tags             = local.common_tags
-  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-  sub_domain              = "tdr-integration"
+  tdr_environment                = "intg"
+  common_tags                    = local.common_tags
+  tdr_mgmt_account_number        = data.aws_ssm_parameter.mgmt_account_number.value
+  sub_domain                     = "tdr-integration"
+  terraform_external_id          = module.global_parameters.external_ids.terraform_environments
+  restore_db_external_id         = module.global_parameters.external_ids.restore_db
+  terraform_scripts_external_id  = module.global_parameters.external_ids.terraform_scripts
+  grafana_management_external_id = module.global_parameters.external_ids.grafana_management
 }
 
 module "staging_environment_role" {
@@ -92,10 +96,14 @@ module "staging_environment_role" {
     aws = aws.staging
   }
 
-  tdr_environment         = "staging"
-  common_tags             = local.common_tags
-  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-  sub_domain              = "tdr-staging"
+  tdr_environment                = "staging"
+  common_tags                    = local.common_tags
+  tdr_mgmt_account_number        = data.aws_ssm_parameter.mgmt_account_number.value
+  sub_domain                     = "tdr-staging"
+  terraform_external_id          = module.global_parameters.external_ids.terraform_environments
+  restore_db_external_id         = module.global_parameters.external_ids.restore_db
+  terraform_scripts_external_id  = module.global_parameters.external_ids.terraform_scripts
+  grafana_management_external_id = module.global_parameters.external_ids.grafana_management
 }
 
 module "prod_environment_role" {
@@ -104,10 +112,14 @@ module "prod_environment_role" {
     aws = aws.prod
   }
 
-  tdr_environment         = "prod"
-  common_tags             = local.common_tags
-  tdr_mgmt_account_number = data.aws_ssm_parameter.mgmt_account_number.value
-  sub_domain              = "tdr"
+  tdr_environment                = "prod"
+  common_tags                    = local.common_tags
+  tdr_mgmt_account_number        = data.aws_ssm_parameter.mgmt_account_number.value
+  sub_domain                     = "tdr"
+  terraform_external_id          = module.global_parameters.external_ids.terraform_environments
+  restore_db_external_id         = module.global_parameters.external_ids.restore_db
+  terraform_scripts_external_id  = module.global_parameters.external_ids.terraform_scripts
+  grafana_management_external_id = module.global_parameters.external_ids.grafana_management
 }
 
 //Shared parameters to store in each environment
