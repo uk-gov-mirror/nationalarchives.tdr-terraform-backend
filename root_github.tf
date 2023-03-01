@@ -370,9 +370,10 @@ module "github_aws_accounts_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-aws-accounts"
   secrets = {
-    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+    MANAGEMENT_ACCOUNT    = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK         = data.aws_ssm_parameter.slack_webhook_url.value
+    WORKFLOW_PAT          = module.common_ssm_parameters.params[local.github_access_token_name].value
+    TERRAFORM_EXTERNAL_ID = module.global_parameters.external_ids.terraform_environments
   }
 }
 
