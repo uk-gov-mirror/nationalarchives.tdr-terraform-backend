@@ -494,6 +494,8 @@ module "github_file_format_repository" {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+    GPG_PASSPHRASE     = data.aws_ssm_parameter.gpg_passphrase.value
+    GPG_PRIVATE_KEY    = data.aws_ssm_parameter.gpg_key.value
   }
 }
 
