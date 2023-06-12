@@ -62,6 +62,14 @@ data "aws_ssm_parameter" "sonatype_password" {
   name = "/mgmt/sonatype/password"
 }
 
+data "aws_ssm_parameter" "slack_success_workflow" {
+  name = "/mgmt/slack_success_workflow"
+}
+
+data "aws_ssm_parameter" "slack_failure_workflow" {
+  name = "/mgmt/slack_failure_workflow"
+}
+
 data "aws_s3_bucket" "state_bucket" {
   bucket = local.backend_state_bucket
 }

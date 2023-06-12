@@ -684,3 +684,14 @@ module "github_statuses_repository" {
     WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
+
+module "github_keycloak_user_management_repository" {
+  source          = "./tdr-terraform-modules/github_repositories"
+  repository_name = "nationalarchives/tdr-keycloak-user-management"
+  secrets = {
+    MANAGEMENT_ACCOUNT     = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_FAILURE_WORKFLOW = data.aws_ssm_parameter.slack_failure_workflow.value
+    SLACK_SUCCESS_WORKFLOW = data.aws_ssm_parameter.slack_success_workflow.value
+    WORKFLOW_PAT           = module.common_ssm_parameters.params[local.github_access_token_name].value
+  }
+}
