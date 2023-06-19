@@ -1,3 +1,20 @@
+module "configuration" {
+  source  = "./da-terraform-configurations"
+  project = "tdr"
+}
+
+locals {
+  account_secrets = {
+    for environment, _ in module.configuration.account_numbers : environment => {
+      "TDR_${upper(environment)}_ACCOUNT_NUMBER"        = module.configuration.account_numbers[environment]
+      "TDR_${upper(environment)}_TERRAFORM_ROLE"        = module.configuration.terraform_config[environment]["terraform_role"]
+      "TDR_${upper(environment)}_CUSTODIAN_ROLE"        = module.configuration.terraform_config[environment]["custodian_role"]
+      "TDR_${upper(environment)}_STATE_BUCKET"          = module.configuration.terraform_config[environment]["state_bucket"]
+      "TDR_${upper(environment)}_DYNAMO_TABLE"          = module.configuration.terraform_config[environment]["dynamo_table"]
+      "TDR_${upper(environment)}_TERRAFORM_EXTERNAL_ID" = module.configuration.terraform_config[environment]["terraform_external_id"]
+    }
+  }
+}
 module "run_e2e_tests_role" {
   source             = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-e2e-tests:*" })
@@ -379,12 +396,12 @@ module "github_scripts_repository" {
 module "github_aws_accounts_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-aws-accounts"
-  secrets = {
-    MANAGEMENT_ACCOUNT    = data.aws_ssm_parameter.mgmt_account_number.value
-    SLACK_WEBHOOK         = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT          = module.common_ssm_parameters.params[local.github_access_token_name].value
-    TERRAFORM_EXTERNAL_ID = module.global_parameters.external_ids.terraform_environments
-  }
+  secrets = merge(local.account_secrets["intg"], local.account_secrets["staging"], local.account_secrets["prod"], local.account_secrets["mgmt"], {
+    TDR_MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    TDR_SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_notifications_webhook_url.value
+    TDR_WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+    TDR_EMAIL_ADDRESS      = "tdr-secops@nationalarchives.gov.uk"
+  })
 }
 
 module "github_api_update_repository" {
@@ -430,12 +447,12 @@ module "github_export_status_update_repository" {
 module "github_tna_custodian_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tna-custodian"
-  secrets = {
-    MANAGEMENT_ACCOUNT     = data.aws_ssm_parameter.mgmt_account_number.value
-    WORKFLOW_PAT           = module.common_ssm_parameters.params[local.github_access_token_name].value
-    SLACK_WEBHOOK          = data.aws_ssm_parameter.slack_webhook_url.value
-    SANDBOX_ACCOUNT_NUMBER = data.aws_ssm_parameter.sandbox_account_number.value
-  }
+  secrets = merge(local.account_secrets["intg"], local.account_secrets["staging"], local.account_secrets["prod"], local.account_secrets["mgmt"], {
+    TDR_MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    TDR_SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_notifications_webhook_url.value
+    TDR_WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
+    TDR_EMAIL_ADDRESS      = "tdr-secops@nationalarchives.gov.uk"
+  })
 }
 
 module "github_dev_documentation_repository" {
