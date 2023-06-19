@@ -719,6 +719,7 @@ module "github_terraform-github_repository" {
   collaborators   = module.global_parameters.collaborators
   secrets = {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
+    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
