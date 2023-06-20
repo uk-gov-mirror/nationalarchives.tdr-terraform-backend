@@ -134,7 +134,7 @@ resource "aws_s3_bucket_public_access_block" "public_access_block_scripts" {
 resource "aws_s3_bucket" "tdr_terraform_state_github" {
   bucket = "tdr-terraform-state-github"
 
-  acl    = "private"
+  acl = "private"
 
   server_side_encryption_configuration {
     rule {
