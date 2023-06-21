@@ -1,6 +1,6 @@
 # TDR Terraform Backend
 
-**Important Note**: tdr-terraform-backend uses v1.3.2 of Terraform. Ensure that Terraform v1.3.2 is installed before proceeding.
+**Important Note**: tdr-terraform-backend uses v1.5.0 of Terraform. Ensure that Terraform v1.5.0 is installed before proceeding.
 
 ## Purpose
 
