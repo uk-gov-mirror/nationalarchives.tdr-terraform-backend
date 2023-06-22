@@ -7,7 +7,7 @@ permissions:
   contents: write
 jobs:
   check:
-    uses: nationalarchives/tdr-github-actions/.github/workflows/terraform_check.yml@TDR-2505-terraform-version-param
+    uses: nationalarchives/tdr-github-actions/.github/workflows/terraform_check.yml@main
     with:
       terraform-version: '1.5.0'
     secrets:
