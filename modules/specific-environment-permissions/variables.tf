@@ -13,6 +13,16 @@ variable "terraform_state_lock" {
   type        = string
 }
 
+variable "terraform_github_state_bucket" {
+  description = "S3 bucket storing the terraform github state for the different TDR AWS environments"
+  type        = string
+}
+
+variable "terraform_github_state_lock" {
+  description = "DynamoDb table controlling the terraform github state lock"
+  type        = string
+}
+
 variable "tdr_account_number" {
   description = "AWS account number where TDR environment is hosted"
   type        = string
