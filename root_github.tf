@@ -606,17 +606,6 @@ module "github_signed_cookies_repository" {
   }
 }
 
-module "github_reporting_repository" {
-  source          = "./tdr-terraform-modules/github_repositories"
-  repository_name = "nationalarchives/tdr-reporting"
-  collaborators   = module.global_parameters.collaborators
-  secrets = {
-    MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
-    SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
-    WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
-  }
-}
-
 module "github_rotate_keycloak_secrets_repository" {
   source          = "./tdr-terraform-modules/github_repositories"
   repository_name = "nationalarchives/tdr-rotate-keycloak-secrets"
@@ -699,17 +688,6 @@ module "github_statuses_repository" {
     MANAGEMENT_ACCOUNT = data.aws_ssm_parameter.mgmt_account_number.value
     SLACK_WEBHOOK      = data.aws_ssm_parameter.slack_webhook_url.value
     WORKFLOW_PAT       = module.common_ssm_parameters.params[local.github_access_token_name].value
-  }
-}
-
-module "github_keycloak_user_management_repository" {
-  source          = "./tdr-terraform-modules/github_repositories"
-  repository_name = "nationalarchives/tdr-keycloak-user-management"
-  secrets = {
-    MANAGEMENT_ACCOUNT     = data.aws_ssm_parameter.mgmt_account_number.value
-    SLACK_FAILURE_WORKFLOW = data.aws_ssm_parameter.slack_failure_workflow.value
-    SLACK_SUCCESS_WORKFLOW = data.aws_ssm_parameter.slack_success_workflow.value
-    WORKFLOW_PAT           = module.common_ssm_parameters.params[local.github_access_token_name].value
   }
 }
 
