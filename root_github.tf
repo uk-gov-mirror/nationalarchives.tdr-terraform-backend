@@ -3,18 +3,6 @@ module "configuration" {
   project = "tdr"
 }
 
-locals {
-  account_secrets = {
-    for environment, _ in module.configuration.account_numbers : environment => {
-      "TDR_${upper(environment)}_ACCOUNT_NUMBER"        = module.configuration.account_numbers[environment]
-      "TDR_${upper(environment)}_TERRAFORM_ROLE"        = module.configuration.terraform_config[environment]["terraform_role"]
-      "TDR_${upper(environment)}_CUSTODIAN_ROLE"        = module.configuration.terraform_config[environment]["custodian_role"]
-      "TDR_${upper(environment)}_STATE_BUCKET"          = module.configuration.terraform_config[environment]["state_bucket"]
-      "TDR_${upper(environment)}_DYNAMO_TABLE"          = module.configuration.terraform_config[environment]["dynamo_table"]
-      "TDR_${upper(environment)}_TERRAFORM_EXTERNAL_ID" = module.configuration.terraform_config[environment]["terraform_external_id"]
-    }
-  }
-}
 module "run_e2e_tests_role" {
   source             = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-e2e-tests:*" })

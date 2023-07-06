@@ -12,16 +12,6 @@ locals {
   github_access_token_name = "/mgmt/github/access_token"
 }
 
-module "common_ssm_parameters" {
-  source      = "./tdr-terraform-modules/ssm_parameter"
-  common_tags = local.common_tags
-  random_parameters = [
-    {
-      name = local.github_access_token_name, description = "The GitHub workflow token", value = "to_be_manually_added", type = "SecureString", tier = "Advanced"
-    }
-  ]
-}
-
 module "global_parameters" {
   source = "./tdr-configurations/terraform"
 }
