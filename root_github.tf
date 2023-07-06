@@ -48,11 +48,11 @@ module "github_actions_role" {
 }
 
 module "github_oidc_provider" {
-  source      = "./tdr-terraform-modules/identity_provider"
-  audience    = "sts.amazonaws.com"
-  thumbprint_list  = ["6938fd4d98bab03faadb97b34396831e3780aea1", "1c58a3a8518e8759bf075b76b750d4f2df264fcd"]
-  url         = "https://token.actions.githubusercontent.com"
-  common_tags = local.common_tags
+  source          = "./tdr-terraform-modules/identity_provider"
+  audience        = "sts.amazonaws.com"
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1", "1c58a3a8518e8759bf075b76b750d4f2df264fcd"]
+  url             = "https://token.actions.githubusercontent.com"
+  common_tags     = local.common_tags
 }
 
 module "github_cloudwatch_terraform_plan_outputs_intg" {
