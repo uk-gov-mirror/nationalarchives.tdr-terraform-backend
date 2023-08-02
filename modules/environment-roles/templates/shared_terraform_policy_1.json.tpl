@@ -12,6 +12,7 @@
         "cloudtrail:*",
         "cloudwatch:*",
         "config:*",
+        "dynamodb:*",
         "ec2:AllocateAddress",
         "ec2:AssociateRouteTable",
         "ec2:AttachInternetGateway",
