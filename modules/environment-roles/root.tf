@@ -222,5 +222,5 @@ resource "aws_iam_policy" "shared_reference_generator_policy" {
 
 resource "aws_iam_role_policy_attachment" "shared_reference_generator_attach" {
   policy_arn = aws_iam_policy.shared_reference_generator_policy.arn
-  role = aws_iam_role.terraform_role.id
+  role       = aws_iam_role.terraform_role.id
 }
