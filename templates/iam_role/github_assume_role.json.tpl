@@ -14,7 +14,8 @@
         "ForAnyValue:StringLike": {
           "token.actions.githubusercontent.com:sub": [
             "repo:nationalarchives/${repo_name}",
-            "repo:nationalarchives/tna-custodian*"
+            "repo:nationalarchives/tna-custodian*",
+            "repo:nationalarchives/da-reference-generator*"
           ]
         }
       }
