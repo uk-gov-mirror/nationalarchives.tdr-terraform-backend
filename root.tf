@@ -366,8 +366,6 @@ module "notification_lambda" {
   sns_topic_arns                = [module.notifications_topic.sns_arn]
   muted_scan_alerts             = module.global_parameters.muted_ecr_scan_alerts
   kms_key_arn                   = module.mgmt_encryption_key.kms_key_arn
-  #  lambda policy requires key arn, but not applicable for the mgmt account
-  kms_export_bucket_key_arn = "no s3Bucket KMS key required for mgmt account - placeholder value"
 }
 
 module "mgmt_encryption_key" {
