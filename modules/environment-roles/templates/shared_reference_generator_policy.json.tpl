@@ -8,7 +8,8 @@
         "iam:*"
       ],
       "Resource": [
-        "arn:aws:iam::${account_id}:policy/DaReferenceCounterTableAccessPolicy${title(environment)}"
+        "arn:aws:iam::${account_id}:policy/DaReferenceCounterTableAccessPolicy${title(environment)}",
+        "arn:aws:iam::${account_id}:role/da*"
       ]
     }
   ]
