@@ -214,3 +214,13 @@ resource "aws_iam_role_policy_attachment" "github_service_unavailable_attach" {
   policy_arn = aws_iam_policy.github_service_unavailable_deploy_policy.arn
   role       = aws_iam_role.github_service_unavailable_deploy_role.id
 }
+
+resource "aws_iam_policy" "shared_reference_generator_policy" {
+  name   = "TDRReferenceGeneratorTerraformPolicy${title(var.tdr_environment)}"
+  policy = templatefile("${path.module}/templates/shared_reference_generator_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, environment = var.tdr_environment })
+}
+
+resource "aws_iam_role_policy_attachment" "shared_reference_generator_attach" {
+  policy_arn = aws_iam_policy.shared_reference_generator_policy.arn
+  role       = aws_iam_role.terraform_role.id
+}
