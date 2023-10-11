@@ -79,6 +79,7 @@
         "arn:aws:iam::${account_id}:role/TDRDownloadFilesRole",
         "arn:aws:iam::${account_id}:role/TDRExportAPICloudwatchRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRExportAPIRole${title(environment)}",
+        "arn:aws:iam::${account_id}:role/TDRExportBucketAccessRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRFileFormatECSExecutionRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRFileFormatEcsTaskRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRFileFormatRole${title(environment)}",

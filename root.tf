@@ -366,6 +366,8 @@ module "notification_lambda" {
   sns_topic_arns                = [module.notifications_topic.sns_arn]
   muted_scan_alerts             = module.global_parameters.muted_ecr_scan_alerts
   kms_key_arn                   = module.mgmt_encryption_key.kms_key_arn
+  // value not needed for mgmt lambda but cipher text encrypted so cannot be an empty value
+  da_event_bus_arn = "placeholder"
 }
 
 module "mgmt_encryption_key" {
