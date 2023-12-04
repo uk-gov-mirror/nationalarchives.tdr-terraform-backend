@@ -180,13 +180,3 @@ module "github_mgmt_lambda_role" {
     mgmt_lambda_policy = module.github_mgmt_lambda_policy.policy_arn
   }
 }
-
-
-module "github_rotate_personal_access_token_event" {
-  source                     = "./tdr-terraform-modules/cloudwatch_events"
-  event_pattern              = "ssm_parameter_policy_action"
-  sns_topic_event_target_arn = toset([module.notifications_topic.sns_arn])
-  rule_name                  = "rotate-github-personal-access-token"
-  rule_description           = "Notify to rotate github personal access token"
-  event_variables            = { parameter_name = local.github_access_token_name, policy_type = "NoChangeNotification" }
-}
