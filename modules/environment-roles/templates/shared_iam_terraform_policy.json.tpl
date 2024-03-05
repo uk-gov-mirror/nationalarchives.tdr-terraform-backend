@@ -36,6 +36,7 @@
         "arn:aws:iam::${account_id}:policy/TDRDownloadFilesPolicy",
         "arn:aws:iam::${account_id}:policy/TDRExport*",
         "arn:aws:iam::${account_id}:policy/TDRFileFormat*",
+        "arn:aws:iam::${account_id}:policy/TDRFrontendEcsDraftMetadata${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRGitHub*",
         "arn:aws:iam::${account_id}:policy/TDRGithubActions*",
         "arn:aws:iam::${account_id}:policy/TDRIAMUserManageCredentialsPolicy${title(environment)}",
