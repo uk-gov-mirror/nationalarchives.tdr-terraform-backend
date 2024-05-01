@@ -59,11 +59,11 @@ resource "aws_iam_policy" "consignment_api_connection_secret_creation_policy" {
   description = "Policy to enable the creation of secrets from the consignment API connection"
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "secretsmanager:CreateSecret"
         ]
         Resource = "arn:aws:secretsmanager:*:*:secret:events!connection/TDRConsignmentAPIConnection${title(var.tdr_environment)}/*"
