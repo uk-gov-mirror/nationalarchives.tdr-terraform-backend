@@ -54,9 +54,9 @@ resource "aws_iam_role_policy_attachment" "shared_iam_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
 }
 
-resource "aws_iam_policy" "custom_secrets_manager_policy" {
-  name        = "CustomSecretsManagerPolicy"
-  description = "Policy to manage secrets for event connections in AWS Secrets Manager"
+resource "aws_iam_policy" "consignment_api_connection_secret_creation_policy" {
+  name        = "TDRConsignmentApiSecretCreationPolicy${title(var.tdr_environment)}"
+  description = "Policy to enable the creation of secrets from the consignment API connection"
 
   policy = jsonencode({
     Version   = "2012-10-17"
@@ -72,9 +72,8 @@ resource "aws_iam_policy" "custom_secrets_manager_policy" {
   })
 }
 
-
 resource "aws_iam_role_policy_attachment" "amazon_eventbridge_policy_attachment" {
-  policy_arn = aws_iam_policy.custom_secrets_manager_policy.arn
+  policy_arn = aws_iam_policy.consignment_api_connection_secret_creation_policy.arn
   role       = aws_iam_role.terraform_role.name
 }
 
