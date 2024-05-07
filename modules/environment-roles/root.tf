@@ -64,7 +64,9 @@ resource "aws_iam_policy" "consignment_api_connection_secret_creation_policy" {
       {
         Effect = "Allow"
         Action = [
-          "secretsmanager:CreateSecret"
+          "secretsmanager:CreateSecret",
+          "secretsmanager:PutSecretValue",
+          "secretsmanager:GetSecretValue"
         ]
         Resource = "arn:aws:secretsmanager:*:*:secret:events!connection/TDRConsignmentAPIConnection${title(var.tdr_environment)}/*"
       }
