@@ -52,6 +52,8 @@
         "arn:aws:iam::${account_id}:policy/TDRServiceUnavailablePolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRSign*",
         "arn:aws:iam::${account_id}:policy/TDRSNSPublish${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRTransferServiceECSExecutionPolicy${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRTransferServiceECSTaskPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRUpdateWAFAndSecurityGroupsPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRVpcFlowlogPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRYaraAvPolicy",
@@ -101,6 +103,8 @@
         "arn:aws:iam::${account_id}:role/TDRServiceUnavailableRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRShieldResponseTeamRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRSign*",
+        "arn:aws:iam::${account_id}:role/TDRTransferServiceECSTaskRole${title(environment)}",
+        "arn:aws:iam::${account_id}:role/TDRTransferServiceECSExecutionRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRUpdateWAFAndSecurityGroupsRole${title(environment)}",
         "arn:aws:iam::${account_id}:role/TDRYaraAvRole"
       ]
