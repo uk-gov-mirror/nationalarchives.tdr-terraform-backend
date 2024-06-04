@@ -246,6 +246,13 @@ module "backend_code_s3" {
   bucket_policy = "lambda_update"
 }
 
+module "ecr_transfer_service_repository" {
+  source           = "./da-terraform-modules/ecr"
+  repository_name  = "transfer-service"
+  image_source_url = "https://github.com/nationalarchives/tdr-transfer-service/blob/master/Dockerfile"
+  common_tags      = local.common_tags
+}
+
 module "ecr_consignment_api_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "consignment-api"
