@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+module "global_parameters" {
+  source = "../../tdr-configurations/terraform"
+}
+
 resource "aws_iam_role" "terraform_restore_db_role" {
   name               = "TDRRestoreDbTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow terraform to create a new rds cluster from a snapshot"
@@ -159,9 +163,12 @@ resource "aws_iam_role" "custodian_deploy_role" {
 }
 
 resource "aws_iam_role" "github_actions_custodian_deploy_role" {
-  name               = "TDRGithubActionsCustodianDeployRole${title(var.tdr_environment)}"
-  description        = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment from GitHub actions"
-  assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
+  name        = "TDRGithubActionsCustodianDeployRole${title(var.tdr_environment)}"
+  description = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment from GitHub actions"
+  assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", {
+    account_id = data.aws_caller_identity.current.account_id,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+  })
 
   tags = merge(
     var.common_tags,
@@ -211,8 +218,11 @@ resource "aws_iam_role_policy_attachment" "grafana_monitoring_policy_attach" {
 
 
 resource "aws_iam_role" "github_actions_describe_ec2_role" {
-  name               = "TDRGithubActionsDescribeEC2Role${title(var.tdr_environment)}"
-  assume_role_policy = templatefile("${path.module}/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
+  name = "TDRGithubActionsDescribeEC2Role${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("${path.module}/templates/github_assume_role.json.tpl", {
+    account_id = data.aws_caller_identity.current.account_id,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+  })
 }
 
 resource "aws_iam_policy" "github_actions_describe_ec2_policy" {
@@ -226,8 +236,11 @@ resource "aws_iam_role_policy_attachment" "github_actions_describe_ec2_attach" {
 }
 
 resource "aws_iam_role" "github_service_unavailable_deploy_role" {
-  name               = "TDRGithubActionsDeployServiceUnavailableRole${title(var.tdr_environment)}"
-  assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", { account_id = data.aws_caller_identity.current.account_id })
+  name = "TDRGithubActionsDeployServiceUnavailableRole${title(var.tdr_environment)}"
+  assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", {
+    account_id = data.aws_caller_identity.current.account_id,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+  })
 }
 
 resource "aws_iam_policy" "github_service_unavailable_deploy_policy" {
