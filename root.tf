@@ -251,11 +251,9 @@ module "ecr_transfer_service_repository" {
   repository_name  = "transfer-service"
   image_source_url = "https://github.com/nationalarchives/tdr-transfer-service/blob/master/Dockerfile"
   allowed_principals = [
-    "arn:aws:iam::${intg_account}:role/TDRTransferServiceECSExecutionRoleIntg",
-    "arn:aws:iam::${staging_account}:role/KeycloakECSExecutionRoleStaging",
-    "arn:aws:iam::${prod_account}:role/KeycloakECSExecutionRoleProd"
+    "arn:aws:iam::${intg_account}:role/TDRTransferServiceECSExecutionRoleIntg"
   ]
-  common_tags      = local.common_tags
+  common_tags = local.common_tags
 }
 
 module "ecr_consignment_api_repository" {
