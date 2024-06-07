@@ -10,6 +10,11 @@ locals {
     }
   )
   github_access_token_name = "/mgmt/github/access_token"
+
+  github_tdr_e2e_tests_repository          = "repo:nationalarchives/tdr-e2e-tests:*"
+  github_tdr_antivirus_repository          = "repo:nationalarchives/tdr-antivirus:*"
+  github_tna_custodian_repository          = "repo:nationalarchives/tna-custodian:*"
+  github_da_reference_generator_repository = "repo:nationalarchives/da-reference-generator:*"
 }
 
 module "global_parameters" {

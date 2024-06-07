@@ -1,5 +1,10 @@
 data "aws_caller_identity" "current" {}
 
+locals {
+  github_tna_custodian_repository          = "repo:nationalarchives/tna-custodian:*"
+  github_da_reference_generator_repository = "repo:nationalarchives/da-reference-generator:*"
+}
+
 module "global_parameters" {
   source = "../../tdr-configurations/terraform"
 }
@@ -167,7 +172,7 @@ resource "aws_iam_role" "github_actions_custodian_deploy_role" {
   description = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment from GitHub actions"
   assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", {
     account_id = data.aws_caller_identity.current.account_id,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
 
   tags = merge(
@@ -221,7 +226,7 @@ resource "aws_iam_role" "github_actions_describe_ec2_role" {
   name = "TDRGithubActionsDescribeEC2Role${title(var.tdr_environment)}"
   assume_role_policy = templatefile("${path.module}/templates/github_assume_role.json.tpl", {
     account_id = data.aws_caller_identity.current.account_id,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
 }
 
@@ -239,7 +244,7 @@ resource "aws_iam_role" "github_service_unavailable_deploy_role" {
   name = "TDRGithubActionsDeployServiceUnavailableRole${title(var.tdr_environment)}"
   assume_role_policy = templatefile("./modules/environment-roles/templates/github_assume_role.json.tpl", {
     account_id = data.aws_caller_identity.current.account_id,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
 }
 

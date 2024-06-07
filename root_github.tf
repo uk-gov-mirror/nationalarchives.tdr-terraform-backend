@@ -7,7 +7,7 @@ module "run_e2e_tests_role" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_e2e_tests_repository, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode([local.github_tdr_e2e_tests_repository, local.github_tna_custodian_repository, local.github_da_reference_generator_repository])
   })
   common_tags        = local.common_tags
   name               = "TDRGithubActionsE2ETestsMgmt"
@@ -42,7 +42,7 @@ module "github_actions_role" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubActionsRoleMgmt"
@@ -95,7 +95,7 @@ module "github_terraform_assume_role_intg" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubTerraformAssumeRoleIntg"
@@ -113,7 +113,7 @@ module "github_terraform_assume_role_staging" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubTerraformAssumeRoleStaging"
@@ -131,7 +131,7 @@ module "github_terraform_assume_role_prod" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubTerraformAssumeRoleProd"
@@ -149,7 +149,7 @@ module "github_terraform_assume_role_sbox" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubTerraformAssumeRoleSbox"
@@ -176,7 +176,7 @@ module "github_antivirus_rule_checks" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_antivirus_repository, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode([local.github_tdr_antivirus_repository, local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubAvRuleChecksMgmt"
@@ -196,7 +196,7 @@ module "github_mgmt_lambda_role" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, module.global_parameters.github_additional_repositories))
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
   })
   common_tags = local.common_tags
   name        = "TDRGithubActionsDeployLambdaMgmt"
