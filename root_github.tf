@@ -176,7 +176,7 @@ module "github_antivirus_rule_checks" {
   source = "./tdr-terraform-modules/iam_role"
   assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
     account_id = data.aws_ssm_parameter.mgmt_account_number.value,
-    repo_names = jsonencode([local.github_tdr_antivirus_repository, local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+    repo_names = jsonencode([local.github_tdr_antivirus_repository, local.github_tna_custodian_repository, local.github_da_reference_generator_repository])
   })
   common_tags = local.common_tags
   name        = "TDRGithubAvRuleChecksMgmt"
