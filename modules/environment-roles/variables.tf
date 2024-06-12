@@ -30,3 +30,11 @@ variable "restore_db_external_id" {
 variable "grafana_management_external_id" {
   description = "The external ID to use when assuming the role for Grafana to load data from the accounts"
 }
+
+variable "github_da_reference_generator_repository" {
+  description = "A full repository name to be used in the github assume role template"
+}
+
+variable "github_tna_custodian_repository" {
+  description = "A full repository name to be used in the github assume role template"
+}
