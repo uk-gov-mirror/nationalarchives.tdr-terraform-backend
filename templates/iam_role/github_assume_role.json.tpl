@@ -12,11 +12,7 @@
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "ForAnyValue:StringLike": {
-          "token.actions.githubusercontent.com:sub": [
-            "repo:nationalarchives/${repo_name}",
-            "repo:nationalarchives/tna-custodian*",
-            "repo:nationalarchives/da-reference-generator*"
-          ]
+          "token.actions.githubusercontent.com:sub": ${repo_names}
         }
       }
     }

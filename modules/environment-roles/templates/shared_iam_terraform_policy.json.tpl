@@ -40,6 +40,8 @@
         "arn:aws:iam::${account_id}:policy/TDRExport*",
         "arn:aws:iam::${account_id}:policy/TDRFileFormat*",
         "arn:aws:iam::${account_id}:policy/TDRFrontendEcsDraftMetadata${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRFrontendKMSKeyUsePolicy${title(environment)}",
+        "arn:aws:iam::${account_id}:policy/TDRFrontendSNSPublishPolicy${title(environment)}",
         "arn:aws:iam::${account_id}:policy/TDRGitHub*",
         "arn:aws:iam::${account_id}:policy/TDRGithubActions*",
         "arn:aws:iam::${account_id}:policy/TDRIAMUserManageCredentialsPolicy${title(environment)}",

@@ -4,8 +4,11 @@ module "configuration" {
 }
 
 module "run_e2e_tests_role" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-e2e-tests:*" })
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode([local.github_tdr_e2e_tests_repository, local.github_tna_custodian_repository, local.github_da_reference_generator_repository])
+  })
   common_tags        = local.common_tags
   name               = "TDRGithubActionsE2ETestsMgmt"
   policy_attachments = {}
@@ -36,10 +39,13 @@ module "github_actions_code_bucket_policy" {
 }
 
 module "github_actions_role" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubActionsRoleMgmt"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubActionsRoleMgmt"
   policy_attachments = {
     dependencies = module.github_sbt_dependencies_policy.policy_arn,
     ecr          = module.github_ecr_policy.policy_arn
@@ -86,10 +92,13 @@ module "github_cloudwatch_terraform_plan_policy" {
 }
 
 module "github_terraform_assume_role_intg" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubTerraformAssumeRoleIntg"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubTerraformAssumeRoleIntg"
   policy_attachments = {
     terraform_ecs_policy_arn        = module.intg_specific_permissions.terraform_ecs_policy_arn
     access_terraform_state_arn      = module.intg_specific_permissions.access_terraform_state_arn
@@ -101,10 +110,13 @@ module "github_terraform_assume_role_intg" {
 }
 
 module "github_terraform_assume_role_staging" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubTerraformAssumeRoleStaging"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubTerraformAssumeRoleStaging"
   policy_attachments = {
     terraform_ecs_policy_arn        = module.staging_specific_permissions.terraform_ecs_policy_arn
     access_terraform_state_arn      = module.staging_specific_permissions.access_terraform_state_arn
@@ -116,10 +128,13 @@ module "github_terraform_assume_role_staging" {
 }
 
 module "github_terraform_assume_role_prod" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubTerraformAssumeRoleProd"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubTerraformAssumeRoleProd"
   policy_attachments = {
     terraform_ecs_policy_arn        = module.prod_specific_permissions.terraform_ecs_policy_arn
     access_terraform_state_arn      = module.prod_specific_permissions.access_terraform_state_arn
@@ -131,10 +146,13 @@ module "github_terraform_assume_role_prod" {
 }
 
 module "github_terraform_assume_role_sbox" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubTerraformAssumeRoleSbox"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubTerraformAssumeRoleSbox"
   policy_attachments = {
     terraform_ecs_policy_arn        = module.sbox_specific_permissions.terraform_ecs_policy_arn
     access_terraform_state_arn      = module.sbox_specific_permissions.access_terraform_state_arn
@@ -155,10 +173,13 @@ module "github_antivirus_rule_checks_policy" {
 }
 
 module "github_antivirus_rule_checks" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-antivirus*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubAvRuleChecksMgmt"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode([local.github_tdr_antivirus_repository, local.github_tna_custodian_repository, local.github_da_reference_generator_repository])
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubAvRuleChecksMgmt"
   policy_attachments = {
     av_rule_check_policy = module.github_antivirus_rule_checks_policy.policy_arn
   }
@@ -172,10 +193,13 @@ module "github_mgmt_lambda_policy" {
 }
 
 module "github_mgmt_lambda_role" {
-  source             = "./tdr-terraform-modules/iam_role"
-  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", { account_id = data.aws_ssm_parameter.mgmt_account_number.value, repo_name = "tdr-*" })
-  common_tags        = local.common_tags
-  name               = "TDRGithubActionsDeployLambdaMgmt"
+  source = "./tdr-terraform-modules/iam_role"
+  assume_role_policy = templatefile("${path.module}/templates/iam_role/github_assume_role.json.tpl", {
+    account_id = data.aws_ssm_parameter.mgmt_account_number.value,
+    repo_names = jsonencode(concat(module.global_parameters.github_tdr_active_repositories, [local.github_tna_custodian_repository, local.github_da_reference_generator_repository]))
+  })
+  common_tags = local.common_tags
+  name        = "TDRGithubActionsDeployLambdaMgmt"
   policy_attachments = {
     mgmt_lambda_policy = module.github_mgmt_lambda_policy.policy_arn
   }
