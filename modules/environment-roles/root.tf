@@ -58,6 +58,11 @@ resource "aws_iam_role_policy_attachment" "shared_iam_policy_attachment" {
   role       = aws_iam_role.terraform_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "shared_iam_policy_attachment_1" {
+  policy_arn = aws_iam_policy.shared_iam_terraform_policy_1.arn
+  role       = aws_iam_role.terraform_role.name
+}
+
 resource "aws_iam_policy" "consignment_api_connection_secret_creation_policy" {
   name        = "TDRConsignmentApiSecretCreationPolicy${title(var.tdr_environment)}"
   description = "Policy to enable the creation of secrets from the consignment API connection"
@@ -91,6 +96,11 @@ resource "aws_iam_policy" "shared_terraform_policy_1" {
 resource "aws_iam_policy" "shared_iam_terraform_policy" {
   policy = templatefile("${path.module}/templates/shared_iam_terraform_policy.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
   name   = "TDRSharedIamTerraform${title(var.tdr_environment)}"
+}
+
+resource "aws_iam_policy" "shared_iam_terraform_policy_1" {
+  policy = templatefile("${path.module}/templates/shared_iam_terraform_policy_1.json.tpl", { environment = var.tdr_environment, account_id = data.aws_caller_identity.current.account_id })
+  name   = "TDRSharedIamTerraform1${title(var.tdr_environment)}"
 }
 
 data "aws_iam_policy_document" "frontend_storage_override" {
