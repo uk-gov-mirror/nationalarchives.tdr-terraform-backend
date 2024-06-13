@@ -261,7 +261,10 @@ module "ecr_transfer_service_repository" {
   source           = "./da-terraform-modules/ecr"
   repository_name  = "transfer-service"
   image_source_url = "https://github.com/nationalarchives/tdr-transfer-service/blob/master/Dockerfile"
-  common_tags      = local.common_tags
+  allowed_principals = [
+    "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRTransferServiceECSExecutionRoleIntg"
+  ]
+  common_tags = local.common_tags
 }
 
 module "ecr_consignment_api_repository" {
