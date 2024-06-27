@@ -267,6 +267,18 @@ module "ecr_transfer_service_repository" {
   common_tags = local.common_tags
 }
 
+module "ecr_draft_metadata_validator_repository" {
+  source           = "./da-terraform-modules/ecr"
+  repository_name  = "draft-metadata-validator"
+  image_source_url = "https://github.com/nationalarchives/tdr-draft-metadata-validator/blob/main/Dockerfile"
+  allowed_principals = [
+    "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/tdr-draft-metadata-validator-intg-role",
+    "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/tdr-draft-metadata-validator-staging-role",
+    "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/tdr-draft-metadata-validator-prod-role"
+  ]
+  common_tags = local.common_tags
+}
+
 module "ecr_consignment_api_repository" {
   source           = "./tdr-terraform-modules/ecr"
   name             = "consignment-api"
