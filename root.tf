@@ -1,14 +1,11 @@
 locals {
   backend_state_lock   = "tdr-bootstrap-terraform-state-lock"
   backend_state_bucket = "tdr-bootstrap-terraform-state"
-  common_tags = tomap(
-    {
-      "Owner"           = "TDR Backend",
-      "Terraform"       = true,
-      "TerraformSource" = "https://github.com/nationalarchives/tdr-terraform-backend",
-      "CostCentre"      = data.aws_ssm_parameter.cost_centre.value
-    }
-  )
+  common_tags = tomap({
+    "Owner"           = "TDR Backend", "Terraform" = true,
+    "TerraformSource" = "https://github.com/nationalarchives/tdr-terraform-backend",
+    "CostCentre"      = data.aws_ssm_parameter.cost_centre.value
+  })
   github_access_token_name = "/mgmt/github/access_token"
 
   github_tdr_e2e_tests_repository          = "repo:nationalarchives/tdr-e2e-tests:*"
@@ -271,11 +268,11 @@ module "ecr_draft_metadata_validator_repository" {
   source           = "./da-terraform-modules/ecr"
   repository_name  = "draft-metadata-validator"
   image_source_url = "https://github.com/nationalarchives/tdr-draft-metadata-validator/blob/main/Dockerfile"
-  allowed_principals = [
-    "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/tdr-draft-metadata-validator-intg-role",
-    "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/tdr-draft-metadata-validator-staging-role",
-    "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/tdr-draft-metadata-validator-prod-role"
-  ]
+  repository_policy = templatefile("${path.module}/templates/iam_policy/ecr_lambda_policy.json.tpl", {
+    staging_account_number = data.aws_ssm_parameter.staging_account_number.value,
+    prod_account_number    = data.aws_ssm_parameter.prod_account_number.value,
+    intg_account_number    = data.aws_ssm_parameter.intg_account_number.value
+  })
   common_tags = local.common_tags
 }
 
@@ -349,8 +346,11 @@ module "ecr_api_data_repository" {
   name             = "consignment-api-data"
   image_source_url = "https://github.com/nationalarchives/tdr-consignment-api-data/blob/master/Dockerfile"
   policy_name      = "api_data_policy"
-  policy_variables = { management_account = data.aws_ssm_parameter.mgmt_account_number.value, role_arn = module.github_actions_role.role.arn }
-  common_tags      = local.common_tags
+  policy_variables = {
+    management_account = data.aws_ssm_parameter.mgmt_account_number.value,
+    role_arn           = module.github_actions_role.role.arn
+  }
+  common_tags = local.common_tags
 }
 
 module "ecr_update_keycloak_repository" {
@@ -395,10 +395,13 @@ module "notification_lambda" {
   common_tags                   = local.common_tags
   project                       = "tdr"
   lambda_ecr_scan_notifications = true
-  event_rule_arns               = [module.ecr_image_scan_event.event_arn, "arn:aws:events:eu-west-2:${data.aws_ssm_parameter.mgmt_account_number.value}:rule/jenkins-backup-maintenance-window"]
-  sns_topic_arns                = [module.notifications_topic.sns_arn]
-  muted_scan_alerts             = module.global_parameters.muted_ecr_scan_alerts
-  kms_key_arn                   = module.mgmt_encryption_key.kms_key_arn
+  event_rule_arns = [
+    module.ecr_image_scan_event.event_arn,
+    "arn:aws:events:eu-west-2:${data.aws_ssm_parameter.mgmt_account_number.value}:rule/jenkins-backup-maintenance-window"
+  ]
+  sns_topic_arns    = [module.notifications_topic.sns_arn]
+  muted_scan_alerts = module.global_parameters.muted_ecr_scan_alerts
+  kms_key_arn       = module.mgmt_encryption_key.kms_key_arn
   // value not needed for mgmt lambda but cipher text encrypted so cannot be an empty value
   da_event_bus_arn = "placeholder"
 }
