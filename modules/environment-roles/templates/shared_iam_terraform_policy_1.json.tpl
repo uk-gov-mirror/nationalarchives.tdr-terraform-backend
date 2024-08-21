@@ -8,6 +8,8 @@
         "iam:*"
       ],
       "Resource": [
+         "arn:aws:iam::${account_id}:policy/TDRProcessDataLoadInvokeLambdaPolicy${title(environment)}",
+         "arn:aws:iam::${account_id}:policy/TDRProcessDataLoadS3Policy${title(environment)}",
          "arn:aws:iam::${account_id}:policy/TDRTransferServiceECSExecutionPolicy${title(environment)}",
          "arn:aws:iam::${account_id}:policy/TDRTransferServiceECSTaskPolicy${title(environment)}",
          "arn:aws:iam::${account_id}:role/TDRTransferServiceECSTaskRole${title(environment)}",
