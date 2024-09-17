@@ -77,3 +77,19 @@ data "aws_s3_bucket" "state_bucket" {
 data "aws_dynamodb_table" "state_lock_table" {
   name = local.backend_state_lock
 }
+
+data "aws_ssm_parameter" "enterprise_gpg_passphrase" {
+  name = "/mgmt/github_enterprise/gpg/passphrase"
+}
+
+data "aws_ssm_parameter" "enterprise_gpg_private_key" {
+  name = "/mgmt/github_enterprise/gpg/private_key"
+}
+
+data "aws_ssm_parameter" "enterprise_gpg_public_key" {
+  name = "/mgmt/github_enterprise/gpg/public_key"
+}
+
+data "aws_ssm_parameter" "enterprise_gpg_key_id" {
+  name = "/mgmt/github_enterprise/gpg/key_id"
+}
