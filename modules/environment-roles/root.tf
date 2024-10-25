@@ -145,20 +145,6 @@ data "aws_iam_policy_document" "frontend_storage_override" {
   }
 }
 
-
-data "aws_iam_policy_document" "tdr_jenkins_update_ecs_service" {
-  statement {
-    actions = [
-      "ecs:UpdateService"
-    ]
-    resources = [
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/frontend_${var.tdr_environment}/frontend_service_${var.tdr_environment}",
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/keycloak_${var.tdr_environment}/keycloak_service_${var.tdr_environment}",
-      "arn:aws:ecs:eu-west-2:${data.aws_caller_identity.current.account_id}:service/consignmentapi_${var.tdr_environment}/consignmentapi_service_${var.tdr_environment}"
-    ]
-  }
-}
-
 resource "aws_iam_role" "custodian_deploy_role" {
   name               = "TDRCustodianDeployRole${title(var.tdr_environment)}"
   description        = "Role to deploy Cloud Custodian to the ${title(var.tdr_environment)} environment"
@@ -255,7 +241,7 @@ resource "aws_iam_role" "github_service_unavailable_deploy_role" {
 
 resource "aws_iam_policy" "github_service_unavailable_deploy_policy" {
   name   = "TDRGithubActionsDeployServiceUnavailablePolicy${title(var.tdr_environment)}"
-  policy = templatefile("${path.module}/templates/jenkins_service_unavailable_deploy_policy.json.tpl", {})
+  policy = templatefile("${path.module}/templates/service_unavailable_deploy_policy.json.tpl", {})
 }
 
 resource "aws_iam_role_policy_attachment" "github_service_unavailable_attach" {
