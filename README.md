@@ -4,18 +4,15 @@
 
 ## Purpose
 
-The purpose of this repository is to setup the necessary Terraform backend and Jenkins permissions AWS resources to support development operations for the TDR application in the different environments, using cross account access.
+The purpose of this repository is to setup the necessary Terraform backend AWS resources to support development operations for the TDR application in the different environments, using cross account access.
 
 Specific resources created:
 * AWS TDR Management account resources:
   * **TDR state S3 Bucket**: contains the Terraform state files for each TDR workspace
-  * **TDR state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace
-  * **Jenkins state S3 Bucket**: contains the Terraform state files for Jenkins workspace
-  * **Jenkins state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace
+  * **TDR state DynamoDb table**: used for locking to prevent concurrent operations on a single workspace  
 * AWS TDR Environment accounts resources:
   * **TDR Terraform IAM Roles**: IAM role to allow creation of AWS resources within the environment using Terraform (Terraform IAM role)
-  * **Jenkins Terraform IAM Roles**: IAM role to allow running of Jenkins operations in AWS management account and TDR environment AWS accounts
-  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform and Jenkins IAM roles
+  * **IAM Policies**: Specific IAM policies to give permissions to the Terraform IAM roles
 
 These resources are used by the TDR application Terraform code: https://github.com/nationalarchives/tdr-terraform-environments
 
@@ -67,9 +64,7 @@ run from a development machine.
 3. Run the following command to ensure Terraform uses the correct credentials and environment variables:
 
    ```
-   [location of project] $ export AWS_PROFILE=management
-   [location of project] $ export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github/jenkins-api-key]
-   [location of project] $ export GITHUB_OWNER=nationalarchives
+   [location of project] $ export AWS_PROFILE=management   
    ```
    
 4. From the root of the project run Terraform in the ***default*** Terraform workspace:
@@ -87,23 +82,18 @@ run from a development machine.
 Once the Terraform Backend project has been setup the following AWS backend resources should be available in the AWS TDR Management account:
 
   * S3 Buckets: 
-    * tdr-terraform-state; 
-    * tdr-terraform-state-jenkins
+    * tdr-terraform-state;    
   * DyanmoDb Tables: 
-    * tdr-terraform-state-lock; 
-    * tdr-state-lock-jenkins  
+    * tdr-terraform-state-lock;    
   * IAM Policies: 
     * TDR[env name]AccessTerraformState;    
     * TDRTerraformPolicy[env name] 
     * TDRReadTerraformState; 
     * TDRTerraformStateLockAccess
-    * TDRTerraformDescribeAccount
-    * TDRJenkinsNodePolicy[env name]
-  * IAM Groups:
-    * terraform-create-jenkins
+    * TDRTerraformDescribeAccount    
+  * IAM Groups:    
     * TDRDEnyAccess
-  * IAM Roles:
-    * TDRJenkinsNodeRole[env name]
+  * IAM Roles:    
     * TDRTerraformAssumeRole[env name] 
   
 In the TDR AWS environment accounts the following AWS resources should be available in each of the AWS accounts:
@@ -114,8 +104,7 @@ In the TDR AWS environment accounts the following AWS resources should be availa
     * TDRFrontendTerraform[env name]-part-a
     * TDRFrontendTerraform[env name]-part-b
     * TDRKeycloakTerraform[env name]-part-a
-    * TDRKeycloakTerraform[env name]-part-b
-    * TDRJenkinsUpdateECS[env name]
+    * TDRKeycloakTerraform[env name]-part-b    
     * *[further policies to be added as needed]*   
 
 The IAM policies are split into parts due to a limit on the size of the policies.
@@ -128,7 +117,7 @@ Two TDR Application AWS accounts are used to host the different environments:
 * **Integration AWS Account**: hosts the TDR *Intg* environment
 * **Production AWS Account**: hosts the TDR *Staging* and *Prod* environments
 
-In addition there is a TDR Management AWS account which is used to host the Terraform backend and Jenkins.
+In addition there is a TDR Management AWS account which is used to host the Terraform backend.
 
 ### IAM Role Delegation
 
