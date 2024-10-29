@@ -22,74 +22,10 @@ data "aws_ssm_parameter" "cost_centre" {
   name = "/mgmt/cost_centre"
 }
 
-data "aws_ssm_parameter" "slack_webhook_url" {
-  name = "/mgmt/release/slack/webhook"
-}
-
-data "aws_ssm_parameter" "slack_notifications_webhook_url" {
-  name = "/mgmt/slack/notifications/webhook"
-}
-
-data "aws_ssm_parameter" "slack_pr_monitor_url" {
-  name = "/mgmt/pr_monitor/slack/webhook"
-}
-
-data "aws_ssm_parameter" "npm_token" {
-  name = "/mgmt/npm_token"
-}
-
-data "aws_ssm_parameter" "gpg_passphrase" {
-  name = "/mgmt/github/gpg/passphrase"
-}
-
-data "aws_ssm_parameter" "slack_bot_token" {
-  name = "/mgmt/slack/bot"
-}
-
-data "aws_ssm_parameter" "gpg_key" {
-  name = "/mgmt/github/gpg/key"
-}
-
-data "aws_ssm_parameter" "gpg_key_id" {
-  name = "/mgmt/github/gpg/id"
-}
-
-data "aws_ssm_parameter" "sonatype_username" {
-  name = "/mgmt/sonatype/username"
-}
-
-data "aws_ssm_parameter" "sonatype_password" {
-  name = "/mgmt/sonatype/password"
-}
-
-data "aws_ssm_parameter" "slack_success_workflow" {
-  name = "/mgmt/slack_success_workflow"
-}
-
-data "aws_ssm_parameter" "slack_failure_workflow" {
-  name = "/mgmt/slack_failure_workflow"
-}
-
 data "aws_s3_bucket" "state_bucket" {
   bucket = local.backend_state_bucket
 }
 
 data "aws_dynamodb_table" "state_lock_table" {
   name = local.backend_state_lock
-}
-
-data "aws_ssm_parameter" "enterprise_gpg_passphrase" {
-  name = "/mgmt/github_enterprise/gpg/passphrase"
-}
-
-data "aws_ssm_parameter" "enterprise_gpg_private_key" {
-  name = "/mgmt/github_enterprise/gpg/private_key"
-}
-
-data "aws_ssm_parameter" "enterprise_gpg_public_key" {
-  name = "/mgmt/github_enterprise/gpg/public_key"
-}
-
-data "aws_ssm_parameter" "enterprise_gpg_key_id" {
-  name = "/mgmt/github_enterprise/gpg/key_id"
 }
