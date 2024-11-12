@@ -9,6 +9,8 @@
       ],
       "Resource": [
          "arn:aws:iam::${account_id}:policy/AWSSSO_DABusinessAnalyst",
+         "arn:aws:iam::${account_id}:policy/TDRGuardDutyS3MalwareScanPolicy${title(environment)}",
+         "arn:aws:iam::${account_id}:role/TDRGuardDutyS3MalwareScanRole${title(environment)}",
          "arn:aws:iam::${account_id}:policy/TDRProcessDataLoadInvokeLambdaPolicy${title(environment)}",
          "arn:aws:iam::${account_id}:policy/TDRProcessDataLoadS3Policy${title(environment)}",
          "arn:aws:iam::${account_id}:policy/TDRTransferServiceECSExecutionPolicy${title(environment)}",
