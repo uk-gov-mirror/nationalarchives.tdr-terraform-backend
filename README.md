@@ -68,7 +68,7 @@ run from a development machine.
 
    ```
    [location of project] $ export AWS_PROFILE=management
-   [location of project] $ export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github/jenkins-api-key]
+   [location of project] $ export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github_enterprise/access_token]
    [location of project] $ export GITHUB_OWNER=nationalarchives
    ```
    
