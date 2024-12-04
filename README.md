@@ -64,7 +64,9 @@ run from a development machine.
 3. Run the following command to ensure Terraform uses the correct credentials and environment variables:
 
    ```
-   [location of project] $ export AWS_PROFILE=management   
+   [location of project] $ export AWS_PROFILE=management
+   [location of project] $ export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github_enterprise/access_token]
+   [location of project] $ export GITHUB_OWNER=nationalarchives
    ```
    
 4. From the root of the project run Terraform in the ***default*** Terraform workspace:

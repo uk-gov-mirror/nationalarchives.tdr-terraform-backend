@@ -118,7 +118,9 @@
         "ssm:ListTagsForResource",
         "ssm:PutParameter",
         "states:*",
-        "wafv2:*"
+        "wafv2:*",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:TagResource"
       ],
       "Resource": "*"
     }
