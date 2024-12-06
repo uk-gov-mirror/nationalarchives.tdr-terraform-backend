@@ -85,6 +85,24 @@ module "github_cloudwatch_terraform_plan_outputs_mgmt" {
   name        = "terraform-plan-outputs-mgmt"
 }
 
+module "github_cloudwatch_terraform_apply_outputs_intg" {
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-apply-outputs-intg"
+}
+
+module "github_cloudwatch_terraform_apply_outputs_staging" {
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-apply-outputs-staging"
+}
+
+module "github_cloudwatch_terraform_apply_outputs_prod" {
+  source      = "./tdr-terraform-modules/cloudwatch_logs"
+  common_tags = local.common_tags
+  name        = "terraform-apply-outputs-prod"
+}
+
 module "github_cloudwatch_terraform_plan_policy" {
   source        = "./tdr-terraform-modules/iam_policy"
   name          = "TDRGithubCloudwatchTerraformPlanPolicy"
