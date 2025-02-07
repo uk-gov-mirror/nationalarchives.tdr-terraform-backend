@@ -82,6 +82,7 @@
         "arn:aws:iam::${account_id}:instance-profile/bastion",
         "arn:aws:iam::${account_id}:role/BastionEC2Role${title_environment}",
         "arn:aws:iam::${account_id}:role/TDRBastionAccessDbRole${title_environment}",
+        "arn:aws:iam::${account_id}:policy/org-session-manager-logs",
         "arn:aws:iam::${account_id}:policy/TDRBastionAccessDbPolicy${title_environment}",
         "arn:aws:iam::${account_id}:policy/TDRBastionAssumeDbRolePolicy${title_environment}",
         "arn:aws:iam::${account_id}:policy/TDRGithubActionsRunDocumentPolicy${title_environment}",
