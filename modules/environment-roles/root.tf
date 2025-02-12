@@ -24,11 +24,13 @@ resource "aws_iam_role" "terraform_scripts_role" {
   name               = "TDRScriptsTerraformRole${title(var.tdr_environment)}"
   description        = "Role to allow terraform to run temporary scripts in the tdr-scripts repository"
   assume_role_policy = templatefile("./modules/environment-roles/templates/terraform_assume_role_policy.json.tpl", { account_id = var.tdr_mgmt_account_number, external_id = var.terraform_scripts_external_id })
+  tags               = var.common_tags
 }
 
 resource "aws_iam_policy" "terraform_scripts_policy" {
   name   = "TDRScriptsTerraformPolicy${title(var.tdr_environment)}"
   policy = templatefile("${path.module}/templates/terraform_scripts_policy.json.tpl", { account_id = data.aws_caller_identity.current.account_id, title_environment = title(var.tdr_environment), environment = var.tdr_environment })
+  tags   = var.common_tags
 }
 
 resource "aws_iam_role" "terraform_role" {

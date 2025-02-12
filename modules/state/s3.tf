@@ -1,18 +1,5 @@
 resource "aws_s3_bucket" "tdr_terraform_state" {
   bucket = "tdr-terraform-state"
-  acl    = "private"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  versioning {
-    enabled = true
-  }
 
   tags = merge(
     var.common_tags,
@@ -20,6 +7,29 @@ resource "aws_s3_bucket" "tdr_terraform_state" {
       { "Name" = "TDR Terraform State" }
     )
   )
+}
+
+resource "aws_s3_bucket_acl" "tdr_terraform_state_acl" {
+  bucket = aws_s3_bucket.tdr_terraform_state.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tdr_terraform_state_encryption" {
+  bucket = aws_s3_bucket.tdr_terraform_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "tdr_terraform_state_versioning" {
+  bucket = aws_s3_bucket.tdr_terraform_state.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_block" {
@@ -31,21 +41,52 @@ resource "aws_s3_bucket_public_access_block" "public_access_block" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket" "tdr_terraform_state_grafana" {
-  bucket = "tdr-terraform-state-grafana"
-  acl    = "private"
+resource "aws_s3_bucket" "tdr_terraform_state_jenkins" {
+  bucket = "tdr-terraform-state-jenkins"
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+  tags = merge(
+    var.common_tags,
+    tomap(
+      { "Name" = "TDR Jekins Terraform State" }
+    )
+  )
+}
+
+resource "aws_s3_bucket_acl" "tdr_terraform_state_jenkins_acl" {
+  bucket = aws_s3_bucket.tdr_terraform_state_jenkins.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tdr_terraform_state_jenkins_encryption" {
+  bucket = aws_s3_bucket.tdr_terraform_state_jenkins.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "tdr_terraform_state_jenkins_versioning" {
+  bucket = aws_s3_bucket.tdr_terraform_state_jenkins.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
+}
+
+
+resource "aws_s3_bucket_public_access_block" "public_access_block_jenkins" {
+  bucket = aws_s3_bucket.tdr_terraform_state_jenkins.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket" "tdr_terraform_state_grafana" {
+  bucket = "tdr-terraform-state-grafana"
 
   tags = merge(
     var.common_tags,
@@ -53,6 +94,29 @@ resource "aws_s3_bucket" "tdr_terraform_state_grafana" {
       { "Name" = "TDR Grafana Terraform State" }
     )
   )
+}
+
+resource "aws_s3_bucket_acl" "tdr_terraform_state_grafana_acl" {
+  bucket = aws_s3_bucket.tdr_terraform_state_grafana.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tdr_terraform_state_grafana_encryption" {
+  bucket = aws_s3_bucket.tdr_terraform_state_grafana.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "tdr_terraform_state_grafana_versioning" {
+  bucket = aws_s3_bucket.tdr_terraform_state_grafana.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_block_grafana" {
@@ -67,19 +131,6 @@ resource "aws_s3_bucket_public_access_block" "public_access_block_grafana" {
 
 resource "aws_s3_bucket" "tdr_terraform_state_scripts" {
   bucket = "tdr-terraform-state-scripts"
-  acl    = "private"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  versioning {
-    enabled = true
-  }
 
   tags = merge(
     var.common_tags,
@@ -87,6 +138,29 @@ resource "aws_s3_bucket" "tdr_terraform_state_scripts" {
       { "Name" = "TDR Scripts Terraform State" }
     )
   )
+}
+
+resource "aws_s3_bucket_acl" "tdr_terraform_state_scripts_acl" {
+  bucket = aws_s3_bucket.tdr_terraform_state_scripts.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tdr_terraform_state_scripts_encryption" {
+  bucket = aws_s3_bucket.tdr_terraform_state_scripts.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "tdr_terraform_state_scripts_versioning" {
+  bucket = aws_s3_bucket.tdr_terraform_state_scripts.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_block_scripts" {
@@ -101,26 +175,35 @@ resource "aws_s3_bucket_public_access_block" "public_access_block_scripts" {
 resource "aws_s3_bucket" "tdr_terraform_state_github" {
   bucket = "tdr-terraform-state-github"
 
-  acl = "private"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  versioning {
-    enabled = true
-  }
-
   tags = merge(
     var.common_tags,
     tomap(
       { "Name" = "TDR Github Terraform State" }
     )
   )
+}
+
+resource "aws_s3_bucket_acl" "tdr_terraform_state_github_acl" {
+  bucket = aws_s3_bucket.tdr_terraform_state_github.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tdr_terraform_state_github_encryption" {
+  bucket = aws_s3_bucket.tdr_terraform_state_github.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "tdr_terraform_state_github_versioning" {
+  bucket = aws_s3_bucket.tdr_terraform_state_github.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_block_github" {
