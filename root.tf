@@ -1,17 +1,22 @@
 locals {
   backend_state_lock   = "tdr-bootstrap-terraform-state-lock"
   backend_state_bucket = "tdr-bootstrap-terraform-state"
+
   common_tags = tomap({
     "Owner"           = "TDR Backend", "Terraform" = true,
     "TerraformSource" = "https://github.com/nationalarchives/tdr-terraform-backend",
     "CostCentre"      = data.aws_ssm_parameter.cost_centre.value
   })
-  github_access_token_name = "/mgmt/github/access_token"
 
   github_tdr_e2e_tests_repository          = "repo:nationalarchives/tdr-e2e-tests:*"
   github_tdr_antivirus_repository          = "repo:nationalarchives/tdr-antivirus:*"
   github_tna_custodian_repository          = "repo:nationalarchives/tna-custodian:*"
   github_da_reference_generator_repository = "repo:nationalarchives/da-reference-generator:*"
+
+  terraform_state_bucket_access_roles = [
+    module.github_terraform_assume_role_intg.role.arn, module.github_terraform_assume_role_staging.role.arn,
+    module.github_terraform_assume_role_prod.role.arn
+  ]
 }
 
 module "global_parameters" {
@@ -429,4 +434,20 @@ module "periodic_ecr_image_scan_event" {
   schedule                = "rate(7 days)"
   rule_name               = "ecr-scan"
   lambda_event_target_arn = module.periodic_ecr_image_scan_lambda.ecr_scan_lambda_arn
+}
+
+module "terraform_state_bucket_kms_key" {
+  source   = "./da-terraform-modules/kms"
+  key_name = "tdr-terraform-state-mgmt"
+  tags     = local.common_tags
+  default_policy_variables = {
+    user_roles = local.terraform_state_bucket_access_roles
+    ci_roles   = []
+    service_details = [
+      {
+        service_name : "cloudwatch"
+        service_source_account : data.aws_ssm_parameter.mgmt_account_number.value
+      }
+    ]
+  }
 }
