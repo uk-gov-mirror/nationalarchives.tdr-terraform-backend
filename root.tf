@@ -65,6 +65,17 @@ provider "aws" {
   }
 }
 
+module "aws_sso_admin_role_ssm_parameters" {
+  source = "./da-terraform-modules/ssm_parameter"
+  parameters = [
+    {
+      name        = "/mgmt/admin_role",
+      description = "AWS SSO admin role. Value to be added manually"
+      type        = "SecureString"
+      value       = "placeholder"
+    }]
+}
+
 //Set up TDR environment roles to provide permissions for Terraform
 module "intg_environment_roles" {
   source = "./modules/environment-roles"
