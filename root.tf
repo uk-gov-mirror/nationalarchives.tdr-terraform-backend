@@ -73,7 +73,7 @@ module "aws_sso_admin_role_ssm_parameters" {
       description = "AWS SSO admin role. Value to be added manually"
       type        = "SecureString"
       value       = "placeholder"
-    }]
+  }]
 }
 
 //Set up TDR environment roles to provide permissions for Terraform
