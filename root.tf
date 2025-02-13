@@ -453,7 +453,7 @@ module "terraform_state_bucket_kms_key" {
   tags     = local.common_tags
   default_policy_variables = {
     user_roles = local.terraform_state_bucket_access_roles
-    ci_roles   = []
+    ci_roles   = [data.aws_ssm_parameter.mgmt_admin_role.value]
     service_details = [
       {
         service_name : "cloudwatch"
