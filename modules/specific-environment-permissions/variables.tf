@@ -71,3 +71,7 @@ variable "add_ssm_policy" {
 variable "terraform_backend_state_bucket" {
   description = "S3 bucket storing the terraform state for the backend terraform project"
 }
+
+variable "terraform_state_bucket_encryption_key_policy_arn" {
+  description = "IAM policy ARN giving permissions to use S3 Terraform state buckets encryption key"
+}
