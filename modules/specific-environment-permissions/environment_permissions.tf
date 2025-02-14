@@ -34,10 +34,6 @@ resource "aws_iam_role_policy_attachment" "jenkins_run_ssm_attach" {
 }
 
 //IAM Policies: TDR Terraform Backend Permissions
-# resource "aws_iam_policy" "terraform_state_bucket_encryption" {
-#   name = "TDRTerraformStateBucketEncryptionPolicy"
-#   policy = templatefile("${path.module}/templates/state_bucket_encryption_policy.json.tpl", {kms_key_arn = var.state_bucket_encryption_key_arn})
-# }
 
 data "aws_iam_policy_document" "write_terraform_state_bucket" {
   version = "2012-10-17"

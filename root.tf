@@ -15,7 +15,7 @@ locals {
 
   terraform_state_bucket_access_roles = [
     module.github_terraform_assume_role_intg.role.arn, module.github_terraform_assume_role_staging.role.arn,
-    module.github_terraform_assume_role_prod.role.arn
+    module.github_terraform_assume_role_prod.role.arn, data.aws_ssm_parameter.mgmt_admin_role.value
   ]
 }
 
@@ -471,4 +471,5 @@ module "terraform_state_bucket_kms_encryption_policy" {
   source        = "./da-terraform-modules/iam_policy"
   name          = "TDRTerraformStateBucketKMSEncryptionPolicy"
   policy_string = templatefile("${path.module}/templates/iam_policy/state_bucket_encryption_policy.json.tpl", { kms_key_arn = module.terraform_state_bucket_kms_key.kms_key_arn })
+  tags          = local.common_tags
 }
