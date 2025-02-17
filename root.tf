@@ -159,7 +159,8 @@ module "staging_prod_account_parameters" {
 
 //Set up Terraform Backend state
 module "terraform_state" {
-  source = "./modules/state"
+  source                             = "./modules/state"
+  terraform_state_bucket_kms_key_arn = module.terraform_state_bucket_kms_key.kms_key_arn
 
   common_tags = local.common_tags
 }
