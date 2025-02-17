@@ -85,6 +85,11 @@ resource "aws_iam_role_policy_attachment" "terraform_role_change_terraform_state
   policy_arn = aws_iam_policy.access_terraform_state.arn
 }
 
+resource "aws_iam_role_policy_attachment" "terraform_state_bucket_encryption_key" {
+  role       = aws_iam_role.terraform_assume_role.name
+  policy_arn = var.terraform_state_bucket_encryption_key_policy_arn
+}
+
 resource "aws_iam_role_policy_attachment" "terraform_role_access_terraform_state_lock" {
   role       = aws_iam_role.terraform_assume_role.name
   policy_arn = var.terraform_state_lock_access_arn

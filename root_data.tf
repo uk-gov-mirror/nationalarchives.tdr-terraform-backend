@@ -29,3 +29,7 @@ data "aws_s3_bucket" "state_bucket" {
 data "aws_dynamodb_table" "state_lock_table" {
   name = local.backend_state_lock
 }
+
+data "aws_ssm_parameter" "mgmt_admin_role" {
+  name = "/mgmt/admin_role"
+}

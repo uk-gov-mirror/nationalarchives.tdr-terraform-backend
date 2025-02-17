@@ -1,17 +1,22 @@
 locals {
   backend_state_lock   = "tdr-bootstrap-terraform-state-lock"
   backend_state_bucket = "tdr-bootstrap-terraform-state"
+
   common_tags = tomap({
     "Owner"           = "TDR Backend", "Terraform" = true,
     "TerraformSource" = "https://github.com/nationalarchives/tdr-terraform-backend",
     "CostCentre"      = data.aws_ssm_parameter.cost_centre.value
   })
-  github_access_token_name = "/mgmt/github/access_token"
 
   github_tdr_e2e_tests_repository          = "repo:nationalarchives/tdr-e2e-tests:*"
   github_tdr_antivirus_repository          = "repo:nationalarchives/tdr-antivirus:*"
   github_tna_custodian_repository          = "repo:nationalarchives/tna-custodian:*"
   github_da_reference_generator_repository = "repo:nationalarchives/da-reference-generator:*"
+
+  terraform_state_bucket_access_roles = [
+    module.github_terraform_assume_role_intg.role.arn, module.github_terraform_assume_role_staging.role.arn,
+    module.github_terraform_assume_role_prod.role.arn, data.aws_ssm_parameter.mgmt_admin_role.value
+  ]
 }
 
 module "global_parameters" {
@@ -63,6 +68,17 @@ provider "aws" {
     role_arn     = "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/IAM_Admin_Role"
     session_name = "terraform-backend"
   }
+}
+
+module "aws_sso_admin_role_ssm_parameters" {
+  source = "./da-terraform-modules/ssm_parameter"
+  parameters = [
+    {
+      name        = "/mgmt/admin_role",
+      description = "AWS SSO admin role. Value to be added manually"
+      type        = "SecureString"
+      value       = "placeholder"
+  }]
 }
 
 //Set up TDR environment roles to provide permissions for Terraform
@@ -143,7 +159,8 @@ module "staging_prod_account_parameters" {
 
 //Set up Terraform Backend state
 module "terraform_state" {
-  source = "./modules/state"
+  source                             = "./modules/state"
+  terraform_state_bucket_kms_key_arn = module.terraform_state_bucket_kms_key.kms_key_arn
 
   common_tags = local.common_tags
 }
@@ -173,76 +190,80 @@ module "common_permissions" {
 
 //Set up specific TDR environment IAM policies for Terraform
 module "intg_specific_permissions" {
-  source                          = "./modules/specific-environment-permissions"
-  common_tags                     = local.common_tags
-  terraform_state_bucket          = module.terraform_state.terraform_state_bucket_arn
-  terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
-  terraform_github_state_bucket   = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock     = module.terraform_state_lock.terraform_github_state_lock_arn
-  tdr_account_number              = data.aws_ssm_parameter.intg_account_number.value
-  tdr_mgmt_account_number         = data.aws_ssm_parameter.mgmt_account_number.value
-  tdr_environment                 = "intg"
-  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
-  terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
-  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
+  source                                           = "./modules/specific-environment-permissions"
+  common_tags                                      = local.common_tags
+  terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
+  terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
+  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
+  tdr_account_number                               = data.aws_ssm_parameter.intg_account_number.value
+  tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
+  tdr_environment                                  = "intg"
+  read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
+  terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
+  terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
+  terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
 }
 
 module "staging_specific_permissions" {
-  source                          = "./modules/specific-environment-permissions"
-  common_tags                     = local.common_tags
-  terraform_state_bucket          = module.terraform_state.terraform_state_bucket_arn
-  terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
-  terraform_github_state_bucket   = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock     = module.terraform_state_lock.terraform_github_state_lock_arn
-  tdr_account_number              = data.aws_ssm_parameter.staging_account_number.value
-  tdr_mgmt_account_number         = data.aws_ssm_parameter.mgmt_account_number.value
-  tdr_environment                 = "staging"
-  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
-  terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
-  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
+  source                                           = "./modules/specific-environment-permissions"
+  common_tags                                      = local.common_tags
+  terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
+  terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
+  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
+  tdr_account_number                               = data.aws_ssm_parameter.staging_account_number.value
+  tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
+  tdr_environment                                  = "staging"
+  read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
+  terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
+  terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
+  terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
 }
 
 module "prod_specific_permissions" {
-  source                          = "./modules/specific-environment-permissions"
-  common_tags                     = local.common_tags
-  terraform_state_bucket          = module.terraform_state.terraform_state_bucket_arn
-  terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
-  terraform_github_state_bucket   = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock     = module.terraform_state_lock.terraform_github_state_lock_arn
-  tdr_account_number              = data.aws_ssm_parameter.prod_account_number.value
-  tdr_mgmt_account_number         = data.aws_ssm_parameter.mgmt_account_number.value
-  tdr_environment                 = "prod"
-  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
-  terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
-  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
+  source                                           = "./modules/specific-environment-permissions"
+  common_tags                                      = local.common_tags
+  terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
+  terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
+  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
+  tdr_account_number                               = data.aws_ssm_parameter.prod_account_number.value
+  tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
+  tdr_environment                                  = "prod"
+  read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
+  terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
+  terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
+  terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
 }
 
 module "sbox_specific_permissions" {
-  source                          = "./modules/specific-environment-permissions"
-  common_tags                     = local.common_tags
-  terraform_state_bucket          = module.terraform_state.terraform_state_bucket_arn
-  terraform_state_lock            = module.terraform_state_lock.terraform_state_lock_arn
-  terraform_github_state_bucket   = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock     = module.terraform_state_lock.terraform_github_state_lock_arn
-  tdr_account_number              = data.aws_ssm_parameter.sandbox_account_number.value
-  tdr_mgmt_account_number         = data.aws_ssm_parameter.mgmt_account_number.value
-  tdr_environment                 = "sbox"
-  read_terraform_state_policy_arn = module.common_permissions.read_terraform_state_policy_arn
-  terraform_state_lock_access_arn = module.common_permissions.terraform_state_lock_access_arn
-  terraform_describe_account_arn  = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn    = module.common_permissions.custodian_get_parameters_arn
-  terraform_scripts_state_bucket  = module.terraform_state.terraform_scripts_state_bucket_arn
-  add_ssm_policy                  = true
-  terraform_backend_state_bucket  = data.aws_s3_bucket.state_bucket.arn
+  source                                           = "./modules/specific-environment-permissions"
+  common_tags                                      = local.common_tags
+  terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
+  terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
+  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
+  tdr_account_number                               = data.aws_ssm_parameter.sandbox_account_number.value
+  tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
+  tdr_environment                                  = "sbox"
+  read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
+  terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
+  terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
+  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
+  terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
+  add_ssm_policy                                   = true
+  terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
+  terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
 }
 
 module "backend_code_s3" {
@@ -429,4 +450,27 @@ module "periodic_ecr_image_scan_event" {
   schedule                = "rate(7 days)"
   rule_name               = "ecr-scan"
   lambda_event_target_arn = module.periodic_ecr_image_scan_lambda.ecr_scan_lambda_arn
+}
+
+module "terraform_state_bucket_kms_key" {
+  source   = "./da-terraform-modules/kms"
+  key_name = "tdr-terraform-state-mgmt"
+  tags     = local.common_tags
+  default_policy_variables = {
+    user_roles = local.terraform_state_bucket_access_roles
+    ci_roles   = [data.aws_ssm_parameter.mgmt_admin_role.value]
+    service_details = [
+      {
+        service_name : "cloudwatch"
+        service_source_account : data.aws_ssm_parameter.mgmt_account_number.value
+      }
+    ]
+  }
+}
+
+module "terraform_state_bucket_kms_encryption_policy" {
+  source        = "./da-terraform-modules/iam_policy"
+  name          = "TDRTerraformStateBucketKMSEncryptionPolicy"
+  policy_string = templatefile("${path.module}/templates/iam_policy/state_bucket_encryption_policy.json.tpl", { kms_key_arn = module.terraform_state_bucket_kms_key.kms_key_arn })
+  tags          = local.common_tags
 }
