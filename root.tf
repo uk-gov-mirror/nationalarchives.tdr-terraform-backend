@@ -15,13 +15,12 @@ locals {
 
   terraform_state_bucket_access_roles = [
     module.github_terraform_assume_role_intg.role.arn, module.github_terraform_assume_role_staging.role.arn,
-    module.github_terraform_assume_role_prod.role.arn, data.aws_ssm_parameter.mgmt_admin_role.value
+    module.github_terraform_assume_role_prod.role.arn, data.aws_ssm_parameter.mgmt_admin_role.value, local.aws_backup_role_arn
   ]
 
-  aws_backup_role_name        = module.aws_backup_configuration.terraform_config["local_account_backup_role_name"]
-  aws_backup_tag              = module.tdr_configuration.terraform_config["aws_backup_7_day_no_cold_tag"]
-  aws_backup_role_arn         = "arn:aws:iam::${data.aws_ssm_parameter.mgmt_account_number.value}:role/${local.aws_backup_role_name}"
-  aws_service_backup_role_arn = module.aws_backup_configuration.terraform_config["aws_service_backup_role"]
+  aws_backup_role_name = module.aws_backup_configuration.terraform_config["local_account_backup_role_name"]
+  aws_backup_tag       = module.tdr_configuration.terraform_config["aws_backup_7_day_no_cold_tag"]
+  aws_backup_role_arn  = "arn:aws:iam::${data.aws_ssm_parameter.mgmt_account_number.value}:role/${local.aws_backup_role_name}"
 }
 
 module "global_parameters" {
@@ -452,7 +451,7 @@ module "mgmt_encryption_key" {
   environment         = "mgmt"
   common_tags         = local.common_tags
   key_policy          = "cloudwatch"
-  aws_backup_role_arn = local.aws_service_backup_role_arn
+  aws_backup_role_arn = local.aws_backup_role_arn
 }
 
 module "periodic_ecr_image_scan_lambda" {
@@ -481,9 +480,6 @@ module "terraform_state_bucket_kms_key" {
       {
         service_name : "cloudwatch"
         service_source_account : data.aws_ssm_parameter.mgmt_account_number.value
-      },
-      {
-        service_name : "backup"
       }
     ]
   }
