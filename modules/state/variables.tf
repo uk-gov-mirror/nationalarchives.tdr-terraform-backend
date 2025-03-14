@@ -7,7 +7,7 @@ variable "terraform_state_bucket_kms_key_arn" {
   description = "Customer managed encryption key for Terraform state buckets"
 }
 
-variable "aws_backup_role_arn" {
+variable "aws_backup_local_role_arn" {
   description = "IAM role used for centralised backups"
 }
 

@@ -190,6 +190,6 @@ resource "aws_s3_bucket_policy" "terraform_state_bucket_policy" {
   policy = templatefile("${path.module}/templates/terraform_state_bucket_policy.json.tpl",
     {
       bucket_name       = each.value.id,
-      aws_back_role_arn = var.aws_backup_role_arn
+      aws_back_role_arn = var.aws_backup_local_role_arn
   })
 }
