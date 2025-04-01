@@ -15,12 +15,26 @@ locals {
 
   terraform_state_bucket_access_roles = [
     module.github_terraform_assume_role_intg.role.arn, module.github_terraform_assume_role_staging.role.arn,
-    module.github_terraform_assume_role_prod.role.arn, data.aws_ssm_parameter.mgmt_admin_role.value
+    module.github_terraform_assume_role_prod.role.arn, data.aws_ssm_parameter.mgmt_admin_role.value, local.aws_backup_local_role_arn
   ]
+
+  aws_backup_role_name      = module.aws_backup_configuration.terraform_config["local_account_backup_role_name"]
+  aws_backup_tag            = module.tdr_configuration.terraform_config["aws_backup_daily_short_term_retain_tag"]
+  aws_backup_local_role_arn = "arn:aws:iam::${data.aws_ssm_parameter.mgmt_account_number.value}:role/${local.aws_backup_role_name}"
 }
 
 module "global_parameters" {
   source = "./tdr-configurations/terraform"
+}
+
+module "tdr_configuration" {
+  source  = "./da-terraform-configurations"
+  project = "tdr"
+}
+
+module "aws_backup_configuration" {
+  source  = "./da-terraform-configurations"
+  project = "aws-backup"
 }
 
 terraform {
@@ -162,7 +176,9 @@ module "terraform_state" {
   source                             = "./modules/state"
   terraform_state_bucket_kms_key_arn = module.terraform_state_bucket_kms_key.kms_key_arn
 
-  common_tags = local.common_tags
+  common_tags               = local.common_tags
+  aws_backup_local_role_arn = local.aws_backup_local_role_arn
+  aws_backup_tag            = local.aws_backup_tag
 }
 
 //Set up Terraform Backend statelock
@@ -429,12 +445,13 @@ module "notification_lambda" {
 }
 
 module "mgmt_encryption_key" {
-  source      = "./tdr-terraform-modules/kms"
-  project     = "tdr"
-  function    = "encryption"
-  environment = "mgmt"
-  common_tags = local.common_tags
-  key_policy  = "cloudwatch"
+  source                    = "./tdr-terraform-modules/kms"
+  project                   = "tdr"
+  function                  = "encryption"
+  environment               = "mgmt"
+  common_tags               = local.common_tags
+  key_policy                = "cloudwatch"
+  aws_backup_local_role_arn = local.aws_backup_local_role_arn
 }
 
 module "periodic_ecr_image_scan_lambda" {
