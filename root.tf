@@ -19,7 +19,7 @@ locals {
   ]
 
   aws_backup_role_name      = module.aws_backup_configuration.terraform_config["local_account_backup_role_name"]
-  aws_backup_tag            = module.tdr_configuration.terraform_config["daily-short-term-retain"]
+  aws_backup_tag            = module.tdr_configuration.terraform_config["aws_backup_daily_short_term_retain_tag"]
   aws_backup_local_role_arn = "arn:aws:iam::${data.aws_ssm_parameter.mgmt_account_number.value}:role/${local.aws_backup_role_name}"
 }
 
