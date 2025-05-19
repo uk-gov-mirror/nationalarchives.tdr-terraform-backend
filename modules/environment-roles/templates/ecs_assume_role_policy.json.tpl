@@ -4,6 +4,11 @@
     {
       "Sid": "",
       "Effect": "Allow",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "${account_id}"
+        }
+      },
       "Principal": {
         "Service": "ecs-tasks.amazonaws.com"
       },

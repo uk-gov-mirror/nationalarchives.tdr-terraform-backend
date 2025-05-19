@@ -2,6 +2,8 @@ locals {
   env_title_case = title(var.tdr_environment)
 }
 
+data "aws_caller_identity" "current" {}
+
 //IAM Roles: Jenkins Nodes Assume Roles
 
 data "aws_iam_policy_document" "ecs_assume_role" {
@@ -15,22 +17,13 @@ data "aws_iam_policy_document" "ecs_assume_role" {
       type        = "Service"
       identifiers = ["ecs-tasks.amazonaws.com"]
     }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
   }
-}
-
-resource "aws_iam_role" "jenkins_run_ssm_role" {
-  name               = "TDRJenkinsRunSsmRole${local.env_title_case}"
-  assume_role_policy = templatefile("${path.module}/templates/ecs_assume_role_policy.json.tpl", {})
-}
-
-resource "aws_iam_policy" "jenkins_run_ssm_policy" {
-  name   = "TDRJenkinsRunSsmPolicy${local.env_title_case}"
-  policy = templatefile("${path.module}/templates/jenkins_assume_role.json.tpl", { account_id = var.tdr_account_number, role_name = "TDRJenkinsRunDocumentRole${local.env_title_case}" })
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_run_ssm_attach" {
-  policy_arn = aws_iam_policy.jenkins_run_ssm_policy.arn
-  role       = aws_iam_role.jenkins_run_ssm_role.id
 }
 
 //IAM Policies: TDR Terraform Backend Permissions
