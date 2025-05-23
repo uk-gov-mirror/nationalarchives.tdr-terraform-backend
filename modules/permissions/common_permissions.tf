@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "terraform_state_lock" {
   statement {
     effect    = "Allow"
     actions   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:DeleteItem"]
-    resources = [var.terraform_state_lock, var.terraform_scripts_state_lock, var.terraform_backend_state_lock, var.terraform_github_state_lock]
+    resources = [var.terraform_state_lock, var.terraform_scripts_state_lock, var.terraform_github_state_lock]
   }
 }
 
