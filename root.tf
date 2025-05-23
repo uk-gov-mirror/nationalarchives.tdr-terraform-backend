@@ -39,13 +39,14 @@ module "aws_backup_configuration" {
 
 terraform {
   backend "s3" {
-    bucket         = "tdr-bootstrap-terraform-state"
-    key            = "terraform.state"
-    region         = "eu-west-2"
-    encrypt        = true
-    dynamodb_table = "tdr-bootstrap-terraform-state-lock"
+    bucket       = "tdr-bootstrap-terraform-state"
+    key          = "terraform.state"
+    region       = "eu-west-2"
+    encrypt      = true
+    use_lockfile = true
   }
 }
+
 
 //Management account AWS provider
 provider "aws" {
