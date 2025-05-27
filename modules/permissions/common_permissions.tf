@@ -79,27 +79,6 @@ data "aws_iam_policy_document" "ecs_assume_role" {
   }
 }
 
-resource "aws_iam_role" "jenkins_check_ami_role" {
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name               = "TDRJenkinsCheckAmiRole"
-  tags = merge(
-    var.common_tags,
-    tomap(
-      { "Name" = "TDR Jenkins Publish Role" }
-    )
-  )
-}
-
-resource "aws_iam_policy" "jenkins_check_ami_policy" {
-  name   = "TDRJenkinsCheckAmiPolicy"
-  policy = templatefile("${path.module}/templates/jenkins_check_ami_policy.json.tpl", {})
-}
-
-resource "aws_iam_role_policy_attachment" "jenkins_check_ami_policy_attachment" {
-  policy_arn = aws_iam_policy.jenkins_check_ami_policy.arn
-  role       = aws_iam_role.jenkins_check_ami_role.name
-}
-
 resource "aws_iam_role" "jenkins_publish_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
   name               = "TDRJenkinsPublishRole"
