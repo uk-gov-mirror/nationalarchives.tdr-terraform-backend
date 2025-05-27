@@ -205,7 +205,7 @@ module "common_permissions" {
 
 //Set up specific TDR environment IAM policies for Terraform
 module "intg_specific_permissions" {
-  source                                           = "./modules/specific-environment-permissions"
+  source                                           = "./modules/specific-environment-permissions-dev"
   common_tags                                      = local.common_tags
   terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
