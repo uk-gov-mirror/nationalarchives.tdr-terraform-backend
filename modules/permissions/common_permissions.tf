@@ -59,37 +59,6 @@ resource "aws_iam_policy" "terraform_describe_account" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_policy_document" "ecs_assume_role" {
-  version = "2012-10-17"
-
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [data.aws_caller_identity.current.account_id]
-    }
-  }
-}
-
-resource "aws_iam_role" "jenkins_publish_role" {
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  name               = "TDRJenkinsPublishRole"
-  tags = merge(
-    var.common_tags,
-    tomap(
-      { "Name" = "TDR Jenkins Publish Role" }
-    )
-  )
-}
-
 data "aws_iam_policy_document" "custodian_get_parameters" {
   version = "2012-10-17"
 
