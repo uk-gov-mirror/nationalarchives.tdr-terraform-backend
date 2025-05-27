@@ -1,5 +1,4 @@
 locals {
-  backend_state_lock   = "tdr-bootstrap-terraform-state-lock"
   backend_state_bucket = "tdr-bootstrap-terraform-state"
 
   common_tags = tomap({
@@ -39,13 +38,14 @@ module "aws_backup_configuration" {
 
 terraform {
   backend "s3" {
-    bucket         = "tdr-bootstrap-terraform-state"
-    key            = "terraform.state"
-    region         = "eu-west-2"
-    encrypt        = true
-    dynamodb_table = "tdr-bootstrap-terraform-state-lock"
+    bucket       = "tdr-bootstrap-terraform-state"
+    key          = "terraform.state"
+    region       = "eu-west-2"
+    encrypt      = true
+    use_lockfile = true
   }
 }
+
 
 //Management account AWS provider
 provider "aws" {
@@ -197,7 +197,6 @@ module "common_permissions" {
   terraform_scripts_state_bucket = module.terraform_state.terraform_scripts_state_bucket_arn
   terraform_scripts_state_lock   = module.terraform_state_lock.terraform_scripts_state_lock_arn
   terraform_backend_state_bucket = data.aws_s3_bucket.state_bucket.arn
-  terraform_backend_state_lock   = data.aws_dynamodb_table.state_lock_table.arn
   terraform_github_state_bucket  = module.terraform_state.terraform_github_state_bucket_arn
   terraform_github_state_lock    = module.terraform_state_lock.terraform_github_state_lock_arn
   management_account_number      = data.aws_ssm_parameter.mgmt_account_number.value

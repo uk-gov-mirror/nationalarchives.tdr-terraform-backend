@@ -27,10 +27,6 @@ variable "terraform_backend_state_bucket" {
   description = "S3 bucket used for the backend state"
 }
 
-variable "terraform_backend_state_lock" {
-  description = "DynamoDb table controlling the backend terraform state lock"
-}
-
 variable "terraform_github_state_bucket" {
   description = "S3 bucket used for the github state"
 }
