@@ -1,12 +1,12 @@
 [submodule "tdr-configurations"]
 	path = tdr-configurations
-	url = git@github.com:nationalarchives/tdr-configurations.git
+	url = https://github.com/nationalarchives/tdr-configurations.git
 [submodule "tdr-terraform-modules"]
 	path = tdr-terraform-modules
-	url = git@github.com:nationalarchives/tdr-terraform-modules.git
+	url = https://github.com/nationalarchives/tdr-terraform-modules.git
 [submodule "da-terraform-configurations"]
 	path = da-terraform-configurations
-	url = git@github.com:nationalarchives/da-terraform-configurations.git
+	url = https://github.com/nationalarchives/da-terraform-configurations.git
 [submodule "da-terraform-modules"]
 	path = da-terraform-modules
-	url = git@github.com:nationalarchives/da-terraform-modules.git
+	url = https://github.com/nationalarchives/da-terraform-modules.git
