@@ -49,15 +49,13 @@ terraform {
 
 //Management account AWS provider
 provider "aws" {
-  region  = "eu-west-2"
-  profile = "management"
+  region = "eu-west-2"
 }
 
 //AWS providers for TDR environment accounts
 provider "aws" {
-  alias   = "intg"
-  region  = "eu-west-2"
-  profile = "management"
+  alias  = "intg"
+  region = "eu-west-2"
   assume_role {
     role_arn     = "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/IAM_Admin_Role"
     session_name = "terraform-backend"
@@ -65,9 +63,8 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias   = "staging"
-  region  = "eu-west-2"
-  profile = "management"
+  alias  = "staging"
+  region = "eu-west-2"
   assume_role {
     role_arn     = "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/IAM_Admin_Role"
     session_name = "terraform-backend"
@@ -75,9 +72,8 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias   = "prod"
-  region  = "eu-west-2"
-  profile = "management"
+  alias  = "prod"
+  region = "eu-west-2"
   assume_role {
     role_arn     = "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/IAM_Admin_Role"
     session_name = "terraform-backend"
