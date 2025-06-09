@@ -34,7 +34,3 @@ variable "grafana_management_external_id" {
 variable "github_da_reference_generator_repository" {
   description = "A full repository name to be used in the github assume role template"
 }
-
-variable "github_tna_custodian_repository" {
-  description = "A full repository name to be used in the github assume role template"
-}
