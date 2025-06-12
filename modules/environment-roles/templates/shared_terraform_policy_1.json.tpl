@@ -120,7 +120,8 @@
         "states:*",
         "wafv2:*",
         "secretsmanager:CreateSecret",
-        "secretsmanager:TagResource"
+        "secretsmanager:TagResource",
+        "organizations:DescribeOrganization"
       ],
       "Resource": "*"
     }

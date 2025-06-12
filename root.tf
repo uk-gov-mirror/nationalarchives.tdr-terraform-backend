@@ -9,7 +9,6 @@ locals {
 
   github_tdr_e2e_tests_repository          = "repo:nationalarchives/tdr-e2e-tests:*"
   github_tdr_antivirus_repository          = "repo:nationalarchives/tdr-antivirus:*"
-  github_tna_custodian_repository          = "repo:nationalarchives/tna-custodian:*"
   github_da_reference_generator_repository = "repo:nationalarchives/da-reference-generator:*"
 
   terraform_state_bucket_access_roles = [
@@ -107,7 +106,6 @@ module "intg_environment_roles" {
   terraform_scripts_external_id            = module.global_parameters.external_ids.terraform_scripts
   grafana_management_external_id           = module.global_parameters.external_ids.grafana_management
   github_da_reference_generator_repository = local.github_da_reference_generator_repository
-  github_tna_custodian_repository          = local.github_tna_custodian_repository
 }
 
 module "staging_environment_role" {
@@ -125,7 +123,6 @@ module "staging_environment_role" {
   terraform_scripts_external_id            = module.global_parameters.external_ids.terraform_scripts
   grafana_management_external_id           = module.global_parameters.external_ids.grafana_management
   github_da_reference_generator_repository = local.github_da_reference_generator_repository
-  github_tna_custodian_repository          = local.github_tna_custodian_repository
 }
 
 module "prod_environment_role" {
@@ -143,7 +140,6 @@ module "prod_environment_role" {
   terraform_scripts_external_id            = module.global_parameters.external_ids.terraform_scripts
   grafana_management_external_id           = module.global_parameters.external_ids.grafana_management
   github_da_reference_generator_repository = local.github_da_reference_generator_repository
-  github_tna_custodian_repository          = local.github_tna_custodian_repository
 }
 
 //Shared parameters to store in each environment
@@ -213,7 +209,6 @@ module "intg_specific_permissions" {
   read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
   terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
   terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
@@ -232,7 +227,6 @@ module "staging_specific_permissions" {
   read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
   terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
   terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
@@ -251,7 +245,6 @@ module "prod_specific_permissions" {
   read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
   terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
   terraform_state_bucket_encryption_key_policy_arn = module.terraform_state_bucket_kms_encryption_policy.policy_arn
@@ -270,7 +263,6 @@ module "sbox_specific_permissions" {
   read_terraform_state_policy_arn                  = module.common_permissions.read_terraform_state_policy_arn
   terraform_state_lock_access_arn                  = module.common_permissions.terraform_state_lock_access_arn
   terraform_describe_account_arn                   = module.common_permissions.terraform_describe_account_arn
-  custodian_get_parameters_arn                     = module.common_permissions.custodian_get_parameters_arn
   terraform_scripts_state_bucket                   = module.terraform_state.terraform_scripts_state_bucket_arn
   add_ssm_policy                                   = true
   terraform_backend_state_bucket                   = data.aws_s3_bucket.state_bucket.arn
