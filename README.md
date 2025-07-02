@@ -27,38 +27,29 @@ The Terraform IAM roles are assumed by the TDR AWS Management account user runni
 
 See: https://learn.hashicorp.com/terraform/getting-started/install.html
 
-### Add shared modules
+### Clone the repo with the submodules
 
-Some of the resources created by this project depend on the shared TDR Terraform
-modules.
-
-Clone the [tdr-terraform-modules](https://github.com/nationalarchives/tdr-terraform-modules/)
-project into this project's directory.
+This stack uses four submodules
 
    ```
-   [location of project] $ git clone git@github.com:nationalarchives/tdr-terraform-modules.git   
+   [location of project] $ git clone --recurse-submodules git@github.com:nationalarchives/tdr-terraform-backend
    ```
-
-### Add TDR Configurations
-
-This project depends on non-public values configured in the TDR configurations
-project. Clone [tdr-configurations](https://github.com/nationalarchives/tdr-configurations)
-into this project's directory.
 
 ## Running the Project
 
 This project bootstraps management account and environments, so it needs to be
 run from a development machine.
 
-1. Clone the project to local machine: https://github.com/nationalarchives/tdr-terraform-backend
+1. Clone the project to local machine (as above) ```git clone --recurse-submodules git@github.com:nationalarchives/tdr-terraform-backend```
 
 2. Add AWS credentials to the local credential store (~/.aws/credentials):
 
    ```
    ... other credentials ...
-   [management]
-   aws_access_key_id = ... management user access key ...
-   aws_secret_access_key = ... management user secret key ...
+   [<a profile that points to management>]
+   sso_account_id  = ... management account number  ...
+   sso_role_name  = ... management role ...
+   ...
    ```
 
   * These credentials will be used to create the Terraform backend and set up the individual Terraform environments with IAM roles that will allow Terraform to create the AWS resources in that TDR environment.
@@ -67,7 +58,7 @@ run from a development machine.
 3. Run the following command to ensure Terraform uses the correct credentials and environment variables:
 
    ```
-   [location of project] $ export AWS_PROFILE=management
+   [location of project] $ export AWS_PROFILE=<profile name created in step 2>
    [location of project] $ export GITHUB_TOKEN=[valid token with access to TDR GitHub repos. Can use token from SSM parameter store: /mgmt/github_enterprise/access_token]
    [location of project] $ export GITHUB_OWNER=nationalarchives
    ```
