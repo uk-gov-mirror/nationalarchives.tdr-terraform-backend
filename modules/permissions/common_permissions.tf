@@ -33,6 +33,12 @@ data "aws_iam_policy_document" "terraform_state_lock" {
     actions   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:DeleteItem"]
     resources = [var.terraform_state_lock, var.terraform_scripts_state_lock, var.terraform_github_state_lock]
   }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${var.terraform_state_bucket}/*/*.tflock"]
+  }
 }
 
 resource "aws_iam_policy" "terraform_state_lock_access" {
