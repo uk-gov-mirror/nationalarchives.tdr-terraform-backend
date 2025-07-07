@@ -213,12 +213,11 @@ module "intg_specific_permissions" {
 }
 
 module "staging_specific_permissions" {
-  source                        = "./modules/specific-environment-permissions"
-  common_tags                   = local.common_tags
-  terraform_state_bucket        = module.terraform_state.terraform_state_bucket_arn
-  terraform_state_lock          = module.terraform_state_lock.terraform_state_lock_arn
-  terraform_github_state_bucket = module.terraform_state.terraform_github_state_bucket_arn
-  #terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
+  source                                           = "./modules/specific-environment-permissions"
+  common_tags                                      = local.common_tags
+  terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
+  terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
+  terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
   tdr_account_number                               = data.aws_ssm_parameter.staging_account_number.value
   tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
   tdr_environment                                  = "staging"
