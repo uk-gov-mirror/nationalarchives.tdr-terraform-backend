@@ -18,11 +18,6 @@ variable "terraform_github_state_bucket" {
   type        = string
 }
 
-variable "terraform_github_state_lock" {
-  description = "DynamoDb table controlling the terraform github state lock"
-  type        = string
-}
-
 variable "tdr_account_number" {
   description = "AWS account number where TDR environment is hosted"
   type        = string
