@@ -31,10 +31,6 @@ variable "terraform_github_state_bucket" {
   description = "S3 bucket used for the github state"
 }
 
-variable "terraform_github_state_lock" {
-  description = "DynamoDb table controlling the terraform github state lock"
-}
-
 variable "management_account_number" {}
 
 variable "environment" {}

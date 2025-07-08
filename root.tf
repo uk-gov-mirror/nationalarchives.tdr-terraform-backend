@@ -190,7 +190,6 @@ module "common_permissions" {
   terraform_scripts_state_lock   = module.terraform_state_lock.terraform_scripts_state_lock_arn
   terraform_backend_state_bucket = data.aws_s3_bucket.state_bucket.arn
   terraform_github_state_bucket  = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock    = module.terraform_state_lock.terraform_github_state_lock_arn
   management_account_number      = data.aws_ssm_parameter.mgmt_account_number.value
   environment                    = "mgmt"
 }
@@ -202,7 +201,6 @@ module "intg_specific_permissions" {
   terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
   terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
   tdr_account_number                               = data.aws_ssm_parameter.intg_account_number.value
   tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
   tdr_environment                                  = "intg"
@@ -220,7 +218,6 @@ module "staging_specific_permissions" {
   terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
   terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
   tdr_account_number                               = data.aws_ssm_parameter.staging_account_number.value
   tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
   tdr_environment                                  = "staging"
@@ -238,7 +235,6 @@ module "prod_specific_permissions" {
   terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
   terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
   tdr_account_number                               = data.aws_ssm_parameter.prod_account_number.value
   tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
   tdr_environment                                  = "prod"
@@ -256,7 +252,6 @@ module "sbox_specific_permissions" {
   terraform_state_bucket                           = module.terraform_state.terraform_state_bucket_arn
   terraform_state_lock                             = module.terraform_state_lock.terraform_state_lock_arn
   terraform_github_state_bucket                    = module.terraform_state.terraform_github_state_bucket_arn
-  terraform_github_state_lock                      = module.terraform_state_lock.terraform_github_state_lock_arn
   tdr_account_number                               = data.aws_ssm_parameter.sandbox_account_number.value
   tdr_mgmt_account_number                          = data.aws_ssm_parameter.mgmt_account_number.value
   tdr_environment                                  = "sbox"
