@@ -35,9 +35,12 @@ data "aws_iam_policy_document" "terraform_state_lock" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = ["s3:DeleteObject"]
-    resources = ["${var.terraform_state_bucket}/*/*.tflock"]
+    effect  = "Allow"
+    actions = ["s3:DeleteObject"]
+    resources = [
+      "${var.terraform_state_bucket}/*/*.tflock",
+      "${var.terraform_scripts_state_bucket}/*/*.tflock"
+    ]
   }
 }
 
