@@ -84,7 +84,7 @@
         "ec2:RevokeSecurityGroupIngress",
         "ec2:RunInstances",
         "ec2:TerminateInstances",
-        "ec2:*VpcEndpointServiceConfiguration*",
+        "ec2:*VpcEndpointService*",
         "ecr:*",
         "ecs:*",
         "elasticache:*",
