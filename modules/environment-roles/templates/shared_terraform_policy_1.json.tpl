@@ -122,7 +122,8 @@
         "wafv2:*",
         "secretsmanager:CreateSecret",
         "secretsmanager:TagResource",
-        "organizations:DescribeOrganization"
+        "organizations:DescribeOrganization",
+        "route53resolver:*ResolverQueryLog*"
       ],
       "Resource": "*"
     }
