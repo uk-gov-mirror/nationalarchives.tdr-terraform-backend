@@ -123,7 +123,9 @@
         "secretsmanager:CreateSecret",
         "secretsmanager:TagResource",
         "organizations:DescribeOrganization",
-        "route53resolver:*ResolverQueryLog*"
+        "route53resolver:*ResolverQueryLog*",
+        "route53resolver:TagResource",
+        "route53resolver:UntagResource"
       ],
       "Resource": "*"
     }
