@@ -125,7 +125,8 @@
         "organizations:DescribeOrganization",
         "route53resolver:*ResolverQueryLog*",
         "route53resolver:TagResource",
-        "route53resolver:UntagResource"
+        "route53resolver:UntagResource",
+        "route53resolver:ListTagsForResource"
       ],
       "Resource": "*"
     }
