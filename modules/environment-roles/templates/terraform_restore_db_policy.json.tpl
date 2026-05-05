@@ -20,12 +20,12 @@
         "rds:CreateDBInstance",
         "rds:DeleteDBCluster",
         "rds:DeleteDBInstance",
-        "rds:DescribeDBClusters",
-        "rds:DescribeDBInstances",
-        "rds:DescribeDBSubnetGroups",
         "rds:ListTagsForResource",
         "rds:ModifyDBCluster",
         "rds:RestoreDBClusterToPointInTime",
+        "rds:RestoreDBClusterFromSnapshot",
+        "rds:RestoreDBInstanceToPointInTime",
+        "rds:RestoreDBInstanceFromDBSnapshot",
         "ssm:GetParameter",
         "ssm:GetParameters",
         "ssm:ListTagsForResource",
@@ -40,7 +40,9 @@
         "arn:aws:rds:eu-west-2:${account_id}:subgrp:*",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/consignmentapi/database/url",
         "arn:aws:ssm:eu-west-2:${account_id}:parameter/${environment}/keycloak/database/url",
-        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre"
+        "arn:aws:ssm:eu-west-2:${account_id}:parameter/mgmt/cost_centre",
+        "arn:aws:rds:eu-west-2:${account_id}:db:consignmentapi-*",
+        "arn:aws:rds:eu-west-2:${account_id}:db:keycloak-*"
       ]
     },
     {
@@ -49,8 +51,11 @@
         "ec2:DescribeSecurityGroups",
         "kms:CreateGrant",
         "kms:DescribeKey",
-        "rds:DescribeGlobalClusters"
-      ],
+        "rds:DescribeGlobalClusters",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBSubnetGroups"
+        ],
       "Resource": "*"
     },
     {
