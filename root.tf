@@ -544,3 +544,24 @@ module "oam_sources_prod" {
     aws = aws.prod
   }
 }
+
+# TDRD-1419 - Policy for SSO Observability Role
+resource "aws_iam_policy" "sso_observability_role_policy" {
+  name        = "AWSSSO_TDRObservabilityPolicy"
+  description = "Policy for SSO Observability Role"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "cloudwatch:Describe*",
+          "cloudwatch:Get*",
+          "cloudwatch:List*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
