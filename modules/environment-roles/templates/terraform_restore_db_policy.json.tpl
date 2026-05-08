@@ -22,6 +22,7 @@
         "rds:DeleteDBInstance",
         "rds:ListTagsForResource",
         "rds:ModifyDBCluster",
+        "rds:ModifyDBInstance",
         "rds:RestoreDBClusterToPointInTime",
         "rds:RestoreDBClusterFromSnapshot",
         "rds:RestoreDBInstanceToPointInTime",
