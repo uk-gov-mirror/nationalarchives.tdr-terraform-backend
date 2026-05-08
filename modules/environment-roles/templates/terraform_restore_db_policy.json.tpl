@@ -55,8 +55,10 @@
         "rds:DescribeGlobalClusters",
         "rds:DescribeDBClusters",
         "rds:DescribeDBInstances",
-        "rds:DescribeDBSubnetGroups"
-        ],
+        "rds:DescribeDBSubnetGroups",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:TagResource"
+      ],
       "Resource": "*"
     },
     {
