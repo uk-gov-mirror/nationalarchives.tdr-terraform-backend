@@ -22,6 +22,7 @@
         "rds:DeleteDBInstance",
         "rds:ListTagsForResource",
         "rds:ModifyDBCluster",
+        "rds:ModifyDBInstance",
         "rds:RestoreDBClusterToPointInTime",
         "rds:RestoreDBClusterFromSnapshot",
         "rds:RestoreDBInstanceToPointInTime",
@@ -54,8 +55,10 @@
         "rds:DescribeGlobalClusters",
         "rds:DescribeDBClusters",
         "rds:DescribeDBInstances",
-        "rds:DescribeDBSubnetGroups"
-        ],
+        "rds:DescribeDBSubnetGroups",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:TagResource"
+      ],
       "Resource": "*"
     },
     {
