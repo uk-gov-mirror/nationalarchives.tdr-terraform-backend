@@ -210,14 +210,16 @@ resource "aws_cloudwatch_event_target" "alarms_cloudwatch_all" {
   event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
 }
 
-# Catch any alarm state change to ALARM and send to cloudwatch 
+# Catch any alarm state change to ALARM and send to cloudwatch
+# Skip if alarm name is prefix with "Muted:"
 resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_any_alarm" {
   name        = "alarm-state-changes-ALARM-all"
-  description = "Catch all state changes to ALARM and send to slack"
+  description = "Catch all state changes to ALARM and send to slack if the alarm name is not prefixed with 'Muted:'"
   event_pattern = jsonencode({
     source               = ["aws.cloudwatch"],
     detail-type          = ["CloudWatch Alarm State Change"]
     "detail.state.value" = ["ALARM"]
+    "detail.alarmName"   = [{ "anything-but" : { "prefix" : "Muted:" } }]
   })
   event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
 }
@@ -278,6 +280,7 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_rds_o
 }
 
 # Catch ALB alarm state changes to OK and send to cloudwatch
+# Ignore Muted
 resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_alb_ok" {
   name        = "alarm-state-changes-OK-alb"
   description = "Catch ALB state changes to OK and send to slack"
@@ -286,6 +289,7 @@ resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_alb_ok
     detail-type                                                = ["CloudWatch Alarm State Change"]
     "detail.state.value"                                       = ["OK"]
     "detail.configuration.metrics.metricStat.metric.namespace" = ["AWS/ApplicationELB"]
+    "detail.alarmName"                                         = [{ "anything-but" : { "prefix" : "Muted:" } }]
   })
   event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
 }
