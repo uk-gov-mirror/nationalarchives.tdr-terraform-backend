@@ -289,7 +289,7 @@ resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_alb_ok
     detail-type                                                = ["CloudWatch Alarm State Change"]
     "detail.state.value"                                       = ["OK"]
     "detail.configuration.metrics.metricStat.metric.namespace" = ["AWS/ApplicationELB"]
-    "detail.alarmName"   = [{ "anything-but" : { "prefix" : "Muted:" } }]
+    "detail.alarmName"                                         = [{ "anything-but" : { "prefix" : "Muted:" } }]
   })
   event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
 }
