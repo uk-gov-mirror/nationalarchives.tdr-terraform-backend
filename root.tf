@@ -403,8 +403,8 @@ module "notification_lambda" {
   event_rule_arns = [
     module.ecr_image_scan_event.event_arn
   ]
-  sns_topic_arns    = [module.notifications_topic.sns_arn]
-  kms_key_arn       = module.mgmt_encryption_key.kms_key_arn
+  sns_topic_arns = [module.notifications_topic.sns_arn]
+  kms_key_arn    = module.mgmt_encryption_key.kms_key_arn
   // value not needed for mgmt lambda but cipher text encrypted so cannot be an empty value
   da_event_bus_arn = "placeholder"
 }
