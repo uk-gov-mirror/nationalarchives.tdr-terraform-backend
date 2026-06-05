@@ -28,15 +28,14 @@ data "aws_secretsmanager_secret_version" "alarms_slack_token" {
   secret_id = aws_secretsmanager_secret.alarms_slack_token.id
 }
 
-resource "aws_secretsmanager_secret" "alarms_jira_credentials" {
-  name        = "alarms_jira_credentials_tdr_notifier"
-  description = "{username:<...>, password:<...>} json object for Jira"
+resource "aws_secretsmanager_secret" "alarms_jira_token" {
+  name        = "alarms_jira_token_tdr_notifier"
+  description = "<username>:<api_key> base64 encoded"
 }
 
-data "aws_secretsmanager_secret_version" "alarms_jira_credentials" {
-  secret_id = aws_secretsmanager_secret.alarms_jira_credentials.id
+data "aws_secretsmanager_secret_version" "alarms_jira_token" {
+  secret_id = aws_secretsmanager_secret.alarms_jira_token.id
 }
-
 
 #### IAM ####
 data "aws_iam_policy_document" "alarms_trust" {
@@ -370,12 +369,12 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_lambd
 resource "aws_cloudwatch_event_connection" "alarms_jira_api" {
   name               = "jira_api_alarms_connection"
   description        = "connection for jira_api_alarms"
-  authorization_type = "BASIC"
+  authorization_type = "API_KEY"
 
   auth_parameters {
-    basic {
-      username = jsondecode(data.aws_secretsmanager_secret_version.alarms_jira_credentials.secret_string)["username"]
-      password = jsondecode(data.aws_secretsmanager_secret_version.alarms_jira_credentials.secret_string)["password"]
+    api_key {
+      key   = "Authorization"
+      value = "Basic ${data.aws_secretsmanager_secret_version.alarms_jira_token.secret_string}"
     }
   }
 }
@@ -386,7 +385,7 @@ resource "aws_cloudwatch_event_api_destination" "alarms_jira_api" {
   invocation_endpoint              = format("%s/rest/api/3/issue", module.global_parameters.jira.cloud_instance_url)
   http_method                      = "POST"
   invocation_rate_limit_per_second = 5
-  connection_arn                   = aws_cloudwatch_event_connection.alarms_slack_api.arn
+  connection_arn                   = aws_cloudwatch_event_connection.alarms_jira_api.arn
 }
 
 # Catch any alarm state change to ALARM in prod and send to cloudwatch
@@ -409,7 +408,9 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_any_a
   arn            = aws_cloudwatch_event_api_destination.alarms_jira_api.arn
   event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
   role_arn       = aws_iam_role.alarms_role.arn
-
+  dead_letter_config {
+    arn = "arn:aws:sqs:eu-west-2:328920706552:ben_dlq_test"
+  }
   input_transformer {
     input_paths = {
       alarmName = "$.detail.alarmName",
