@@ -382,7 +382,7 @@ resource "aws_cloudwatch_event_connection" "alarms_jira_api" {
 resource "aws_cloudwatch_event_api_destination" "alarms_jira_api" {
   name                             = "jira_api_alarms"
   description                      = "send alarms to jira"
-  invocation_endpoint              = format("%s/rest/api/3/issue", module.global_parameters.jira.cloud_instance_url)
+  invocation_endpoint              = format("https://api.atlassian.com/ex/jira/%s/rest/api/3/issue", module.global_parameters.jira.cloud_instance_id)
   http_method                      = "POST"
   invocation_rate_limit_per_second = 5
   connection_arn                   = aws_cloudwatch_event_connection.alarms_jira_api.arn
