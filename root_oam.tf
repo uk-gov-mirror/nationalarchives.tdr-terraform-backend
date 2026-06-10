@@ -5,7 +5,7 @@ module "oam_sink" {
   region                 = "eu-west-2"
 }
 
-module "oam_sink_use1" {
+module "oam_sink_us_east_1" {
   source                 = "./da-terraform-modules/oam_sink"
   source_oam_account_ids = [data.aws_ssm_parameter.dev_account_number.value, data.aws_ssm_parameter.intg_account_number.value, data.aws_ssm_parameter.staging_account_number.value, data.aws_ssm_parameter.prod_account_number.value]
   region                 = "us-east-1"
@@ -21,9 +21,9 @@ module "oam_sources_dev" {
   }
 }
 
-module "oam_sources_dev_use1" {
+module "oam_sources_dev_us_east_1" {
   source                        = "./da-terraform-modules/oam_sources"
-  aws_oam_sink_arn              = module.oam_sink_use1.aws_oam_sink.arn
+  aws_oam_sink_arn              = module.oam_sink_us_east_1.aws_oam_sink.arn
   aws_account_id_sink           = data.aws_ssm_parameter.mgmt_account_number.value
   service_role_managed_policies = []
   region                        = "us-east-1"
@@ -42,9 +42,9 @@ module "oam_sources_intg" {
   }
 }
 
-module "oam_sources_intg_use1" {
+module "oam_sources_intg_us_east_1" {
   source                        = "./da-terraform-modules/oam_sources"
-  aws_oam_sink_arn              = module.oam_sink_use1.aws_oam_sink.arn
+  aws_oam_sink_arn              = module.oam_sink_us_east_1.aws_oam_sink.arn
   aws_account_id_sink           = data.aws_ssm_parameter.mgmt_account_number.value
   service_role_managed_policies = []
   region                        = "us-east-1"
@@ -63,9 +63,9 @@ module "oam_sources_staging" {
   }
 }
 
-module "oam_sources_staging_use1" {
+module "oam_sources_staging_us_east_1" {
   source                        = "./da-terraform-modules/oam_sources"
-  aws_oam_sink_arn              = module.oam_sink_use1.aws_oam_sink.arn
+  aws_oam_sink_arn              = module.oam_sink_us_east_1.aws_oam_sink.arn
   aws_account_id_sink           = data.aws_ssm_parameter.mgmt_account_number.value
   service_role_managed_policies = []
   region                        = "us-east-1"
@@ -84,9 +84,9 @@ module "oam_sources_prod" {
   }
 }
 
-module "oam_sources_prod_use1" {
+module "oam_sources_prod_us_east_1" {
   source                        = "./da-terraform-modules/oam_sources"
-  aws_oam_sink_arn              = module.oam_sink_use1.aws_oam_sink.arn
+  aws_oam_sink_arn              = module.oam_sink_us_east_1.aws_oam_sink.arn
   aws_account_id_sink           = data.aws_ssm_parameter.mgmt_account_number.value
   service_role_managed_policies = []
   region                        = "us-east-1"
