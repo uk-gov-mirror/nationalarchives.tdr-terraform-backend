@@ -408,9 +408,7 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_any_a
   arn            = aws_cloudwatch_event_api_destination.alarms_jira_api.arn
   event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
   role_arn       = aws_iam_role.alarms_role.arn
-  dead_letter_config {
-    arn = "arn:aws:sqs:eu-west-2:328920706552:ben_dlq_test"
-  }
+
   input_transformer {
     input_paths = {
       alarmName = "$.detail.alarmName",
