@@ -6,6 +6,9 @@
 # * Create a role that can be consumed from tdr-terraform-environments for creating alarms
 # * Create slack API destination
 # * Create rules for sending alterts to Slack
+# TDRD-1436
+# * Create rule for sending alerts to Jira
+
 resource "aws_cloudwatch_event_bus" "alarms_event_bus" {
   name = "tdr-alarms"
 }
@@ -23,6 +26,15 @@ resource "aws_secretsmanager_secret" "alarms_slack_token" {
 
 data "aws_secretsmanager_secret_version" "alarms_slack_token" {
   secret_id = aws_secretsmanager_secret.alarms_slack_token.id
+}
+
+resource "aws_secretsmanager_secret" "alarms_jira_token" {
+  name        = "alarms_jira_token_tdr_notifier"
+  description = "<username>:<api_key> base64 encoded"
+}
+
+data "aws_secretsmanager_secret_version" "alarms_jira_token" {
+  secret_id = aws_secretsmanager_secret.alarms_jira_token.id
 }
 
 #### IAM ####
@@ -53,10 +65,13 @@ data "aws_iam_policy_document" "alarms_role" {
     resources = [aws_cloudwatch_event_bus.alarms_event_bus.arn]
   }
   statement {
-    sid       = "TDRAlarmsInvokeApi"
-    effect    = "Allow"
-    actions   = ["events:InvokeApiDestination"]
-    resources = [aws_cloudwatch_event_api_destination.alarms_slack_api.arn]
+    sid     = "TDRAlarmsInvokeApi"
+    effect  = "Allow"
+    actions = ["events:InvokeApiDestination"]
+    resources = [
+      aws_cloudwatch_event_api_destination.alarms_slack_api.arn,
+      aws_cloudwatch_event_api_destination.alarms_jira_api.arn
+    ]
   }
   statement {
     sid    = "TDRAlarmsConnectionSecrets"
@@ -213,7 +228,7 @@ resource "aws_cloudwatch_event_target" "alarms_cloudwatch_all" {
 # Catch any alarm state change to ALARM and send to cloudwatch
 # Skip if alarm name is prefix with "Muted:"
 resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_any_alarm" {
-  name        = "alarm-state-changes-ALARM-all"
+  name        = "alarm-state-changes-ALARM-all-slack"
   description = "Catch all state changes to ALARM and send to slack if the alarm name is not prefixed with 'Muted:'"
   event_pattern = jsonencode({
     source               = ["aws.cloudwatch"],
@@ -247,7 +262,7 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_any_a
 
 # Catch RDS alarm state changes to OK and send to cloudwatch
 resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_rds_ok" {
-  name        = "alarm-state-changes-OK-rds"
+  name        = "alarm-state-changes-OK-rds-slack"
   description = "Catch RDS state changes to OK and send to slack"
   event_pattern = jsonencode({
     source                                                     = ["aws.cloudwatch"],
@@ -282,7 +297,7 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_rds_o
 # Catch ALB alarm state changes to OK and send to cloudwatch
 # Ignore Muted
 resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_alb_ok" {
-  name        = "alarm-state-changes-OK-alb"
+  name        = "alarm-state-changes-OK-alb-slack"
   description = "Catch ALB state changes to OK and send to slack"
   event_pattern = jsonencode({
     source                                                     = ["aws.cloudwatch"],
@@ -317,7 +332,7 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_alb_o
 
 # Catch Lambda Throttle alarm state changes to OK and send to cloudwatch
 resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_lambda_throttle_ok" {
-  name        = "alarm-state-changes-OK-lambda-throttle"
+  name        = "alarm-state-changes-OK-lambda-throttle-slack"
   description = "Catch Lambda Throttle state changes to OK and send to slack"
   event_pattern = jsonencode({
     source                                                     = ["aws.cloudwatch"],
@@ -347,5 +362,60 @@ resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_lambd
       channel_id  = module.global_parameters.slack_channels.da-tdr-cloudwatch-alarms
       alarm_state = ":green-tick:"
     })
+  }
+}
+
+#### Jira ####
+resource "aws_cloudwatch_event_connection" "alarms_jira_api" {
+  name               = "jira_api_alarms_connection"
+  description        = "connection for jira_api_alarms"
+  authorization_type = "API_KEY"
+
+  auth_parameters {
+    api_key {
+      key   = "Authorization"
+      value = "Basic ${data.aws_secretsmanager_secret_version.alarms_jira_token.secret_string}"
+    }
+  }
+}
+
+resource "aws_cloudwatch_event_api_destination" "alarms_jira_api" {
+  name                             = "jira_api_alarms"
+  description                      = "send alarms to jira"
+  invocation_endpoint              = format("https://api.atlassian.com/ex/jira/%s/rest/api/3/issue", module.global_parameters.jira.cloud_instance_id)
+  http_method                      = "POST"
+  invocation_rate_limit_per_second = 5
+  connection_arn                   = aws_cloudwatch_event_connection.alarms_jira_api.arn
+}
+
+# Catch any alarm state change to ALARM in prod and send to cloudwatch
+# Skip if alarm name is prefix with "Muted:"
+resource "aws_cloudwatch_event_rule" "alarms_state_change_any_environment_any_alarm_jira" {
+  name        = "alarm-state-changes-ALARM-all-jira"
+  description = "Catch all state changes to ALARM in prod and send to Jira if the alarm name is not prefixed with 'Muted:'"
+  event_pattern = jsonencode({
+    source      = ["aws.cloudwatch"],
+    detail-type = ["CloudWatch Alarm State Change"]
+    "detail.configuration.metrics.accountId" : [data.aws_ssm_parameter.prod_account_number.value]
+    "detail.state.value" = ["ALARM"]
+    "detail.alarmName"   = [{ "anything-but" : { "prefix" : "Muted:" } }]
+  })
+  event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
+}
+
+resource "aws_cloudwatch_event_target" "alarm_state_change_any_environment_any_alarm_jira" {
+  rule           = aws_cloudwatch_event_rule.alarms_state_change_any_environment_any_alarm_jira.name
+  arn            = aws_cloudwatch_event_api_destination.alarms_jira_api.arn
+  event_bus_name = aws_cloudwatch_event_bus.alarms_event_bus.name
+  role_arn       = aws_iam_role.alarms_role.arn
+
+  input_transformer {
+    input_paths = {
+      alarmName = "$.detail.alarmName",
+      resources = "$.resources[0]",
+      state     = "$.detail.state.value",
+      time      = "$.detail.state.timestamp"
+    }
+    input_template = templatefile("${path.module}/templates/alarms/alarm_notification_jira.json", {})
   }
 }

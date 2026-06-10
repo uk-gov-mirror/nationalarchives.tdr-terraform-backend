@@ -1,0 +1,32 @@
+{
+  "fields": {
+    "project": {
+      "key": "TDRD"
+    },
+    "summary": "<alarmName>",
+    "description": {
+      "version": 1,
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "An production alarm fired from <resources> at <time>"
+            }
+          ]
+        }
+      ]
+    },
+    "issuetype": {
+      "name": "Live Issue"
+    },
+    "parent": {
+      "key": "TDRD-988"
+    },
+    "priority": {
+      "name": "Medium"
+    }
+  }
+}
