@@ -3,7 +3,7 @@
     "project": {
       "key": "TDRD"
     },
-    "summary": "<alarmName>",
+    "summary": "CloudWatch Alarm: <alarmName>",
     "description": {
       "version": 1,
       "type": "doc",
@@ -27,6 +27,9 @@
     },
     "priority": {
       "name": "Medium"
+    },
+    "customfield_11430": {
+      "id": "11629"
     }
   }
 }
