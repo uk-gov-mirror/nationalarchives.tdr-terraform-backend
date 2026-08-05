@@ -268,7 +268,8 @@ module "ecr_transfer_service_repository" {
   allowed_principals = [
     "arn:aws:iam::${data.aws_ssm_parameter.intg_account_number.value}:role/TDRTransferServiceECSExecutionRoleIntg",
     "arn:aws:iam::${data.aws_ssm_parameter.staging_account_number.value}:role/TDRTransferServiceECSExecutionRoleStaging",
-    "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRTransferServiceECSExecutionRoleProd"
+    "arn:aws:iam::${data.aws_ssm_parameter.prod_account_number.value}:role/TDRTransferServiceECSExecutionRoleProd",
+    "arn:aws:iam::${data.aws_ssm_parameter.dev_account_number.value}:role/TDRTransferServiceECSExecutionRoleDev"
   ]
   common_tags = local.common_tags
 }
