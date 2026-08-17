@@ -89,6 +89,7 @@
         "ecs:*",
         "elasticache:*",
         "elasticfilesystem:*",
+        "s3files:*",
         "elasticloadbalancing:*",
         "events:*",
         "glue:*",
