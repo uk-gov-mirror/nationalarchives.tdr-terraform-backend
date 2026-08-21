@@ -2,24 +2,31 @@
     "channel": "${channel_id}",
     "blocks": [
 		{
-			"type": "header",
-			"text": {
-				"type": "plain_text",
-				"text": "<alarmName>",
-				"emoji": false
-			}
-		},
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": "<alarmName>",
+                "emoji": false
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "<https://github.com/nationalarchives/tdr-dev-documentation-internal/blob/main/manual/cloudwatch-alarms.md|:book: CloudWatch alarms documentation>"
+            }
+        },
 		{
 			"type": "section",
 			"fields": [
-              	                {
+              	{
 					"type": "plain_text",
 					"text": "State",
 					"emoji": false
 				},
-              	                {
+              	{
 					"type": "mrkdwn",
-				        "text": "${alarm_state}"
+				    "text": "${alarm_state}"
 				},
 				{
 					"type": "plain_text",

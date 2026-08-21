@@ -22,7 +22,10 @@
          "arn:aws:iam::${account_id}:role/TDRCreateDbUsersKeycloakRole${title(environment)}",
          "arn:aws:iam::${account_id}:policy/TDRCreateDbUsersKeycloakPolicy${title(environment)}",
          "arn:aws:iam::${account_id}:policy/wiz-secrets-access-policy-${environment}",
-         "arn:aws:iam::${account_id}:policy/TDRConsignmentAPIExportInvokePolicy${title(environment)}"
+         "arn:aws:iam::${account_id}:policy/TDRConsignmentAPIExportInvokePolicy${title(environment)}",
+         "arn:aws:iam::${account_id}:policy/TDRFrontendEcsInternalS3Buckets${title(environment)}",
+         "arn:aws:iam::${account_id}:policy/TDRFrontendStepFunctionsExecutionPolicy${title(environment)}",
+         "arn:aws:iam::${account_id}:role/TDRFileChecksS3FilesRole${title(environment)}"
        ]
     }
   ]
