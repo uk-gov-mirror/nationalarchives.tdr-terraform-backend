@@ -11,9 +11,9 @@ locals {
     "CostCentre"      = data.aws_ssm_parameter.cost_centre.value
   })
 
-  github_tdr_e2e_tests_repository          = "repo:nationalarchives/tdr-e2e-tests:*"
+  github_tdr_e2e_tests_repository          = "repo:nationalarchives@10154228/tdr-e2e-tests@234021326:*"
   github_tdr_antivirus_repository          = "repo:nationalarchives/tdr-antivirus:*"
-  github_da_reference_generator_repository = "repo:nationalarchives/da-reference-generator:*"
+  github_da_reference_generator_repository = "repo:nationalarchives@10154228/da-reference-generator@671378975:*"
 
   aws_backup_role_name      = module.tdr_configuration.terraform_config.mgmt["local_account_backup_role_name"]
   aws_backup_tag            = module.tdr_configuration.terraform_config["aws_backup_daily_short_term_retain_tag"]
